@@ -16,9 +16,7 @@
       <maxHistory>60</maxHistory>      <!-- 일자별 백업파일의 보관기간 -->
     </rollingPolicy>
     <encoder>
-      <Pattern>
-        %clr(%d{yyyy-MM-dd HH:mm:ss}){faint} %clr(%-5p) %clr([%15.15t]){faint} %clr(%logger){cyan} %clr(:){faint} %m%n ${LOG_EXCEPTION_CONVERSION_WORD:-%wEx}
-      </Pattern>
+      <Pattern>%clr(%d{yyyy-MM-dd HH:mm:ss}){faint} %clr(%-5p) %clr([%15.15t]){faint} %clr(%logger){cyan} %clr(:){faint} %m%n ${LOG_EXCEPTION_CONVERSION_WORD:-%wEx}</Pattern>
     </encoder>
     <!-- <filter class="ch.qos.logback.classic.filter.LevelFilter">
           <level>error</level>
@@ -27,9 +25,7 @@
 
   <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
     <layout class="ch.qos.logback.classic.PatternLayout">
-      <Pattern>
-        %clr(%d{yyyy-MM-dd HH:mm:ss}){faint} %clr(%-5p) %clr([%15.15t]){faint} %clr(%logger){cyan} %clr(:){faint} %m%n ${LOG_EXCEPTION_CONVERSION_WORD:-%wEx}
-      </Pattern>
+      <Pattern>%clr(%d{yyyy-MM-dd HH:mm:ss}){faint} %clr(%-5p) %clr([%15.15t]){faint} %clr(%logger){cyan} %clr(:){faint} %m%n ${LOG_EXCEPTION_CONVERSION_WORD:-%wEx}</Pattern>
     </layout>
   </appender>
 
