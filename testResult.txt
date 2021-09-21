@@ -1,0 +1,22 @@
+{code=XlWvsLkN9RuGTvdtgQ
+    , state=280285146224475074104206487753699691023
+}
+    
+    
+    {
+    "access_token": "AAAANyomZi7R-olT4UPFeD7hxoA8VTH2P5jGuWrimdWrmVCmkcEq3Ikzplg9XKObfMdZEr7GXbUUpmgp70BXgfaHc6Y",
+    "refresh_token": "aii32J6tXsmu1ZPUSI7Po6GNgSJHMT9NtBkLjzK6d9a2N5nXnNGhQMhVJtleIwBSEWisK4gBxdKXxist4H1NV2IZSUaT637kwTaRCNa4ugL1FisisHEZvGnripfJJg3QJJPjqY",
+    "token_type": "bearer",
+    "expires_in": "3600"
+}
+    {
+    "resultcode": "00",
+    "message": "success",
+    "response": {
+        "id": "-moTX_e6zrrDTyGfbguQy_bn5FuQhbpKTbb8bLm2jp4",
+        "email": "psj2867@naver.com",
+        "mobile": "010-2231-2867",
+        "mobile_e164": "+821022312867",
+        "name": "\ubc15\uc120\uc7ac"
+    }
+}
