@@ -19,7 +19,7 @@ public class UserService  {
 
     public UserEntity addOriginUser(UserForm user) throws DataIntegrityViolationException{
         UserEntity userEntity = user.convertToEntity();
-        userEntity.setType(LoginTypeEnum.ORIGIN.name());
+        userEntity.setLoginType(LoginTypeEnum.ORIGIN);
         userDao.save(userEntity);
         return userEntity;
     }

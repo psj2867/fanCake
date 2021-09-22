@@ -6,27 +6,22 @@ import java.sql.SQLException;
 import javax.servlet.ServletContext;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.servlet.View;
-import org.springframework.web.servlet.view.RedirectView;
 
 import lombok.extern.slf4j.Slf4j;
-import ml.psj2867.demo.dao.TestEntityDao;
+import ml.psj2867.demo.dao.UserEntityDao;
 
 @Slf4j
 @Controller
 // @Secured("ROLE_TEST")
 public class MainController {
-    @Autowired
-    private TestEntityDao testEntityDao;
 
     @RequestMapping("")
     public String getMain() throws SQLException {
-        return "redirect:/static/theme/freelance/index.html";
+        return "redirect:/static/fanCake/index.html";
     }
 
     @RequestMapping("template")
@@ -43,13 +38,15 @@ public class MainController {
     public @ResponseBody Object getTest() {
         return "test page";
     }
-
-
-    @RequestMapping("entity")
-    public @ResponseBody Object getEntity() {
-        log.info("test log");
-        return testEntityDao.findAll();
+    @Autowired
+    UserEntityDao userDao;
+    @RequestMapping("chain")
+    public @ResponseBody Object getChain() {
+        // return userDao.find
+        return null;
     }
+
+
 
     @RequestMapping("classpath")
     public @ResponseBody Object getClassPath() {

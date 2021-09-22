@@ -68,7 +68,7 @@ public class AuthService {
     }
 
     public UserEntity loginOriginUser(UserForm userForm) {
-        Optional<UserEntity> userEntity = userDao.findByIdIsAndTypeIs(userForm.getId(), LoginTypeEnum.ORIGIN.name());
+        Optional<UserEntity> userEntity = userDao.findByIdIsAndLoginTypeIs(userForm.getId(), LoginTypeEnum.ORIGIN);
         return userEntity
             .orElseThrow( ()->new LoginException() );
     }
@@ -76,13 +76,13 @@ public class AuthService {
     public UserEntity loginNaverUserOrAdd(NaverOAuthForm naverOAuthForm) {
         final NaverToken accessToken = getNaverAccessToekn(naverOAuthForm);
         NaverOAuthUserInfo userInfo= getNaverUserInfo(accessToken).getResponse();        
-        Optional<UserEntity> userEntity = userDao.findByIdIsAndTypeIs(userInfo.getId(), LoginTypeEnum.NAVER.name());        
+        Optional<UserEntity> userEntity = userDao.findByIdIsAndLoginTypeIs(userInfo.getId(), LoginTypeEnum.NAVER);        
         return userEntity
             .orElseGet(()->{
                 UserEntity newNaverUser = UserEntity.builder()
                                             .id(userInfo.getId())
                                             .name(userInfo.getName())
-                                            .type(LoginTypeEnum.NAVER.name())
+                                            .loginType(LoginTypeEnum.NAVER)
                                             .build();
                 userDao.save(newNaverUser);
                 return newNaverUser;

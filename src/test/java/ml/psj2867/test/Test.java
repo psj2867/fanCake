@@ -1,4 +1,4 @@
-package ml.psj2867.demo;
+package ml.psj2867.test;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
