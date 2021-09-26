@@ -1,4 +1,4 @@
-package ml.psj2867.test.service.user;
+package ml.psj2867.demo.service.user;
 
 import org.junit.Assert;
 import org.junit.jupiter.api.Test;
@@ -14,25 +14,16 @@ import ml.psj2867.demo.service.user.model.UserForm;
 
 @ActiveProfiles("test")
 @SpringBootTest
-class LoginServiceTest {
+public class AuthoritiesServiceTest {
 
 	@Autowired
 	private  UserService loginService;
 
 
 	@Autowired
-	private  UserEntityDao userDao;
+	private  AuthService authService;
 
 
-
-	@Test
-	void addOriginUserTest() {
-		String id = "user1";
-		String password = "1234";
-		UserEntity UserEntity = loginService.addOriginUser(new UserForm(id, password));
-		UserEntity dbUser = userDao.findByIdIsAndPasswdIsAndLoginTypeIs(id, password, LoginTypeEnum.ORIGIN).get();
-		Assert.assertEquals(UserEntity.getIdx(), dbUser.getIdx());
-	}
 
 
 

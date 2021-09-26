@@ -6,21 +6,28 @@ import lombok.Data;
 import ml.psj2867.demo.entity.UserEntity;
 
 @Builder
-@AllArgsConstructor
 @Data
 public class UserForm {
     
+    private Integer userIdx;
     private String id;
     private String password;
+    @Builder.Default
+    private boolean isCreator = false;
 
-    public UserEntity convertToEntity(){
+    public UserEntity toEntity(){
         UserEntity user = new UserEntity();
         user.setId(this.id);
         user.setPasswd(this.password);
+        user.setCreator(this.isCreator);
         return user;
     }
-    public static UserForm convert(UserEntity userEntity){
-        UserForm user = new UserForm(userEntity.getId(), userEntity.getPasswd());
+    public static UserForm of(UserEntity userEntity){
+        UserForm user = UserForm.builder()
+                            .userIdx(userEntity.getIdx())
+                            .id(userEntity.getId())
+                            .password(userEntity.getPasswd())
+                            .build();
         return user;
 
     }

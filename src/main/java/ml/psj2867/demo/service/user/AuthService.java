@@ -50,6 +50,8 @@ public class AuthService {
 
     @Autowired
     private UserEntityDao userDao;
+    @Autowired
+    private UserService userService;
 
     @Autowired
     private ConfigureProperties properties;
@@ -60,8 +62,7 @@ public class AuthService {
         try {
             Authentication authUser = new UsernamePasswordAuthenticationToken(user.getId(), user.getPasswd());
             final TokenDto token = jwtProvider.generateTokenDto(authUser);
-            res.addHeader(JwtFilter.AUTHORIZATION_HEADER, token.getAccessToken());
-            res.addCookie(CookieUtil.createCookie(JwtFilter.AUTHORIZATION_HEADER, token.getAccessToken()));
+            res.addCookie(CookieUtil.createCookie(jwtProvider.AUTHORIZATION_HEADER, token.getAccessToken()));
         } catch (Exception e) {
             throw new LoginException(e);
         }
@@ -78,15 +79,7 @@ public class AuthService {
         NaverOAuthUserInfo userInfo= getNaverUserInfo(accessToken).getResponse();        
         Optional<UserEntity> userEntity = userDao.findByIdIsAndLoginTypeIs(userInfo.getId(), LoginTypeEnum.NAVER);        
         return userEntity
-            .orElseGet(()->{
-                UserEntity newNaverUser = UserEntity.builder()
-                                            .id(userInfo.getId())
-                                            .name(userInfo.getName())
-                                            .loginType(LoginTypeEnum.NAVER)
-                                            .build();
-                userDao.save(newNaverUser);
-                return newNaverUser;
-        });
+            .orElseGet(()->userService.addUser(userInfo.convertToEntity()));
     }
     private NaverToken getNaverAccessToekn(NaverOAuthForm naverOAuthForm) {
         try {

@@ -31,8 +31,10 @@ import ml.psj2867.demo.configure.ConfigureProperties;
 @Component
 public class JwtProvider {
 
+    public static final String AUTHORIZATION_HEADER = "Authorization";
+    public static final String BEARER_PREFIX = "Bearer";
+
     private static final String AUTHORITIES_KEY = "grants";
-    private static final String BEARER_TYPE = "bearer";
     public static final long ACCESS_TOKEN_EXPIRE_TIME = 1000 * 60 * 60 * 24; // 1일 
     private static final long REFRESH_TOKEN_EXPIRE_TIME = 1000 * 60 * 60 * 24 * 7; // 7일
 
@@ -63,17 +65,9 @@ public class JwtProvider {
                 .signWith(key, SignatureAlgorithm.HS512)    // header "alg": "HS512"
                 .compact();
 
-        // Refresh Token 생성
-        // String refreshToken = Jwts.builder()
-        //         .setExpiration(new Date(now + REFRESH_TOKEN_EXPIRE_TIME))
-        //         .signWith(key, SignatureAlgorithm.HS512)
-        //         .compact();
-
         return TokenDto.builder()
-                .grantType(BEARER_TYPE)
                 .accessToken(accessToken)
                 .accessTokenExpiresIn(accessTokenExpiresIn.getTime())
-                // .refreshToken(refreshToken)
                 .build();
     }
 

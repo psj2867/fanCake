@@ -14,18 +14,18 @@ import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
 
+import io.jsonwebtoken.Jwt;
+
 @Component
 public class JwtFilter extends OncePerRequestFilter {
 
-    public static final String AUTHORIZATION_HEADER = "Authorization";
-    public static final String BEARER_PREFIX = "Bearer ";
-
     @Autowired
     private JwtProvider jwtProvider;
+    public static final String BEARER_PREFIX = JwtProvider.BEARER_PREFIX + " ";
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws IOException, ServletException {
-
+        
         String jwt = resolveToken(request);
 
         if (jwtProvider.validateToken(jwt)) {
@@ -39,11 +39,11 @@ public class JwtFilter extends OncePerRequestFilter {
 
     // Request Header 에서 토큰 정보를 꺼내오기
     private String resolveToken(HttpServletRequest request) {
-        String headerBearerToken = request.getHeader(AUTHORIZATION_HEADER);
+        String headerBearerToken = request.getHeader(JwtProvider.AUTHORIZATION_HEADER);
         if (StringUtils.hasText(headerBearerToken) && headerBearerToken.startsWith(BEARER_PREFIX)) {
             return headerBearerToken;
         }
-        String cookieBearerToken = request.getHeader(AUTHORIZATION_HEADER);
+        String cookieBearerToken = request.getHeader(JwtProvider.AUTHORIZATION_HEADER);
         if (StringUtils.hasText(cookieBearerToken) && cookieBearerToken.startsWith(BEARER_PREFIX)) {
             return cookieBearerToken;
         }        

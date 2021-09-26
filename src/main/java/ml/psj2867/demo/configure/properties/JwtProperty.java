@@ -1,9 +1,13 @@
 package ml.psj2867.demo.configure.properties;
 
-import lombok.Data;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 
-@Data
+@Getter
+@Setter
+@NoArgsConstructor
 public class JwtProperty {
     private String secret;
 }

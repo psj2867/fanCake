@@ -34,8 +34,6 @@
     <root level="debug">
       <appender-ref ref="STDOUT" />
     </root>
-    <logger name="org.springframework" level="info"/>
-    <logger name="org.hibernate" level="info"/>
   </springProfile>
 
 
@@ -43,6 +41,7 @@
     <root level="warn">
       <appender-ref ref="STDOUT" />
     </root>
+    <logger name="org.hibernate.type.descriptor.sql" level="trace"/>
   </springProfile>
 
   <springProfile name="prod">
@@ -53,6 +52,10 @@
   </springProfile> 
 
   <logger name="ml.psj2867" level="trace"/>
+  <logger name="org.springframework" level="info"/>
+  <logger name="org.hibernate" level="info"/>
+  <logger name="org.hibernate.type.descriptor.sql" level="trace"/>
+  <logger name="com.zaxxer.hikari" level="info"/>
 
 
 </configuration>

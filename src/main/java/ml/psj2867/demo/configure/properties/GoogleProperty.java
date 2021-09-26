@@ -1,14 +1,16 @@
 package ml.psj2867.demo.configure.properties;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-
+@Builder
 @Getter
 @Setter
 @NoArgsConstructor
-public class NaverProperty {
-    private String client_id;
-    private String client_secret;
+@AllArgsConstructor
+public class GoogleProperty {
+    private String api_key;
 }
