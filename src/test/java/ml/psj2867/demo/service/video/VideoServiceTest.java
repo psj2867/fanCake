@@ -1,15 +1,16 @@
 package ml.psj2867.demo.service.video;
 
-import java.util.List;
-
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.Page;
 import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.context.jdbc.Sql;
 
 import ml.psj2867.demo.entity.VideoEntity;
+import ml.psj2867.demo.service.video.model.VideoDto;
 import ml.psj2867.demo.service.video.model.VideoListForm;
+
 
 @ActiveProfiles("test")
 @SpringBootTest
@@ -20,12 +21,17 @@ public class VideoServiceTest {
     @Test
     public void listTest(){
         VideoListForm form = VideoListForm.builder()
-                                            .q("")
+                                            .q("title")
+                                            .page(2)
+                                            .sort("idx")
+                                            .asc(false)
                                             .build();
-        Page<VideoEntity> list= videoService.getVideoList(form);
+        Page<VideoDto> list= videoService.getVideoList(form);
         System.out.println(list);
         System.out.println(list.getContent());
+        list.getContent().stream().forEach(System.out::println);
     }
+
 
 
 }

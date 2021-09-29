@@ -12,7 +12,7 @@ import lombok.extern.slf4j.Slf4j;
 @ControllerAdvice
 public class ExceptionHandlerAdvice {
 
-    // @ExceptionHandler(Exception.class)
+    @ExceptionHandler(Exception.class)
     public String exception(  HttpServletRequest request
                             , HttpServletResponse reponse
                             , Exception e){

@@ -19,10 +19,6 @@ public class AuthEntityDaoTest {
 	private  UserEntityDao userDao;
 	@Autowired
 	private  AuthoritiesEntityDao authDao;
-	@Autowired
-	private  VideoEntityDao videoDao;
-	@Autowired
-	private  StockEntityDao stockDao;
 
 	@Transactional
 	@Test

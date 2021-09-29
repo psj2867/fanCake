@@ -14,7 +14,6 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.fasterxml.jackson.core.type.TypeReference;
@@ -28,7 +27,6 @@ import org.springframework.stereotype.Service;
 
 import lombok.extern.slf4j.Slf4j;
 import ml.psj2867.demo.configure.ConfigureProperties;
-import ml.psj2867.demo.configure.security.JwtFilter;
 import ml.psj2867.demo.configure.security.JwtProvider;
 import ml.psj2867.demo.configure.security.TokenDto;
 import ml.psj2867.demo.dao.UserEntityDao;
@@ -40,7 +38,6 @@ import ml.psj2867.demo.service.user.model.NaverOAuthResponse;
 import ml.psj2867.demo.service.user.model.NaverOAuthUserInfo;
 import ml.psj2867.demo.service.user.model.NaverToken;
 import ml.psj2867.demo.service.user.model.UserForm;
-import ml.psj2867.demo.util.CookieUtil;
 import ml.psj2867.demo.util.OptionalUtil;
 
 @Slf4j
@@ -60,9 +57,9 @@ public class AuthService {
 
     public void login(UserEntity user, HttpServletResponse res) throws LoginException {
         try {
-            Authentication authUser = new UsernamePasswordAuthenticationToken(user.getId(), user.getPasswd());
+            UsernamePasswordAuthenticationToken authUser = new UsernamePasswordAuthenticationToken(user.getId(), user.getName());
             final TokenDto token = jwtProvider.generateTokenDto(authUser);
-            res.addCookie(CookieUtil.createCookie(jwtProvider.AUTHORIZATION_HEADER, token.getAccessToken()));
+            res.addCookie(jwtProvider.createCookie(token));
         } catch (Exception e) {
             throw new LoginException(e);
         }

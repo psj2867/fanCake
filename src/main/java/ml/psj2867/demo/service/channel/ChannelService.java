@@ -15,7 +15,7 @@ public class ChannelService  {
     @Autowired
     private ChannelEntityDao channelDao;  
 
-    public ChannelEntity setChannel(ChannelForm channelForm){
+    public ChannelEntity addChannel(ChannelForm channelForm){
         ChannelEntity channel = channelForm.toEntity();
         channelDao.save(channel);
         return channel;

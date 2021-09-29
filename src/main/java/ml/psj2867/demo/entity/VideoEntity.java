@@ -6,10 +6,14 @@ import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.PrePersist;
+
+import org.hibernate.annotations.ColumnDefault;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -26,7 +30,7 @@ import lombok.Setter;
 public class VideoEntity{
     public final static String ENTITY_NAME = "video";
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int idx;
 
     @Column(name = "VIDEO_ID")
@@ -34,12 +38,17 @@ public class VideoEntity{
     private String videoTitle;
     private int stockSize;
     private double pricePerShare;    
+    private LocalDateTime createdDate;    
     private LocalDateTime expirationDate;
+
+    @PrePersist
+    public void saveAt(){
+        this.createdDate = LocalDateTime.now();
+    }
     
     @ManyToOne
     @JoinColumn(name = "CHANNEL_IDX")
     private ChannelEntity channel;
-
 
     @OneToMany(mappedBy = "video")
     private List<StockEntity> sotkcs;

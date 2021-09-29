@@ -20,10 +20,15 @@ import ml.psj2867.demo.entity.VideoEntity;
 public class VideoListForm {
     @Builder.Default
     private int DEFAULT_COUNT_PER_PAGE = 10;
+    @Builder.Default
+    private int MAX_COUNT_PER_PAGE = 50;
 
     private String q;
+    private Integer page;
+    private Integer countPerPage;
     private String sort;
-    private String asc;
+    @Builder.Default
+    private boolean asc = true;
 
     public Specification<VideoEntity> toSpec(){
         return (root, query, builder) -> {
@@ -34,13 +39,21 @@ public class VideoListForm {
             return p;
         };
     }
-    public Pageable toPageable(int curr){
-        return toPageable(curr, this.DEFAULT_COUNT_PER_PAGE);
+
+    public Pageable toPageable(){
+        page = (page == null ||  page < 0  ) ? 0 : page;
+        countPerPage = (countPerPage == null ||  countPerPage < 1 ) ? DEFAULT_COUNT_PER_PAGE : countPerPage;
+        countPerPage = countPerPage > MAX_COUNT_PER_PAGE ? MAX_COUNT_PER_PAGE : countPerPage;
+        return toPageable(page, countPerPage);
     }
-    public Pageable toPageable(int curr, int countPerPagge){
+
+    private Pageable toPageable(int curr, int countPerPagge){
         PageRequest pageable = null;
-        if( StringUtils.hasLength(sort) ){
+        if( StringUtils.hasLength(sort) && asc ){
             Sort sort = Sort.by(Order.asc(this.sort) ) ;
+            pageable = PageRequest.of(curr, countPerPagge, sort);
+        }else if( StringUtils.hasLength(sort) ){
+            Sort sort = Sort.by(Order.desc(this.sort) ) ;
             pageable = PageRequest.of(curr, countPerPagge, sort);
         }else{
             pageable = PageRequest.of(curr, countPerPagge);            

@@ -2,14 +2,22 @@ package ml.psj2867.demo.service.video.model;
 
 import java.time.LocalDateTime;
 
-import lombok.Data;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.Setter;
 
-@Data
+@Builder
+@AllArgsConstructor
+@Getter
+@Setter
 public class VideoDto{
 
     private String title;
     private double marketCap;
-    private String currentAmount;
+    private double pricePerShare;
+    private int currentAmount;
     private int videoIdx;
     private LocalDateTime expirationDate;
+
 }

@@ -5,10 +5,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import ml.psj2867.demo.dao.AdvanceBookingEntityDao;
-import ml.psj2867.demo.dao.ChannelEntityDao;
 import ml.psj2867.demo.entity.AdvanceBookingEntity;
-import ml.psj2867.demo.entity.ChannelEntity;
-import ml.psj2867.demo.service.channel.model.ChannelForm;
 
 @Transactional
 @Service

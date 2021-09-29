@@ -5,6 +5,7 @@ import ml.psj2867.demo.configure.properties.GoogleProperty;
 import ml.psj2867.demo.entity.ChannelEntity;
 import ml.psj2867.demo.service.channel.model.ChannelForm;
 import ml.psj2867.demo.service.youtube.YoutubeService;
+import ml.psj2867.demo.util.exceptionwrap.ExceptionOptional;
 
 public class Test {
     public static void main(String[] args) throws Exception {
@@ -20,9 +21,8 @@ public class Test {
     }
 
     public static void f2() throws Exception {
-        ChannelForm form = ChannelForm.builder().channel_id("asdf").build();
-        ChannelEntity entity = form.toEntity();
-        System.out.println(entity);
-
+        ExceptionOptional.of(()-> {
+            throw new RuntimeException();
+        }).fin(e -> "");
     }
 }

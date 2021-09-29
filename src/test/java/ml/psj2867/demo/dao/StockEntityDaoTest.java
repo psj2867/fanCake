@@ -7,22 +7,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 
-import ml.psj2867.demo.entity.UserEntity;
 import ml.psj2867.demo.entity.VideoEntity;
-import ml.psj2867.demo.service.user.model.LoginTypeEnum;
 
 @ActiveProfiles("test")
 @SpringBootTest
 public class StockEntityDaoTest {
-
-	@Autowired
-	private  UserEntityDao userDao;
-	@Autowired
-	private  AuthoritiesEntityDao authDao;
 	@Autowired
 	private  VideoEntityDao videoDao;
-	@Autowired
-	private  StockEntityDao stockDao;
 
 	@Transactional
 	@Test

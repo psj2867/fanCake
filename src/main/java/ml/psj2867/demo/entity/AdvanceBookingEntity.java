@@ -1,8 +1,12 @@
 package ml.psj2867.demo.entity;
 
+import java.time.LocalDateTime;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.PrePersist;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -19,8 +23,15 @@ import lombok.Setter;
 public class AdvanceBookingEntity{
     public final static String ENTITY_NAME = "advance_resevation";
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int idx;
+
+    private LocalDateTime createdDate;    
+
+    @PrePersist
+    public void saveAt(){
+        this.createdDate = LocalDateTime.now();
+    }
 
 
 

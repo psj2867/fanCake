@@ -17,12 +17,18 @@ public class SecurityUtil {
     public static Optional<Authentication> getAuth(){
         return Optional.ofNullable( SecurityContextHolder.getContext().getAuthentication() );
     }
+    public static Optional<String> getName(){
+        return getDetail().map(detailL ->(String)detailL );
+    }
+    public static Optional<Integer> getUserIdx(){
+        return getAuth().map(authL -> (Integer)authL.getPrincipal());
+    }
 
     public static Optional<UserDetails> getUser(){
         return getAuth().map(authL -> (UserDetails)authL.getPrincipal());
     }
 
-    public static List<GrantedAuthority> getGrant(){
+    public static List<GrantedAuthority> getGrants(){
         Collection<? extends GrantedAuthority> grants = getAuth().map(authL -> authL.getAuthorities() ).orElse(new ArrayList<>()) ;
         return new ArrayList<>(grants);
     }
@@ -31,6 +37,6 @@ public class SecurityUtil {
     }
     
     public static boolean hasAuth(GrantedAuthority... grant){
-        return  CollectionUtils.containsAny(getGrant(), Arrays.asList(grant) );
+        return  CollectionUtils.containsAny(getGrants(), Arrays.asList(grant) );
     }
 }
