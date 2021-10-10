@@ -4,6 +4,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -35,8 +36,9 @@ public class ChannelEntity{
     private LocalDateTime createdDate;    
 
     @PrePersist
-    public void saveAt(){
-        this.createdDate = LocalDateTime.now();
+    private void saveAt(){
+        if(this.createdDate == null)
+            this.createdDate = LocalDateTime.now();
     }
     
     @ManyToOne

@@ -9,7 +9,7 @@ import ml.psj2867.demo.util.exceptionwrap.ExceptionOptional;
 
 public class Test {
     public static void main(String[] args) throws Exception {
-        f1();
+        f2();
     }
 
     public static void f1() throws Exception {
@@ -21,8 +21,8 @@ public class Test {
     }
 
     public static void f2() throws Exception {
-        ExceptionOptional.of(()-> {
-            throw new RuntimeException();
-        }).fin(e -> "");
+        String a ="";
+        Object b = a.split(",");
+        System.out.println(b);
     }
 }

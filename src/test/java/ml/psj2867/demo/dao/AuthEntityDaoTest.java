@@ -7,9 +7,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 
+import ml.psj2867.demo.configure.security.AuthEnum;
 import ml.psj2867.demo.entity.AuthoritiesEntity;
 import ml.psj2867.demo.entity.UserEntity;
-import ml.psj2867.demo.service.user.model.LoginTypeEnum;
+import ml.psj2867.demo.service.user.model.auth.LoginTypeEnum;
 
 @ActiveProfiles("test")
 @SpringBootTest
@@ -26,7 +27,7 @@ public class AuthEntityDaoTest {
 		String id ="psj2867";
 		UserEntity user = userDao.findByIdIsAndLoginTypeIs(id, LoginTypeEnum.ORIGIN).get();
 		AuthoritiesEntity auth = AuthoritiesEntity.builder()
-											.auth("tset_auth")
+											.auth(AuthEnum.USER)
 											.build();
 		auth.setUser(user);
 		authDao.save(auth);

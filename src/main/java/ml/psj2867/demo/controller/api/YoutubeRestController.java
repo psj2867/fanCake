@@ -19,7 +19,7 @@ public class YoutubeRestController {
     private YoutubeService youtubeService;
 
     @GetMapping("channel")
-    public ResponseEntity<SearchListResponse> postAdvance(String q){
+    public ResponseEntity<SearchListResponse> postAdvance( String q){
         return youtubeService.getChannelList(q)
                 .map(reponseL -> ResponseEntity.ok(reponseL) )
                 .orElseGet(() -> ResponseEntity.internalServerError().build());

@@ -1,5 +1,6 @@
 package ml.psj2867.demo.configure;
 
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -14,14 +15,16 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.access.ExceptionTranslationFilter;
 
 import ml.psj2867.demo.configure.security.JwtFilter;
+import ml.psj2867.demo.configure.security.JwtProvider;
 
 @Configuration
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(securedEnabled = true, prePostEnabled = true)
 public class SecurityConfig extends WebSecurityConfigurerAdapter{
 
+
     @Autowired
-    private JwtFilter jwtFilter;
+    private JwtProvider jwtProvider;
 
     @Bean
     public PasswordEncoder passwordEncoder() {
@@ -31,13 +34,13 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
     @Override
     public void configure(WebSecurity web) throws Exception {
         web.ignoring()
+            .antMatchers("/login/**")
             .antMatchers("/h2-console/**")
             .antMatchers("/static/**");
     }
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-
         http.authorizeRequests()
                 .anyRequest()
                 .permitAll()
@@ -48,9 +51,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
             .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
             .and()
                 .formLogin()
-            .disable();
-
-        http.addFilterAfter(jwtFilter, ExceptionTranslationFilter.class);
+                .disable();
+        http.addFilterAfter(new JwtFilter(this.jwtProvider), ExceptionTranslationFilter.class);
 
     }
 

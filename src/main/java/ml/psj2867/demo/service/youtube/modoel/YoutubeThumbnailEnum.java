@@ -17,7 +17,7 @@ public enum YoutubeThumbnailEnum{
     private YoutubeThumbnailEnum(){ this.imageSize = this.name();}
     private YoutubeThumbnailEnum(String imageSize){this.imageSize = imageSize;}
 
-    public static String URL = "https://img.youtube.com/vi/%s/%s";
+    private static String URL = "https://img.youtube.com/vi/%s/%s";
 
     private String getJpgName(){
         return this.getImageSize() + ".jpg";

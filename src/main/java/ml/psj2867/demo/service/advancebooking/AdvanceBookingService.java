@@ -6,6 +6,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import ml.psj2867.demo.dao.AdvanceBookingEntityDao;
 import ml.psj2867.demo.entity.AdvanceBookingEntity;
+import ml.psj2867.demo.service.advancebooking.model.AdvanceBookingForm;
 
 @Transactional
 @Service
@@ -14,8 +15,8 @@ public class AdvanceBookingService  {
     @Autowired
     private AdvanceBookingEntityDao reservationDao;  
 
-    public AdvanceBookingEntity addBooking(){
-        return null;
+    public AdvanceBookingEntity addBooking(AdvanceBookingForm reservationForm){
+        return reservationDao.save(reservationForm.toEntity());
     }
 
 }

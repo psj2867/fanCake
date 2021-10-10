@@ -4,6 +4,7 @@ import java.security.Key;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Date;
+import java.util.List;
 import java.util.stream.Collectors;
 
 import javax.servlet.http.Cookie;
@@ -11,7 +12,6 @@ import javax.servlet.http.Cookie;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.stereotype.Component;
@@ -33,7 +33,7 @@ import ml.psj2867.demo.util.CookieUtil;
 @Slf4j
 @Component
 public class JwtProvider {
-
+    
     public static final String AUTHORIZATION_HEADER = "Authorization";
     public static final String BEARER_PREFIX = "Bearer";
 
@@ -57,9 +57,13 @@ public class JwtProvider {
 
     public TokenDto generateTokenDto(Authentication authentication) {
         // 권한들 가져오기
-        String authorities = authentication.getAuthorities().stream()
-                .map(GrantedAuthority::getAuthority)
-                .collect(Collectors.joining(","));
+        GrantedAuthority defaultGrant = AuthEnum.USER;
+        List<String> authoritieList = authentication.getAuthorities().stream()
+                                            .map(GrantedAuthority::getAuthority)
+                                            .collect(Collectors.toList());
+        authoritieList.add(defaultGrant.getAuthority());
+        String authorities = String.join(",", authoritieList);
+                                    
 
         long now = (new Date()).getTime();
 
@@ -82,11 +86,10 @@ public class JwtProvider {
     public Authentication getAuthentication(String accessToken) {
         // 토큰 복호화
         Claims claims = parseClaims(accessToken);
-
         if (claims.getSubject() == null) {
             throw new BadCredentialsException("권한 정보가 없는 토큰입니다.");
         }
-        if (claims.get(AUTHORITIES_KEY) == null) {
+        if (claims.get(AUTHORITIES_KEY) == null || ! StringUtils.hasLength(claims.get(AUTHORITIES_KEY).toString())) {
             throw new BadCredentialsException("권한 정보가 없는 토큰입니다.");
         }
         if (claims.get(USER_NAME_KEY) == null) {
@@ -95,7 +98,8 @@ public class JwtProvider {
 
         // 클레임에서 권한 정보 가져오기
         Collection<? extends GrantedAuthority> authorities =
-                Arrays.stream(claims.get(AUTHORITIES_KEY).toString().split(","))
+                    Arrays.asList(claims.get(AUTHORITIES_KEY).toString().split(","))
+                        .stream()
                         .map(SimpleGrantedAuthority::new)
                         .collect(Collectors.toList());
 

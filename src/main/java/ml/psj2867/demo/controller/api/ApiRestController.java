@@ -1,30 +1,20 @@
 package ml.psj2867.demo.controller.api;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import ml.psj2867.demo.service.advancebooking.AdvanceBookingService;
-import ml.psj2867.demo.service.advancebooking.model.AdvanceBookingForm;
+import ml.psj2867.demo.service.user.UserService;
+import ml.psj2867.demo.service.user.model.sign.SignUpUserForm;
 
 
 @RestController
 @RequestMapping("api")
 public class ApiRestController {
-    
+
     @Autowired
-    private AdvanceBookingService adBookingService;
+    private UserService userService;
 
-    @PostMapping("advance")
-    public ResponseEntity postAdvance(AdvanceBookingForm reservationForm){
-        return ResponseEntity.ok( adBookingService.addBooking() );
-    }
-
-    // @PostMapping("")
-    // public ResponseEntity postAdvance(AdvanceBookingForm reservationForm){
-    //     return ResponseEntity.ok( adBookingService.addBooking() );
-    // }
 
 }

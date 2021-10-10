@@ -32,12 +32,14 @@ import ml.psj2867.demo.configure.security.TokenDto;
 import ml.psj2867.demo.dao.UserEntityDao;
 import ml.psj2867.demo.entity.UserEntity;
 import ml.psj2867.demo.exception.LoginException;
-import ml.psj2867.demo.service.user.model.LoginTypeEnum;
-import ml.psj2867.demo.service.user.model.NaverOAuthForm;
-import ml.psj2867.demo.service.user.model.NaverOAuthResponse;
-import ml.psj2867.demo.service.user.model.NaverOAuthUserInfo;
-import ml.psj2867.demo.service.user.model.NaverToken;
+import ml.psj2867.demo.exception.NotMatchedCredentialException;
+import ml.psj2867.demo.exception.ServerErrorException;
 import ml.psj2867.demo.service.user.model.UserForm;
+import ml.psj2867.demo.service.user.model.auth.LoginTypeEnum;
+import ml.psj2867.demo.service.user.model.auth.NaverOAuthForm;
+import ml.psj2867.demo.service.user.model.auth.NaverOAuthResponse;
+import ml.psj2867.demo.service.user.model.auth.NaverOAuthUserInfo;
+import ml.psj2867.demo.service.user.model.auth.NaverToken;
 import ml.psj2867.demo.util.OptionalUtil;
 
 @Slf4j
@@ -55,20 +57,21 @@ public class AuthService {
     @Autowired
     private JwtProvider jwtProvider;
 
-    public void login(UserEntity user, HttpServletResponse res) throws LoginException {
+    private TokenDto login(UserEntity user) throws LoginException {
         try {
-            UsernamePasswordAuthenticationToken authUser = new UsernamePasswordAuthenticationToken(user.getId(), user.getName());
+            UsernamePasswordAuthenticationToken authUser = new UsernamePasswordAuthenticationToken(user.getIdx(), user.getName(), user.getGrants());
             final TokenDto token = jwtProvider.generateTokenDto(authUser);
-            res.addCookie(jwtProvider.createCookie(token));
+            return token;
         } catch (Exception e) {
-            throw new LoginException(e);
+            throw new ServerErrorException(e);
         }
     }
 
-    public UserEntity loginOriginUser(UserForm userForm) {
-        Optional<UserEntity> userEntity = userDao.findByIdIsAndLoginTypeIs(userForm.getId(), LoginTypeEnum.ORIGIN);
-        return userEntity
-            .orElseThrow( ()->new LoginException() );
+    public TokenDto loginOriginUser(UserForm userForm)throws LoginException  {
+        Optional<UserEntity> nullableUserEntity = userDao.findByIdIsAndLoginTypeIs(userForm.getId(), LoginTypeEnum.ORIGIN);
+        UserEntity userEntitiy = nullableUserEntity
+                        .orElseThrow( ()->new NotMatchedCredentialException() );
+        return this.login(userEntitiy);
     }
 
     public UserEntity loginNaverUserOrAdd(NaverOAuthForm naverOAuthForm) {
@@ -76,7 +79,7 @@ public class AuthService {
         NaverOAuthUserInfo userInfo= getNaverUserInfo(accessToken).getResponse();        
         Optional<UserEntity> userEntity = userDao.findByIdIsAndLoginTypeIs(userInfo.getId(), LoginTypeEnum.NAVER);        
         return userEntity
-            .orElseGet(()->userService.addUser(userInfo.convertToEntity()));
+            .orElseGet(()->userService.addNaverUser(userInfo.convertToEntity()));
     }
     private NaverToken getNaverAccessToekn(NaverOAuthForm naverOAuthForm) {
         try {
@@ -94,7 +97,7 @@ public class AuthService {
                                 .access_token(tokenInfo.get("access_token"))
                                 .refresh_token(tokenInfo.get("refresh_token"))
                                 .token_type(tokenInfo.get("token_type"))
-                                .expires_in(OptionalUtil.paseLong(tokenInfo.get("expires_in"))
+                                .expires_in(OptionalUtil.parseLong(tokenInfo.get("expires_in"))
                                     .orElseThrow(()->new RuntimeException("naver token parsing error : expires_in"))
                                     )
                                 .build();

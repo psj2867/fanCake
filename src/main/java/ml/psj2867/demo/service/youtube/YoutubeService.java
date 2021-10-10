@@ -2,11 +2,9 @@ package ml.psj2867.demo.service.youtube;
 
 import java.io.IOException;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
-import com.google.api.client.http.HttpHeaders;
 import com.google.api.client.http.HttpRequest;
 import com.google.api.client.http.HttpRequestInitializer;
 import com.google.api.client.http.HttpTransport;
@@ -16,16 +14,13 @@ import com.google.api.client.json.jackson2.JacksonFactory;
 import com.google.api.services.youtube.YouTube;
 import com.google.api.services.youtube.model.Channel;
 import com.google.api.services.youtube.model.SearchListResponse;
-import com.google.api.services.youtube.model.SearchResult;
 import com.google.api.services.youtube.model.Video;
 
-import org.springframework.security.web.header.Header;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import lombok.extern.slf4j.Slf4j;
 import ml.psj2867.demo.configure.ConfigureProperties;
-import ml.psj2867.demo.configure.security.JwtProvider;
 import ml.psj2867.demo.service.video.model.VideoForm;
 import ml.psj2867.demo.service.youtube.modoel.YoutubeThumbnailEnum;
 
@@ -33,7 +28,7 @@ import ml.psj2867.demo.service.youtube.modoel.YoutubeThumbnailEnum;
 @Transactional
 @Service
 public class YoutubeService  {
-
+    private static final String YOUTUBE_CHANNEL_URL = "https://www.youtube.com/channel/%s";
     private final HttpTransport HTTP_TRANSPORT = new NetHttpTransport();
     private final JsonFactory JSON_FACTORY = new JacksonFactory();
     private final YouTube youtube;
@@ -107,5 +102,9 @@ public class YoutubeService  {
             log.warn("", e);
             return Optional.empty();
         }
+    }
+
+    public static String getChannelUrl(String channelIdx){
+        return String.format(YoutubeService.YOUTUBE_CHANNEL_URL , channelIdx);
     }
 }

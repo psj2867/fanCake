@@ -1,4 +1,4 @@
-package ml.psj2867.demo.service.user.model;
+package ml.psj2867.demo.service.user.model.auth;
 
 public enum LoginTypeEnum{
      ORIGIN

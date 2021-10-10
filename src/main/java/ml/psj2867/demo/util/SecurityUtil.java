@@ -5,38 +5,50 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.util.CollectionUtils;
+
+import ml.psj2867.demo.dao.UserEntityDao;
+import ml.psj2867.demo.entity.UserEntity;
 
 public class SecurityUtil {
 
-    public static Optional<Authentication> getAuth(){
-        return Optional.ofNullable( SecurityContextHolder.getContext().getAuthentication() );
-    }
     public static Optional<String> getName(){
-        return getDetail().map(detailL ->(String)detailL );
+        return getCredentaial().map(pL -> (String)pL );
     }
     public static Optional<Integer> getUserIdx(){
-        return getAuth().map(authL -> (Integer)authL.getPrincipal());
+        return getPrincipal().flatMap(pL -> OptionalUtil.parseInt((String)pL));
     }
-
-    public static Optional<UserDetails> getUser(){
-        return getAuth().map(authL -> (UserDetails)authL.getPrincipal());
-    }
-
     public static List<GrantedAuthority> getGrants(){
-        Collection<? extends GrantedAuthority> grants = getAuth().map(authL -> authL.getAuthorities() ).orElse(new ArrayList<>()) ;
+        Collection<? extends GrantedAuthority> grants = getAuth().getAuthorities();
         return new ArrayList<>(grants);
     }
-    public static Optional<Object> getDetail(){
-        return getAuth().map(authL -> authL.getDetails() );
+
+    private static Optional<Object> getPrincipal(){
+        return isAuth() ?  Optional.ofNullable(getAuth().getPrincipal()) : Optional.empty() ;
     }
-    
-    public static boolean hasAuth(GrantedAuthority... grant){
-        return  CollectionUtils.containsAny(getGrants(), Arrays.asList(grant) );
+    private static Optional<Object> getDetail(){
+        return isAuth() ?  Optional.ofNullable(getAuth().getDetails()) : Optional.empty() ;
+    }
+    private static Optional<Object> getCredentaial(){
+        return isAuth() ?  Optional.ofNullable(getAuth().getCredentials()) : Optional.empty() ;
+    }
+    public static boolean isAuth(){
+        return hasNotAuth("ROLE_ANONYMOUS");
+    }
+    public static Authentication getAuth(){
+        return SecurityContextHolder.getContext().getAuthentication();
+    }
+    public static boolean hasNotAuth(String... grant){
+        return ! hasAuth(grant);
+    }
+    public static boolean hasAuth(String... grant){
+        return  CollectionUtils.containsAny(
+              getGrants().stream().map(GrantedAuthority::getAuthority).collect(Collectors.toList())
+            , Arrays.asList(grant) );
     }
 }

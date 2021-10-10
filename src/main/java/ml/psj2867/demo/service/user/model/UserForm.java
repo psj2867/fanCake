@@ -1,35 +1,31 @@
 package ml.psj2867.demo.service.user.model;
 
+import javax.validation.constraints.NotBlank;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
-import lombok.Data;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import ml.psj2867.demo.entity.UserEntity;
 
+@Getter
+@Setter
 @Builder
-@Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class UserForm {
     
-    private Integer userIdx;
+    @NotBlank
     private String id;
+    @NotBlank
     private String password;
-    @Builder.Default
-    private boolean isCreator = false;
 
     public UserEntity toEntity(){
         UserEntity user = new UserEntity();
         user.setId(this.id);
-        user.setPasswd(this.password);
-        user.setCreator(this.isCreator);
+        user.setPassword(this.password);
         return user;
-    }
-    public static UserForm of(UserEntity userEntity){
-        UserForm user = UserForm.builder()
-                            .userIdx(userEntity.getIdx())
-                            .id(userEntity.getId())
-                            .password(userEntity.getPasswd())
-                            .build();
-        return user;
-
     }
 
 }

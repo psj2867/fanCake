@@ -21,7 +21,7 @@ public class VideoServiceTest {
     @Test
     public void listTest(){
         VideoListForm form = VideoListForm.builder()
-                                            .q("title")
+                                            .videoTitle("title")
                                             .page(2)
                                             .sort("idx")
                                             .asc(false)

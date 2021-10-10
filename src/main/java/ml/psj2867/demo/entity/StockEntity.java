@@ -33,8 +33,9 @@ public class StockEntity{
     private LocalDateTime createdDate;    
     
     @PrePersist
-    public void saveAt(){
-        this.createdDate = LocalDateTime.now();
+    private void saveAt(){
+        if(this.createdDate == null)
+            this.createdDate = LocalDateTime.now();
     }
 
     @ManyToOne

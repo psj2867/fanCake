@@ -26,11 +26,15 @@ public class AdvanceBookingEntity{
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int idx;
 
+    private String channelUrl;
+    private String email;
+
     private LocalDateTime createdDate;    
 
     @PrePersist
-    public void saveAt(){
-        this.createdDate = LocalDateTime.now();
+    private void saveAt(){
+        if(this.createdDate == null)
+            this.createdDate = LocalDateTime.now();
     }
 
 

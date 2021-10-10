@@ -3,6 +3,8 @@ package ml.psj2867.demo.entity;
 import java.time.LocalDateTime;
 
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -15,6 +17,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import ml.psj2867.demo.configure.security.AuthEnum;
 
 @Entity(name = AuthoritiesEntity.ENTITY_NAME)
 @Getter
@@ -28,12 +31,14 @@ public class AuthoritiesEntity{
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int idx;    
     
-    private String auth;
+    @Enumerated(EnumType.STRING)
+    private AuthEnum auth;
     private LocalDateTime createdDate;    
 
     @PrePersist
-    public void saveAt(){
-        this.createdDate = LocalDateTime.now();
+    private void saveAt(){
+        if(this.createdDate == null)
+            this.createdDate = LocalDateTime.now();
     }
 
     @ManyToOne
