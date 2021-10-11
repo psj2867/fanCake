@@ -21,7 +21,7 @@ public class VideoDto{
     private String title;
     private double marketCap;
     private double pricePerShare;
-    private int totlaAmount;
+    private int totalAmount;
     private int currentAmount;
     private int videoIdx;
     private LocalDateTime expirationDate;
@@ -38,7 +38,7 @@ public class VideoDto{
                     .expirationDate(videoEntity.getExpirationDate())
                     .marketCap(videoEntity.getPricePerShare() * videoEntity.getStockSize())
                     .pricePerShare(videoEntity.getPricePerShare())
-                    .totlaAmount(videoEntity.getStockSize())
+                    .totalAmount(videoEntity.getStockSize())
                     .channel(ChannelDto.of(videoEntity.getChannel()))
                     .videoIdx(videoEntity.getIdx())
                     .isOnSale(checkOnSale(videoEntity))
