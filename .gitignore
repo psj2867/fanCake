@@ -1,4 +1,6 @@
-**/theme/
+application-private.properties
+
+*.log
 
 HELP.md
 target/

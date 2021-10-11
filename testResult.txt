@@ -1,0 +1,130 @@
+// youtube
+
+// videos get?part=snippet&id=[video_id]
+{
+    "kind": "youtube#videoListResponse",
+    "etag": "05SN0YtnRa0PBN7-jlEdjRxIdCw",
+    "items": [
+      {
+        "kind": "youtube#video",
+        "etag": "fgL0JiuVZNJ1g2peFuJgPmG9Udg",
+        "id": "kGvsO9dFaHI",
+        "snippet": {
+          "publishedAt": "2021-09-17T06:59:12Z",
+          "channelId": "UCGKQ4Tw5nPXMGsoYZHrHYeA",
+          "title": "악은 악으로 처단한다👊 [나쁜 녀석들1] 스트리밍",
+          "description": "주먹질🤜 하나는 끝장나는 마동석과 악의 씨를 말리기 위해 뭉친 악인들😈\n짜릿한 범죄 액션물 즐겨보자😎\n[나쁜 녀석들1] 1-11회 전편 스트리밍\n\n티빙 바로가기: https://bit.ly/3hPuofE\n\n#나쁜녀석들 #김상중 #마동석 #박해진 #조동혁 #강예원 #티빙에서스트리밍\n\n✔ 스트리밍 일정 : 9/20 (월) 18:00 ~ 종료 시까지\n✔ 실시간 스트리밍 중 끊김이 있을 수 있으며 예고없이 종료될 수 있습니다. \n✔ 국내 한정으로 서비스됩니다.",
+          "thumbnails": {
+            "default": {
+              "url": "https://i.ytimg.com/vi/kGvsO9dFaHI/default_live.jpg",
+              "width": 120,
+              "height": 90
+            },
+            "medium": {
+              "url": "https://i.ytimg.com/vi/kGvsO9dFaHI/mqdefault_live.jpg",
+              "width": 320,
+              "height": 180
+            },
+            "high": {
+              "url": "https://i.ytimg.com/vi/kGvsO9dFaHI/hqdefault_live.jpg",
+              "width": 480,
+              "height": 360
+            },
+            "standard": {
+              "url": "https://i.ytimg.com/vi/kGvsO9dFaHI/sddefault_live.jpg",
+              "width": 640,
+              "height": 480
+            },
+            "maxres": {
+              "url": "https://i.ytimg.com/vi/kGvsO9dFaHI/maxresdefault_live.jpg",
+              "width": 1280,
+              "height": 720
+            }
+          },
+          "channelTitle": "OCN",
+          "categoryId": "24",
+          "liveBroadcastContent": "live",
+          "localized": {
+            "title": "악은 악으로 처단한다👊 [나쁜 녀석들1] 스트리밍",
+            "description": "주먹질🤜 하나는 끝장나는 마동석과 악의 씨를 말리기 위해 뭉친 악인들😈\n짜릿한 범죄 액션물 즐겨보자😎\n[나쁜 녀석들1] 1-11회 전편 스트리밍\n\n티빙 바로가기: https://bit.ly/3hPuofE\n\n#나쁜녀석들 #김상중 #마동석 #박해진 #조동혁 #강예원 #티빙에서스트리밍\n\n✔ 스트리밍 일정 : 9/20 (월) 18:00 ~ 종료 시까지\n✔ 실시간 스트리밍 중 끊김이 있을 수 있으며 예고없이 종료될 수 있습니다. \n✔ 국내 한정으로 서비스됩니다."
+          },
+          "defaultAudioLanguage": "en"
+        }
+      }
+    ],
+    "pageInfo": {
+      "totalResults": 1,
+      "resultsPerPage": 1
+    }
+  }
+  
+//   search&part=snippet&q=곽튜브KwakTube&type=channel
+{
+    "kind": "youtube#searchListResponse",
+    "etag": "RIBcr_RCjgIVLur69QpVsDHkxBE",
+    "regionCode": "KR",
+    "pageInfo": {
+      "totalResults": 4,
+      "resultsPerPage": 2
+    },
+    "items": [
+      {
+        "kind": "youtube#searchResult",
+        "etag": "Ln1ItYyay87tI9GNCfbnqnausPc",
+        "id": {
+          "kind": "youtube#channel",
+          "channelId": "UClRNDVO8093rmRTtLe4GEPw"
+        },
+        "snippet": {
+          "publishedAt": "2018-10-16T17:14:53Z",
+          "channelId": "UClRNDVO8093rmRTtLe4GEPw",
+          "title": "곽튜브KWAKTUBE",
+          "description": "세계여행 및 음식탐방을 목표로 하는 채널입니다. 문의 insta : @jbkwak mail : wnsqls3@gmail.com.",
+          "thumbnails": {
+            "default": {
+              "url": "https://yt3.ggpht.com/IiZfu92VbzJoI3gcw7NwyQTXBSPgk9-GBIwVj8tGEex-9uozEIvfDX2N6DNJVh15Uh1yy42VaA=s88-c-k-c0xffffffff-no-rj-mo"
+            },
+            "medium": {
+              "url": "https://yt3.ggpht.com/IiZfu92VbzJoI3gcw7NwyQTXBSPgk9-GBIwVj8tGEex-9uozEIvfDX2N6DNJVh15Uh1yy42VaA=s240-c-k-c0xffffffff-no-rj-mo"
+            },
+            "high": {
+              "url": "https://yt3.ggpht.com/IiZfu92VbzJoI3gcw7NwyQTXBSPgk9-GBIwVj8tGEex-9uozEIvfDX2N6DNJVh15Uh1yy42VaA=s800-c-k-c0xffffffff-no-rj-mo"
+            }
+          },
+          "channelTitle": "곽튜브KWAKTUBE",
+          "liveBroadcastContent": "none",
+          "publishTime": "2018-10-16T17:14:53Z"
+        }
+      },
+      {
+        "kind": "youtube#searchResult",
+        "etag": "wMMOQq2qkAQ7JG7KIvidDwSz7_g",
+        "id": {
+          "kind": "youtube#channel",
+          "channelId": "UCjKoaGQcwRNuvlL3BEK1ubg"
+        },
+        "snippet": {
+          "publishedAt": "2018-08-26T15:31:06Z",
+          "channelId": "UCjKoaGQcwRNuvlL3BEK1ubg",
+          "title": "라이준 [소련 라이프] Soviet Life",
+          "description": "라이준의 소련 라이프. 러시아, 중앙아시아 국가에서 이 남자가 살아가는 법. --------------------------------------------- Instagram : @ryjoon_ E-mail : leejj91@yandex.ru ...",
+          "thumbnails": {
+            "default": {
+              "url": "https://yt3.ggpht.com/_JKQL4Vribh2dvXPffp9XDiygK891bYoZHxE6BUG6oiaecSNwfbOXCsnGipRXcaAD_b-Y8U8=s88-c-k-c0xffffffff-no-rj-mo"
+            },
+            "medium": {
+              "url": "https://yt3.ggpht.com/_JKQL4Vribh2dvXPffp9XDiygK891bYoZHxE6BUG6oiaecSNwfbOXCsnGipRXcaAD_b-Y8U8=s240-c-k-c0xffffffff-no-rj-mo"
+            },
+            "high": {
+              "url": "https://yt3.ggpht.com/_JKQL4Vribh2dvXPffp9XDiygK891bYoZHxE6BUG6oiaecSNwfbOXCsnGipRXcaAD_b-Y8U8=s800-c-k-c0xffffffff-no-rj-mo"
+            }
+          },
+          "channelTitle": "라이준 [소련 라이프] Soviet Life",
+          "liveBroadcastContent": "none",
+          "publishTime": "2018-08-26T15:31:06Z"
+        }
+      }
+    ]
+  }
+  
+  {"etag":"FlEKAMZQu7lBIJ3MnEjt6xZ5iT8","items":[{"etag":"ogQgHWKHiBVMJgJrgOPzoW5FY8w","id":{"channelId":"UCVut4hqvrjQC4qDE3oc5qig","kind":"youtube#channel"},"kind":"youtube#searchResult","snippet":{"channelId":"UCVut4hqvrjQC4qDE3oc5qig","channelTitle":"때껄룩ᴛᴀᴋᴇ ᴀ ʟᴏᴏᴋ","description":"엄마 사랑해.","liveBroadcastContent":"none","publishedAt":{"value":1552410156000,"dateOnly":false,"timeZoneShift":0},"thumbnails":{"default":{"url":"https://yt3.ggpht.com/f8v1DOw41Mr8j-NtFbOTQ1Ku9HkcQ4VATt3asLs4qtsbSn7pPXw4FzUolSFLnlekBXQ_6llaexc=s88-c-k-c0xffffffff-no-rj-mo"},"high":{"url":"https://yt3.ggpht.com/f8v1DOw41Mr8j-NtFbOTQ1Ku9HkcQ4VATt3asLs4qtsbSn7pPXw4FzUolSFLnlekBXQ_6llaexc=s800-c-k-c0xffffffff-no-rj-mo"},"medium":{"url":"https://yt3.ggpht.com/f8v1DOw41Mr8j-NtFbOTQ1Ku9HkcQ4VATt3asLs4qtsbSn7pPXw4FzUolSFLnlekBXQ_6llaexc=s240-c-k-c0xffffffff-no-rj-mo"}},"title":"때껄룩ᴛᴀᴋᴇ ᴀ ʟᴏᴏᴋ","publishTime":"2019-03-12T17:02:36Z"}},{"etag":"7M1QSFzjWwiOkOmLEClky6_jhm0","id":{"channelId":"UC-dmMp33ZtSJzXs0FfzahCQ","kind":"youtube#channel"},"kind":"youtube#searchResult","snippet":{"channelId":"UC-dmMp33ZtSJzXs0FfzahCQ","channelTitle":"떼껄룩","description":"모바일 냥코대전쟁 채널이었다가 포켓몬고 하게되며 혼종이 되었다.","liveBroadcastContent":"none","publishedAt":{"value":1378042736000,"dateOnly":false,"timeZoneShift":0},"thumbnails":{"default":{"url":"https://yt3.ggpht.com/ytc/AKedOLQJkcFsr3PLJSIV2ZXSmEvFIEpoeUoGm0oCyKWBNA=s88-c-k-c0xffffffff-no-rj-mo"},"high":{"url":"https://yt3.ggpht.com/ytc/AKedOLQJkcFsr3PLJSIV2ZXSmEvFIEpoeUoGm0oCyKWBNA=s800-c-k-c0xffffffff-no-rj-mo"},"medium":{"url":"https://yt3.ggpht.com/ytc/AKedOLQJkcFsr3PLJSIV2ZXSmEvFIEpoeUoGm0oCyKWBNA=s240-c-k-c0xffffffff-no-rj-mo"}},"title":"떼껄룩","publishTime":"2013-09-01T13:38:56Z"}},{"etag":"TxJS4F6rOI6cxgiFnEyc9SGynK4","id":{"channelId":"UCwPAYZEYcSbLlt7DRHOw9tg","kind":"youtube#channel"},"kind":"youtube#searchResult","snippet":{"channelId":"UCwPAYZEYcSbLlt7DRHOw9tg","channelTitle":"Anonymous7","description":"취미로 음악과 사진, 미디어 및 하드웨어 작업을 즐겨하는 17세 소년입니다.","liveBroadcastContent":"none","publishedAt":{"value":1409221757000,"dateOnly":false,"timeZoneShift":0},"thumbnails":{"default":{"url":"https://yt3.ggpht.com/2o-shUpkuwEFi2rlW-SpoXtYpVXrd1-nDsTocrDO7RSzcaZuHqDDEKY-qoMuaa366VVgIVUy_A=s88-c-k-c0xffffffff-no-rj-mo"},"high":{"url":"https://yt3.ggpht.com/2o-shUpkuwEFi2rlW-SpoXtYpVXrd1-nDsTocrDO7RSzcaZuHqDDEKY-qoMuaa366VVgIVUy_A=s800-c-k-c0xffffffff-no-rj-mo"},"medium":{"url":"https://yt3.ggpht.com/2o-shUpkuwEFi2rlW-SpoXtYpVXrd1-nDsTocrDO7RSzcaZuHqDDEKY-qoMuaa366VVgIVUy_A=s240-c-k-c0xffffffff-no-rj-mo"}},"title":"Anonymous7","publishTime":"2014-08-28T10:29:17Z"}},{"etag":"z_VocYI-w4LWgjh5WB5n57y30bY","id":{"channelId":"UC6RMhIoxHxkrLFLcoLT7-lA","kind":"youtube#channel"},"kind":"youtube#searchResult","snippet":{"channelId":"UC6RMhIoxHxkrLFLcoLT7-lA","channelTitle":"떼껄룩","description":"","liveBroadcastContent":"none","publishedAt":{"value":1420678225000,"dateOnly":false,"timeZoneShift":0},"thumbnails":{"default":{"url":"https://yt3.ggpht.com/ytc/AKedOLTscCUIldOJdcltYjMB8-Gr_9nTUbe4AR9mdO3p=s88-c-k-c0xffffffff-no-rj-mo"},"high":{"url":"https://yt3.ggpht.com/ytc/AKedOLTscCUIldOJdcltYjMB8-Gr_9nTUbe4AR9mdO3p=s800-c-k-c0xffffffff-no-rj-mo"},"medium":{"url":"https://yt3.ggpht.com/ytc/AKedOLTscCUIldOJdcltYjMB8-Gr_9nTUbe4AR9mdO3p=s240-c-k-c0xffffffff-no-rj-mo"}},"title":"떼껄룩","publishTime":"2015-01-08T00:50:25Z"}},{"etag":"crfH0CNu-L4lLOf8jRU39_6Y-n4","id":{"channelId":"UCMJEv0wtHe0tmvQqmsO5-Kg","kind":"youtube#channel"},"kind":"youtube#searchResult","snippet":{"channelId":"UCMJEv0wtHe0tmvQqmsO5-Kg","channelTitle":"떼껄룩","description":"","liveBroadcastContent":"none","publishedAt":{"value":1622705596000,"dateOnly":false,"timeZoneShift":0},"thumbnails":{"default":{"url":"https://yt3.ggpht.com/gEER9aFdXeUad91ALSoXTECiojex9wvQam6srCNne2aGN7E79LL_uCUQw42gDqMV2G3oXTZeKA=s88-c-k-c0xffffffff-no-rj-mo"},"high":{"url":"https://yt3.ggpht.com/gEER9aFdXeUad91ALSoXTECiojex9wvQam6srCNne2aGN7E79LL_uCUQw42gDqMV2G3oXTZeKA=s800-c-k-c0xffffffff-no-rj-mo"},"medium":{"url":"https://yt3.ggpht.com/gEER9aFdXeUad91ALSoXTECiojex9wvQam6srCNne2aGN7E79LL_uCUQw42gDqMV2G3oXTZeKA=s240-c-k-c0xffffffff-no-rj-mo"}},"title":"떼껄룩","publishTime":"2021-06-03T07:33:16Z"}},{"etag":"Bw26FPHzvexDNL31b6Mw1SFSLXc","id":{"channelId":"UCQofssdITMKP4pa0hONPU4w","kind":"youtube#channel"},"kind":"youtube#searchResult","snippet":{"channelId":"UCQofssdITMKP4pa0hONPU4w","channelTitle":"떼껄룩","description":"지극히 평범한 플레이어.","liveBroadcastContent":"none","publishedAt":{"value":1368747624000,"dateOnly":false,"timeZoneShift":0},"thumbnails":{"default":{"url":"https://yt3.ggpht.com/ytc/AKedOLQsPt0jOuNrjd8HnRzIN2fi51DUxgm8ZlrGrdbBlg=s88-c-k-c0xffffffff-no-rj-mo"},"high":{"url":"https://yt3.ggpht.com/ytc/AKedOLQsPt0jOuNrjd8HnRzIN2fi51DUxgm8ZlrGrdbBlg=s800-c-k-c0xffffffff-no-rj-mo"},"medium":{"url":"https://yt3.ggpht.com/ytc/AKedOLQsPt0jOuNrjd8HnRzIN2fi51DUxgm8ZlrGrdbBlg=s240-c-k-c0xffffffff-no-rj-mo"}},"title":"떼껄룩","publishTime":"2013-05-16T23:40:24Z"}},{"etag":"sVcMiq-GkruoJ0aQH5n9iigfSXE","id":{"channelId":"UCBuEdZb9Yn-7Ca_x7TyXZaQ","kind":"youtube#channel"},"kind":"youtube#searchResult","snippet":{"channelId":"UCBuEdZb9Yn-7Ca_x7TyXZaQ","channelTitle":"떼껄룩","description":"","liveBroadcastContent":"none","publishedAt":{"value":1569930099000,"dateOnly":false,"timeZoneShift":0},"thumbnails":{"default":{"url":"https://yt3.ggpht.com/ytc/AKedOLRrbjkr1FVm-FhJaGf4Wxun3pDU1pVefrzDqw=s88-c-k-c0xffffffff-no-rj-mo"},"high":{"url":"https://yt3.ggpht.com/ytc/AKedOLRrbjkr1FVm-FhJaGf4Wxun3pDU1pVefrzDqw=s800-c-k-c0xffffffff-no-rj-mo"},"medium":{"url":"https://yt3.ggpht.com/ytc/AKedOLRrbjkr1FVm-FhJaGf4Wxun3pDU1pVefrzDqw=s240-c-k-c0xffffffff-no-rj-mo"}},"title":"떼껄룩","publishTime":"2019-10-01T11:41:39Z"}},{"etag":"lXIHCnec2Lrjh6MIEMYva3lUtsw","id":{"channelId":"UCAGcfNrhrFIXVL8JP25IYQQ","kind":"youtube#channel"},"kind":"youtube#searchResult","snippet":{"channelId":"UCAGcfNrhrFIXVL8JP25IYQQ","channelTitle":"떼껄룩","description":"버니합좀 치는 새끼.","liveBroadcastContent":"none","publishedAt":{"value":1615446314000,"dateOnly":false,"timeZoneShift":0},"thumbnails":{"default":{"url":"https://yt3.ggpht.com/VuYA-ZJiD2SizqpwSBI4LBHMCJtde-ZRBeXU7UTd3_watPqaPA-35xCZWD6BB797ydsab4BEnyU=s88-c-k-c0xffffffff-no-rj-mo"},"high":{"url":"https://yt3.ggpht.com/VuYA-ZJiD2SizqpwSBI4LBHMCJtde-ZRBeXU7UTd3_watPqaPA-35xCZWD6BB797ydsab4BEnyU=s800-c-k-c0xffffffff-no-rj-mo"},"medium":{"url":"https://yt3.ggpht.com/VuYA-ZJiD2SizqpwSBI4LBHMCJtde-ZRBeXU7UTd3_watPqaPA-35xCZWD6BB797ydsab4BEnyU=s240-c-k-c0xffffffff-no-rj-mo"}},"title":"떼껄룩","publishTime":"2021-03-11T07:05:14Z"}},{"etag":"eGi7ohgwzyJlLbcqX3FjilIb9kg","id":{"channelId":"UCTn1OKHSRN487w-3LpVh9sA","kind":"youtube#channel"},"kind":"youtube#searchResult","snippet":{"channelId":"UCTn1OKHSRN487w-3LpVh9sA","channelTitle":"떼껄룩TV","description":"떼껄룩.","liveBroadcastContent":"none","publishedAt":{"value":1542452257000,"dateOnly":false,"timeZoneShift":0},"thumbnails":{"default":{"url":"https://yt3.ggpht.com/a_p8FxORV2_Fstloy0eniBwHbM4_4Sazhx2swbbY2XYbFMjpXxBsFBqtoHlLBarlDpCkDCqHag=s88-c-k-c0xffffffff-no-rj-mo"},"high":{"url":"https://yt3.ggpht.com/a_p8FxORV2_Fstloy0eniBwHbM4_4Sazhx2swbbY2XYbFMjpXxBsFBqtoHlLBarlDpCkDCqHag=s800-c-k-c0xffffffff-no-rj-mo"},"medium":{"url":"https://yt3.ggpht.com/a_p8FxORV2_Fstloy0eniBwHbM4_4Sazhx2swbbY2XYbFMjpXxBsFBqtoHlLBarlDpCkDCqHag=s240-c-k-c0xffffffff-no-rj-mo"}},"title":"떼껄룩TV","publishTime":"2018-11-17T10:57:37Z"}},{"etag":"8WsVfgET4M9LXr5fwZNyckU7ITo","id":{"channelId":"UCxTmhaKMVoyGElBr35RmbCQ","kind":"youtube#channel"},"kind":"youtube#searchResult","snippet":{"channelId":"UCxTmhaKMVoyGElBr35RmbCQ","channelTitle":"떼껄룩","description":"","liveBroadcastContent":"none","publishedAt":{"value":1366136102000,"dateOnly":false,"timeZoneShift":0},"thumbnails":{"default":{"url":"https://yt3.ggpht.com/ytc/AKedOLQ_rx5w4dCBosQVbho9DuiKe3EM374J9IHkwXFXTA=s88-c-k-c0xffffffff-no-rj-mo"},"high":{"url":"https://yt3.ggpht.com/ytc/AKedOLQ_rx5w4dCBosQVbho9DuiKe3EM374J9IHkwXFXTA=s800-c-k-c0xffffffff-no-rj-mo"},"medium":{"url":"https://yt3.ggpht.com/ytc/AKedOLQ_rx5w4dCBosQVbho9DuiKe3EM374J9IHkwXFXTA=s240-c-k-c0xffffffff-no-rj-mo"}},"title":"떼껄룩","publishTime":"2013-04-16T18:15:02Z"}}],"kind":"youtube#searchListResponse","nextPageToken":"CAoQAA","pageInfo":{"resultsPerPage":10,"totalResults":445},"regionCode":"US"}
