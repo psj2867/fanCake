@@ -19,6 +19,7 @@ public class VideoDto{
 
     private ChannelDto channel;
     private String title;
+    private String videoId;
     private double marketCap;
     private double pricePerShare;
     private int totlaAmount;
@@ -41,6 +42,7 @@ public class VideoDto{
                     .totlaAmount(videoEntity.getStockSize())
                     .channel(ChannelDto.of(videoEntity.getChannel()))
                     .videoIdx(videoEntity.getIdx())
+                    .videoId(videoEntity.getVideoId())
                     .isOnSale(checkOnSale(videoEntity))
                     .build();
     }

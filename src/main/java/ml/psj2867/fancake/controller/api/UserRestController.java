@@ -106,8 +106,8 @@ public class UserRestController {
         return ResponseEntity.ok(MessageDto.success());
     }
     @Operation(description = "로그인")
-    @GetMapping("login")
-    public ResponseEntity<TokenDto> getLogin(@Validated UserForm userForm){
+    @PostMapping("login")
+    public ResponseEntity<TokenDto> postLogin(@Validated UserForm userForm){
         try {
             TokenDto token = authService.loginOriginUser(userForm);
             return ResponseEntity.ok(token);
