@@ -20,10 +20,10 @@ import ml.psj2867.fancake.service.video.model.VideoListForm;
 import ml.psj2867.fancake.util.MessageDto;
 
 
-@Api(basePath = "api/video", description="영상 관련 정보")
+@Api(basePath = "api/videos", description="영상 관련 정보")
 @RestController
-@RequestMapping("api/video")
-public class VideoRestController {
+@RequestMapping("api/videos")
+public class VideosRestController {
     @Autowired
     private VideoService videoService;
     
