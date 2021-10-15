@@ -2,8 +2,6 @@ package ml.psj2867.fancake.service.stock.model;
 
 import java.time.LocalDateTime;
 
-import javax.persistence.EntityManager;
-
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
@@ -22,9 +20,9 @@ public class StockDto {
     private boolean isOnSale;
 
     
-    public static StockDto of(StockEntity stockEntity, EntityManager em) {
+    public static StockDto of(StockEntity stockEntity) {
         return StockDto.builder()
-                        .video(VideoDto.of(stockEntity.getVideo(),em))  
+                        .video(VideoDto.of(stockEntity.getVideo()))  
                         .price(stockEntity.getPrice())
                         .size(stockEntity.getSize())
                         .createdDate(stockEntity.getCreatedDate())
