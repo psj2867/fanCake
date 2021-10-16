@@ -41,12 +41,15 @@ public class StockListForm extends ListForm<StockEntity> {
     }
 
     public Specification<StockEntity> toSpec(final UserEntity user){
-        if(StringUtils.hasLength(this.videoTitle))
-            this.and( this.like(this.videoTitle, "video", "videoTitle"));
-        if(this.confirm)
-            this.and((root, query, builder) -> {
-                return builder.lessThan(root.join("video").get("expirationDate"), LocalDateTime.now());
-            });
-        return this.getSpec();
+      this.and((root, query, builder) -> {
+        return builder.equal(root.get("owner"), user);
+      });
+      if(StringUtils.hasLength(this.videoTitle))
+          this.and( this.like(this.videoTitle, "video", "videoTitle"));
+      if(this.confirm)
+          this.and((root, query, builder) -> {
+              return builder.lessThan(root.join("video").get("expirationDate"), LocalDateTime.now());
+          });
+      return this.getSpec();
     }
 }
