@@ -1,7 +1,5 @@
 package ml.psj2867.fancake.service.stock;
 
-import javax.persistence.EntityManager;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
@@ -25,13 +23,10 @@ public class StockService  {
     @Autowired
     private StockEntityDao stockDao;  
 
-    @Autowired
-    private EntityManager em;
-
     public Page<StockDto> getUserStock(StockListForm stockListForm){
         UserEntity user = userService.getUserOrThrow();
         return stockDao.findAll(stockListForm.toSpec(user), stockListForm.toPageable())
-                        .map(stockEntity -> StockDto.of(stockEntity, em));
+                        .map(StockDto::of);
     }
 
     public void buyStock(VideoEntity video , UserEntity user ,BuyStockForm form){

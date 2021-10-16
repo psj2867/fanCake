@@ -36,6 +36,10 @@ INSERT INTO public.authorities(
 	 auth, user_idx, created_date)
 	VALUES ('CREATOR', (select max(idx) from user_info ), now());
 
+INSERT INTO public.channel_info(
+	 channnel_id, channel_title, owner_idx, created_date)
+	VALUES ( 'd923jd', 'channel_title2', (select max(idx) from user_info) , now());
+
 INSERT INTO public.video( created_date, expiration_date, price_per_share, stock_size, video_id, video_title, channel_idx) VALUES ( now(), now()+ interval '136 day', 1264.4 , 100 , '6q4DSKFn_k8', 'title1', ( select max(idx) from channel_info ));
 INSERT INTO public.video( created_date, expiration_date, price_per_share, stock_size, video_id, video_title, channel_idx) VALUES ( now(), now()+ interval '136 day', 1264.4 , 100 , '6q4DSKFn_k8', 'title1', ( select max(idx) from channel_info ));
 INSERT INTO public.video( created_date, expiration_date, price_per_share, stock_size, video_id, video_title, channel_idx) VALUES ( now(), now()+ interval '136 day', 1264.4 , 100 , '6q4DSKFn_k8', 'title1', ( select max(idx) from channel_info ));

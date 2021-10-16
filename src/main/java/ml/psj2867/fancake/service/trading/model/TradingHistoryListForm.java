@@ -37,8 +37,7 @@ public class TradingHistoryListForm extends ListForm<TradingHistoryEntity> {
     }
     public Specification<TradingHistoryEntity> toSpec(UserEntity user) {
         return this.and((root, query, builder) -> {
-            Predicate p = builder.equal(root.join("owner").get("idx"), user.getIdx());
-            return p;
+          return builder.equal(root.get("idx"), user);
         });
     }
 }

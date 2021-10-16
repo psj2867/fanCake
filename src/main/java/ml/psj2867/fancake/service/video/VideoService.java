@@ -1,7 +1,5 @@
 package ml.psj2867.fancake.service.video;
 
-import javax.persistence.EntityManager;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
@@ -30,14 +28,12 @@ public class VideoService  {
     private StockService stockService;    
     @Autowired
     private UserService userService;
-    @Autowired
-    private EntityManager em;
 
     public void buyStock(int videoIdx, BuyStockForm form){
         UserEntity user = userService.getUserOrThrow();
         VideoEntity video = videoDao.findById(videoIdx)
                                 .orElseThrow( ()->  NotFoundException.of("video", videoIdx) );
-        int remainSize = video.getStockSize() - video.getCurrentStockSize(em);
+        long remainSize = video.getStockSize() - video.getSize();
         if(  remainSize < form.getSize() ){
             BuyStockErrorDto error = BuyStockErrorDto.builder()
                                                         .code("video.buyStock.outOfSize")
@@ -51,13 +47,13 @@ public class VideoService  {
 
     public VideoDto getVideo(int videoIdx){
         return videoDao.findById(videoIdx)
-            .map( videoEntitiyL -> VideoDto.of(videoEntitiyL, em))
+            .map(VideoDto::of)
             .orElseThrow( ()->  NotFoundException.of("video", videoIdx) );
     }
 
     public Page<VideoDto> getVideoList(VideoListForm form){
         Page<VideoEntity> items = videoDao.findAll(form.toSpec(), form.toPageable());
-        return items.map(videoDtoL -> VideoDto.of(videoDtoL, em));
+        return items.map(VideoDto::of);
     }
     
 

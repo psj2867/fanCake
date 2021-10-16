@@ -2,8 +2,6 @@ package ml.psj2867.fancake.service.video.model;
 
 import java.time.LocalDateTime;
 
-import javax.persistence.EntityManager;
-
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -22,20 +20,16 @@ public class VideoDto{
     private String videoId;
     private double marketCap;
     private double pricePerShare;
-    private int totlaAmount;
-    private int currentAmount;
+    private long totlaAmount;
+    private long currentAmount;
     private int videoIdx;
     private LocalDateTime expirationDate;
     private boolean isOnSale;
 
-    public static VideoDto of(VideoEntity videoEntity, EntityManager em){
-        VideoDto videoDto = of(videoEntity);
-        videoDto.setCurrentAmount(videoEntity.getCurrentStockSize(em));
-        return videoDto;
-    }
-    private static VideoDto of(VideoEntity videoEntity){
+    public static VideoDto of(VideoEntity videoEntity){
         return VideoDto.builder()
                     .title(videoEntity.getVideoTitle())
+                    .currentAmount(videoEntity.getSize())
                     .expirationDate(videoEntity.getExpirationDate())
                     .marketCap(videoEntity.getPricePerShare() * videoEntity.getStockSize())
                     .pricePerShare(videoEntity.getPricePerShare())
