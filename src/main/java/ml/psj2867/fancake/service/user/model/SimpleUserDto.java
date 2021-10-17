@@ -20,7 +20,7 @@ public class SimpleUserDto {
     private Integer userIdx;
     private boolean isAuthenticate;
 
-    public static SimpleUserDto current(){
+    public static SimpleUserDto current() throws UnAuthorizedException{
         if(!SecurityUtil.isAuth())
             throw new UnAuthorizedException();
         return SimpleUserDto.builder()
