@@ -10,7 +10,7 @@
 	</parent>
 	<groupId>ml.psj2867</groupId>
 	<artifactId>fancake</artifactId>
-	<version>1.0.2</version>
+	<version>1.0.3</version>
 	<packaging>war</packaging>
 	<name>fancake</name>
 	<description>fancake project 2021</description>

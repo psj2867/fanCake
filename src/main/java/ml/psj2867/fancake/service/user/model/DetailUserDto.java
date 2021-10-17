@@ -19,6 +19,7 @@ import ml.psj2867.fancake.service.user.model.auth.LoginTypeEnum;
 @AllArgsConstructor
 public class DetailUserDto extends SimpleUserDto {
 
+    private String userID;
     private String phoneNumber;
     private double balance;
     private String email;
@@ -35,6 +36,7 @@ public class DetailUserDto extends SimpleUserDto {
                     .name(userEntity.getName())
                     .userIdx(userEntity.getIdx())
                     .isAuthenticate(true) 
+                    .userID(userEntity.getId())
                     .balance(userEntity.getBalance())
                     .createdDate(userEntity.getCreatedDate())
                     .loginType(userEntity.getLoginType())
