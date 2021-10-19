@@ -8,6 +8,7 @@ import org.springframework.transaction.annotation.Transactional;
 import ml.psj2867.fancake.dao.VideoEntityDao;
 import ml.psj2867.fancake.entity.UserEntity;
 import ml.psj2867.fancake.entity.VideoEntity;
+import ml.psj2867.fancake.entity.type.VideoAutctionState;
 import ml.psj2867.fancake.exception.FieldValidException;
 import ml.psj2867.fancake.exception.NotFoundException;
 import ml.psj2867.fancake.service.stock.StockService;
@@ -45,6 +46,12 @@ public class VideoService  {
         stockService.buyStock(video, user, form);
     }
 
+    public void updateVideoState(int videoIdx, VideoAutctionState state){
+      VideoEntity video = videoDao.findById(videoIdx)
+          .orElseThrow( ()->  NotFoundException.of("video", videoIdx) );
+      video.setAutctionState(state);
+      videoDao.save(video);
+    }
     public VideoDto getVideo(int videoIdx){
         return videoDao.findById(videoIdx)
             .map(VideoDto::of)
