@@ -9,6 +9,8 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
+import ml.psj2867.fancake.configure.security.JwtFilter;
+import ml.psj2867.fancake.configure.security.JwtProvider;
 import springfox.documentation.builders.PathSelectors;
 import springfox.documentation.builders.RequestHandlerSelectors;
 import springfox.documentation.builders.RequestParameterBuilder;
@@ -25,9 +27,15 @@ public class ApplicationConfig implements WebMvcConfigurer{
 		//Authentication header 처리를 위해 사용
 		List<RequestParameter> global = new ArrayList<>();
         global.add(new RequestParameterBuilder()
-                        .name("Authorization")
+                        .name(JwtProvider.AUTHORIZATION_HEADER)
                         .description("Access Token")
                         .in("header")
+                        .required(false)
+                        .build());
+        global.add(new RequestParameterBuilder()
+                        .name(JwtProvider.AUTHORIZATION_QUERY)
+                        .description("Access Token")
+                        .in("query")
                         .required(false)
                         .build());
                                   
