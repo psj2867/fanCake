@@ -35,8 +35,8 @@ public class ApplicationConfig implements WebMvcConfigurer{
                 .globalRequestParameters(global)
                 .consumes(getConsumeContentTypes())
                 .select()
-                    .apis(RequestHandlerSelectors.any())//Swagger API 문서로 만들기 원하는 basePackage 경로
-                    .paths(PathSelectors.ant("/*/**"))    //URL 경로를 지정하여 해당 URL에 해당하는 요청만 SWAGGER로 만듦
+                    .apis(RequestHandlerSelectors.basePackage("ml.psj2867.fancake.controller.api"))//Swagger API 문서로 만들기 원하는 basePackage 경로
+                    .paths(PathSelectors.ant("/api/**"))    //URL 경로를 지정하여 해당 URL에 해당하는 요청만 SWAGGER로 만듦
                 .build();
     }
     private Set<String> getConsumeContentTypes(){
