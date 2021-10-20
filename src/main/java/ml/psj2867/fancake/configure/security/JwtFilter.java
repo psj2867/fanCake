@@ -18,7 +18,6 @@ import ml.psj2867.fancake.util.CookieUtil;
 public class JwtFilter extends OncePerRequestFilter {
 
     private final JwtProvider jwtProvider;
-    public static final String BEARER_PREFIX = JwtProvider.BEARER_PREFIX + " ";
 
     public JwtFilter(JwtProvider jwtProvider){
         super();
@@ -49,7 +48,7 @@ public class JwtFilter extends OncePerRequestFilter {
         if (StringUtils.hasText(headerBearerToken)) {
             return headerBearerToken;
         }
-        Cookie cookie =  CookieUtil.getCookie(request, JwtProvider.AUTHORIZATION_HEADER);
+        Cookie cookie =  CookieUtil.getCookie(request, JwtProvider.AUTHORIZATION_COOKIE);
         String cookieBearerToken = cookie == null ? null : cookie.getValue();
         if (StringUtils.hasText(cookieBearerToken)) {
             return cookieBearerToken;
