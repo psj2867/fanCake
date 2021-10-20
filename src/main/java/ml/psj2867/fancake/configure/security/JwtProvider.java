@@ -35,7 +35,9 @@ import ml.psj2867.fancake.util.CookieUtil;
 public class JwtProvider {
     
     public static final String AUTHORIZATION_HEADER = "Authorization";
-    public static final String BEARER_PREFIX = "Bearer";
+    // public static final String BEARER_PREFIX = "Bearer";
+    public static final String AUTHORIZATION_QUERY = "authToken";
+    public static final String AUTHORIZATION_COOKIE = JwtProvider.AUTHORIZATION_HEADER;
 
     private static final String AUTHORITIES_KEY = "grants";
     private static final String USER_NAME_KEY = "user_name";

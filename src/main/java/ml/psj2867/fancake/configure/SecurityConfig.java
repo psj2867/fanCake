@@ -13,6 +13,9 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.access.ExceptionTranslationFilter;
+import org.springframework.security.web.firewall.DefaultHttpFirewall;
+import org.springframework.security.web.firewall.HttpFirewall;
+import org.springframework.security.web.firewall.StrictHttpFirewall;
 
 import ml.psj2867.fancake.configure.security.JwtFilter;
 import ml.psj2867.fancake.configure.security.JwtProvider;
@@ -34,11 +37,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
     @Override
     public void configure(WebSecurity web) throws Exception {
         web.ignoring()
-            .antMatchers("/login/**")
-            .antMatchers("/h2-console/**")
-            .antMatchers("/static/**");
-    }
+            .antMatchers("/login/**");
 
+        web.httpFirewall(defaultHttpFirewall());
+    }
+StrictHttpFirewall a;
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
@@ -55,5 +58,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
         http.addFilterAfter(new JwtFilter(this.jwtProvider), ExceptionTranslationFilter.class);
 
     }
+
+
+    @Bean
+    public HttpFirewall defaultHttpFirewall() {
+        return new DefaultHttpFirewall();
+    }
+
 
 }
