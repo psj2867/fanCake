@@ -24,7 +24,8 @@ public class UserUpdateForm {
     @Nullable private String accountName;
     @Nullable private String accountOwner;
 
-    @Nullable private String recipient;
+    @Nullable private String addressPhoneNumber;
+    @Nullable private String addressRecipient;
     @Nullable private String address;
     @Nullable private String addressDetail;
 
@@ -38,7 +39,8 @@ public class UserUpdateForm {
         if(this.accountName != null) user.getBank().setAccountName(this.accountName);
         if(this.accountOwner != null) user.getBank().setAccountOwner(this.accountOwner);
 
-        if(this.recipient != null) user.getAddress().setAddressRecipient(this.recipient);
+        if(this.addressPhoneNumber != null) user.getAddress().setAddressPhoneNumber(addressPhoneNumber);
+        if(this.addressRecipient != null) user.getAddress().setAddressRecipient(this.addressRecipient);
         if(this.address != null) user.getAddress().setAddress(this.address);
         if(this.addressDetail != null) user.getAddress().setAddressDetail(this.addressDetail);
         if(this.zipCode != null) user.getAddress().setAddressZipCode(this.zipCode);
