@@ -58,20 +58,20 @@ public class UserRestController {
     
     @Operation(description = "로그인 된 사용자 정보")
     @GetMapping("")
-    public ResponseEntity<Object> getRoot(@Nullable UserInfoForm form){
+    public SimpleUserDto getRoot(@Nullable UserInfoForm form){
         if(!SecurityUtil.isAuth())
             throw new UnAuthorizedException();
         if(form.isDetail())
-            return ResponseEntity.ok(userService.getDetailUser());
+            return userService.getDetailUser();
         else
-            return ResponseEntity.ok(SimpleUserDto.current());                
+            return SimpleUserDto.current();                
     }
     @Operation(description = "회원가입")
     @PostMapping("")
-    public ResponseEntity<MessageDto> postRoot(@Validated SignUpUserForm signUpForm){
+    public MessageDto postRoot(@Validated SignUpUserForm signUpForm){
         try {
             userService.addOriginUser(signUpForm);
-            return ResponseEntity.ok(MessageDto.success());
+            return MessageDto.success();
         } catch (DataIntegrityViolationException e) {
             ErrorDto error = new ErrorDto("user.signUp.duplicatedId", "id", signUpForm.getId());
             throw FieldValidException.of(error);
@@ -79,16 +79,15 @@ public class UserRestController {
     }
     @Operation(description = "정보 수정")
     @PutMapping("")
-    public ResponseEntity<MessageDto> putRoot(@Validated UserUpdateForm userDetailForm){
+    public MessageDto putRoot(@Validated UserUpdateForm userDetailForm){
         userService.updateUser(userDetailForm);
-        return ResponseEntity.ok(MessageDto.success());
+        return MessageDto.success();
     }
     @Operation(description = "아이디 찾기")
     @GetMapping("id")
-    public ResponseEntity<IdDto> getFindID(@Validated FindIdForm findIdForm){
+    public IdDto getFindID(@Validated FindIdForm findIdForm){
         Optional<UserEntity> userEntitiy = userService.findId(findIdForm);
         return  userEntitiy.map(IdDto::of)
-                    .map(ResponseEntity::ok)
                     .orElseThrow(()->FieldValidException.of(new ErrorDto("user.notMatched", null, null)));
     }
     @Operation(description = "비밀번호 찾기")
@@ -101,16 +100,16 @@ public class UserRestController {
     
     @Operation(description = "비밀번호 변경")
     @PutMapping("password")
-    public ResponseEntity<MessageDto> putPassword(@Validated UpdateUserPasswordForm passwordForm){
+    public MessageDto putPassword(@Validated UpdateUserPasswordForm passwordForm){
         userService.updatePassword(passwordForm);
-        return ResponseEntity.ok(MessageDto.success());
+        return MessageDto.success();
     }
     @Operation(description = "로그인")
     @PostMapping("login")
-    public ResponseEntity<TokenDto> postLogin(@Validated UserForm userForm){
+    public TokenDto postLogin(@Validated UserForm userForm){
         try {
             TokenDto token = authService.loginOriginUser(userForm);
-            return ResponseEntity.ok(token);
+            return token;
         } catch (NotMatchedCredentialException e) {
             ErrorDto error = new ErrorDto("user.notMatched", "id", null);
             throw FieldValidException.of(error);

@@ -32,22 +32,22 @@ public class VideosRestController {
 
     @Operation(description = "전체 영상 목록")
     @GetMapping("")
-    public ResponseEntity<Page<VideoDto>> getRootGetVideos(VideoListForm videoListForm) {
-        return ResponseEntity.ok( videoService.getVideoList(videoListForm));
+    public Page<VideoDto> getRootGetVideos(VideoListForm videoListForm) {
+        return videoService.getVideoList(videoListForm);
     }
 
     @Operation(description = "영상 정보")
     @ApiResponse(responseCode = "404",description = "videoIdx 가 없는 값 일때" )
     @GetMapping("{videoIdx}")
-    public ResponseEntity<VideoDto> getVideoIdxGetVideInfo(@PathVariable int videoIdx) {
-        return ResponseEntity.ok( videoService.getVideo(videoIdx));
+    public VideoDto getVideoIdxGetVideInfo(@PathVariable int videoIdx) {
+        return videoService.getVideo(videoIdx);
     }
     @Operation(description = "영상 state 변경")
     @ApiResponse(responseCode = "404",description = "videoIdx 가 없는 값 일때" )
     @PatchMapping("{videoIdx}")
-    public ResponseEntity<MessageDto> patchVideoIdxGetVideInfo(@PathVariable int videoIdx, VideoAutctionState state ) {
+    public MessageDto patchVideoIdxGetVideInfo(@PathVariable int videoIdx, VideoAutctionState state ) {
         videoService.updateVideoState(videoIdx, state);
-        return ResponseEntity.ok( MessageDto.success() );
+        return MessageDto.success();
     }
 
     @Operation(description = "영상 구매하기")
