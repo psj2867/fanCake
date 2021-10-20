@@ -20,7 +20,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.SuperBuilder;
-import ml.psj2867.fancake.exception.FieldValidException;
+import ml.psj2867.fancake.exception.bad.FieldValidException;
 
 @Getter
 @Setter

@@ -1,7 +1,13 @@
 package ml.psj2867.fancake.exception;
 
+import org.apache.http.HttpStatus;
+
+import lombok.Getter;
+
+@Getter
 public class ApiException extends RuntimeException{
     private static final long serialVersionUID = -3982470902307575402L;
+
 
     public ApiException() {super();}    
     public ApiException(java.lang.String message) {super(message);}

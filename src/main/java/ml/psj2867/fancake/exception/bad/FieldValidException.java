@@ -1,4 +1,4 @@
-package ml.psj2867.fancake.exception;
+package ml.psj2867.fancake.exception.bad;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -10,7 +10,7 @@ import org.springframework.context.MessageSource;
 import ml.psj2867.fancake.service.api.model.ErrorDto;
 
 
-public class FieldValidException extends ApiException{
+public class FieldValidException extends BadRequesetException{
     private static final long serialVersionUID = -3982470902307575402L;
 
     private List<ErrorDto> errors = new ArrayList<>();

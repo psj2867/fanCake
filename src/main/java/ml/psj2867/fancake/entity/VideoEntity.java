@@ -20,6 +20,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import ml.psj2867.fancake.entity.type.VideoAutctionState;
 
 @Entity(name = VideoEntity.ENTITY_NAME )
 @Getter
@@ -38,6 +39,7 @@ public class VideoEntity{
     private String videoTitle;
     private long stockSize;
     private double pricePerShare;    
+    private VideoAutctionState autctionState;
     private LocalDateTime createdDate;    
     private LocalDateTime expirationDate;
 
