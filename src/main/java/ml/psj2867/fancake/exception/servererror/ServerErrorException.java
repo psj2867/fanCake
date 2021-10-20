@@ -1,4 +1,4 @@
-package ml.psj2867.fancake.exception;
+package ml.psj2867.fancake.exception.servererror;
 
 
 public class ServerErrorException extends RuntimeException{

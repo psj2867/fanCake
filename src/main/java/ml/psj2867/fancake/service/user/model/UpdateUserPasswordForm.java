@@ -14,13 +14,15 @@ import ml.psj2867.fancake.entity.UserEntity;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class UserPasswordForm {
+public class UpdateUserPasswordForm {
     
     @NotBlank
-    private String password;
+    private String currentPassword;
+    @NotBlank
+    private String newPassword;
 
     public void overWrite(UserEntity user){
-        user.setPassword(this.password);
+        user.setPassword(this.newPassword);
     }
 
 }

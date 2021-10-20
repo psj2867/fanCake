@@ -6,7 +6,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.SuperBuilder;
 import ml.psj2867.fancake.entity.UserEntity;
-import ml.psj2867.fancake.exception.UnAuthorizedException;
+import ml.psj2867.fancake.exception.unauth.UnAuthorizedException;
 import ml.psj2867.fancake.util.SecurityUtil;
 
 @Getter

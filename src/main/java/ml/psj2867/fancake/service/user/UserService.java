@@ -18,13 +18,14 @@ import ml.psj2867.fancake.dao.AuthoritiesEntityDao;
 import ml.psj2867.fancake.dao.UserEntityDao;
 import ml.psj2867.fancake.entity.AuthoritiesEntity;
 import ml.psj2867.fancake.entity.UserEntity;
-import ml.psj2867.fancake.exception.UnAuthorizedException;
+import ml.psj2867.fancake.exception.conflict.ConflictException;
+import ml.psj2867.fancake.exception.unauth.UnAuthorizedException;
 import ml.psj2867.fancake.service.user.model.CreatorListForm;
 import ml.psj2867.fancake.service.user.model.DetailUserDto;
 import ml.psj2867.fancake.service.user.model.FindIdForm;
 import ml.psj2867.fancake.service.user.model.SimpleUserDto;
+import ml.psj2867.fancake.service.user.model.UpdateUserPasswordForm;
 import ml.psj2867.fancake.service.user.model.UserListForm;
-import ml.psj2867.fancake.service.user.model.UserPasswordForm;
 import ml.psj2867.fancake.service.user.model.UserUpdateForm;
 import ml.psj2867.fancake.service.user.model.auth.LoginTypeEnum;
 import ml.psj2867.fancake.service.user.model.sign.SignUpUserForm;
@@ -49,11 +50,16 @@ public class UserService {
         userDao.save(user);
     } 
 
-    public void updatePassword(final UserPasswordForm passwordForm) {
+    public void updatePassword(final UpdateUserPasswordForm passwordForm) {
         UserEntity user = this.getUserOrThrow();
+        checkCurrentPasswordIsValid(user, passwordForm);
         passwordForm.overWrite(user);
         userDao.save(user);
-    } 
+    }
+    private void checkCurrentPasswordIsValid(UserEntity user, UpdateUserPasswordForm passwordForm){
+      if(! user.getPassword().equals(passwordForm.getCurrentPassword()) )
+        throw new ConflictException();
+    }
 
     public Optional<UserEntity> findId(final FindIdForm findIdForm) {
         return userDao.findByNameIsAndEmailIsAndLoginTypeIs(findIdForm.getName(), findIdForm.getEmail(),LoginTypeEnum.ORIGIN);

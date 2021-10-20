@@ -20,9 +20,9 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import ml.psj2867.fancake.configure.security.TokenDto;
 import ml.psj2867.fancake.entity.UserEntity;
-import ml.psj2867.fancake.exception.FieldValidException;
-import ml.psj2867.fancake.exception.NotMatchedCredentialException;
-import ml.psj2867.fancake.exception.UnAuthorizedException;
+import ml.psj2867.fancake.exception.bad.FieldValidException;
+import ml.psj2867.fancake.exception.inner.NotMatchedCredentialException;
+import ml.psj2867.fancake.exception.unauth.UnAuthorizedException;
 import ml.psj2867.fancake.service.api.model.ErrorDto;
 import ml.psj2867.fancake.service.stock.StockService;
 import ml.psj2867.fancake.service.stock.model.StockDto;
@@ -35,9 +35,9 @@ import ml.psj2867.fancake.service.user.UserService;
 import ml.psj2867.fancake.service.user.model.FindIdForm;
 import ml.psj2867.fancake.service.user.model.IdDto;
 import ml.psj2867.fancake.service.user.model.SimpleUserDto;
+import ml.psj2867.fancake.service.user.model.UpdateUserPasswordForm;
 import ml.psj2867.fancake.service.user.model.UserForm;
 import ml.psj2867.fancake.service.user.model.UserInfoForm;
-import ml.psj2867.fancake.service.user.model.UserPasswordForm;
 import ml.psj2867.fancake.service.user.model.UserUpdateForm;
 import ml.psj2867.fancake.service.user.model.sign.SignUpUserForm;
 import ml.psj2867.fancake.util.MessageDto;
@@ -101,7 +101,7 @@ public class UserRestController {
     
     @Operation(description = "비밀번호 변경")
     @PutMapping("password")
-    public ResponseEntity<MessageDto> putPassword(@Validated UserPasswordForm passwordForm){
+    public ResponseEntity<MessageDto> putPassword(@Validated UpdateUserPasswordForm passwordForm){
         userService.updatePassword(passwordForm);
         return ResponseEntity.ok(MessageDto.success());
     }

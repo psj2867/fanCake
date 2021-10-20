@@ -1,4 +1,4 @@
-package ml.psj2867.fancake.exception;
+package ml.psj2867.fancake.exception.unauth;
 
 
 public class LoginException extends RuntimeException{

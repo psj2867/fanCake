@@ -9,8 +9,8 @@ import ml.psj2867.fancake.dao.VideoEntityDao;
 import ml.psj2867.fancake.entity.UserEntity;
 import ml.psj2867.fancake.entity.VideoEntity;
 import ml.psj2867.fancake.entity.type.VideoAutctionState;
-import ml.psj2867.fancake.exception.FieldValidException;
-import ml.psj2867.fancake.exception.NotFoundException;
+import ml.psj2867.fancake.exception.bad.FieldValidException;
+import ml.psj2867.fancake.exception.notfound.ResourceNotFoundException;
 import ml.psj2867.fancake.service.stock.StockService;
 import ml.psj2867.fancake.service.user.UserService;
 import ml.psj2867.fancake.service.video.model.BuyStockErrorDto;
@@ -33,7 +33,7 @@ public class VideoService  {
     public void buyStock(int videoIdx, BuyStockForm form){
         UserEntity user = userService.getUserOrThrow();
         VideoEntity video = videoDao.findById(videoIdx)
-                                .orElseThrow( ()->  NotFoundException.of("video", videoIdx) );
+                                .orElseThrow( ()->  ResourceNotFoundException.of("video", videoIdx) );
         long remainSize = video.getStockSize() - video.getSize();
         if(  remainSize < form.getSize() ){
             BuyStockErrorDto error = BuyStockErrorDto.builder()
@@ -48,14 +48,14 @@ public class VideoService  {
 
     public void updateVideoState(int videoIdx, VideoAutctionState state){
       VideoEntity video = videoDao.findById(videoIdx)
-          .orElseThrow( ()->  NotFoundException.of("video", videoIdx) );
+          .orElseThrow( ()->  ResourceNotFoundException.of("video", videoIdx) );
       video.setAutctionState(state);
       videoDao.save(video);
     }
     public VideoDto getVideo(int videoIdx){
         return videoDao.findById(videoIdx)
             .map(VideoDto::of)
-            .orElseThrow( ()->  NotFoundException.of("video", videoIdx) );
+            .orElseThrow( ()->  ResourceNotFoundException.of("video", videoIdx) );
     }
 
     public Page<VideoDto> getVideoList(VideoListForm form){

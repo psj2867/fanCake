@@ -1,5 +1,6 @@
-package ml.psj2867.fancake.exception;
+package ml.psj2867.fancake.exception.inner;
 
+import ml.psj2867.fancake.exception.unauth.LoginException;
 
 public class NotMatchedCredentialException extends LoginException{
 
