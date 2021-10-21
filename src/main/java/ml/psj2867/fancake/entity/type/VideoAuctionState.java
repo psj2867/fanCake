@@ -5,7 +5,7 @@ import java.util.Optional;
 import lombok.AllArgsConstructor;
 
 @AllArgsConstructor
-public enum VideoAutctionState {
+public enum VideoAuctionState {
    CANCEL(false)
   ,SUCCESS(true)
   ;
@@ -17,9 +17,9 @@ public enum VideoAutctionState {
   }
 
 
-  public static Optional<VideoAutctionState> of(String name){
+  public static Optional<VideoAuctionState> of(String name){
     try {      
-      return Optional.ofNullable( VideoAutctionState.valueOf(name) );
+      return Optional.ofNullable( VideoAuctionState.valueOf(name) );
     } catch (Exception e) {
       return Optional.empty();
     }

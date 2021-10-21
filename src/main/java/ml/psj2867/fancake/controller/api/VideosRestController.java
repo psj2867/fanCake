@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 import io.swagger.annotations.Api;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
-import ml.psj2867.fancake.entity.type.VideoAutctionState;
+import ml.psj2867.fancake.entity.type.VideoAuctionState;
 import ml.psj2867.fancake.service.video.VideoService;
 import ml.psj2867.fancake.service.video.model.BuyStockForm;
 import ml.psj2867.fancake.service.video.model.VideoDto;
@@ -45,7 +45,7 @@ public class VideosRestController {
     @Operation(description = "영상 state 변경")
     @ApiResponse(responseCode = "404",description = "videoIdx 가 없는 값 일때" )
     @PatchMapping("{videoIdx}")
-    public MessageDto patchVideoIdxGetVideInfo(@PathVariable int videoIdx, VideoAutctionState state ) {
+    public MessageDto patchVideoIdxGetVideInfo(@PathVariable int videoIdx, VideoAuctionState state ) {
         videoService.updateVideoState(videoIdx, state);
         return MessageDto.success();
     }
