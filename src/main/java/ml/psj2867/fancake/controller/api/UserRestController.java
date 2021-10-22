@@ -9,6 +9,7 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -83,6 +84,13 @@ public class UserRestController {
         userService.updateUser(userDetailForm);
         return MessageDto.success();
     }
+    @Operation(description = "현재 로그인 된 사용자 제거")
+    @DeleteMapping("")
+    public MessageDto deleteRoot(@Validated UserUpdateForm userDetailForm){
+        userService.deleteUser();
+        return MessageDto.success();
+    }
+
     @Operation(description = "아이디 찾기")
     @GetMapping("id")
     public IdDto getFindID(@Validated FindIdForm findIdForm){

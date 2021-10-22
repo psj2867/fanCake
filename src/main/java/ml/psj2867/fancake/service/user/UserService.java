@@ -20,6 +20,7 @@ import ml.psj2867.fancake.entity.AuthoritiesEntity;
 import ml.psj2867.fancake.entity.UserEntity;
 import ml.psj2867.fancake.exception.conflict.ConflictException;
 import ml.psj2867.fancake.exception.unauth.UnAuthorizedException;
+import ml.psj2867.fancake.service.email.EmailService;
 import ml.psj2867.fancake.service.user.model.CreatorListForm;
 import ml.psj2867.fancake.service.user.model.DetailUserDto;
 import ml.psj2867.fancake.service.user.model.FindIdForm;
@@ -39,11 +40,17 @@ public class UserService {
     private UserEntityDao userDao;
     @Autowired
     private AuthoritiesEntityDao authDao;
+    @Autowired
+    private EmailService emailService;
 
     public DetailUserDto getDetailUser(){
         return DetailUserDto.of(this.getUserOrThrow());
     }
 
+    public void deleteUser() {
+        UserEntity user = this.getUserOrThrow();
+        userDao.delete(user);
+    } 
     public void updateUser(final UserUpdateForm userUpdateForm) {
         UserEntity user = this.getUserOrThrow();
         userUpdateForm.overWrite(user);
@@ -70,13 +77,13 @@ public class UserService {
         user.ifPresent(this::sendEmail);
     } 
     private void sendEmail(final UserEntity user){
-        // TODO
+        emailService.sendFindPasswordEmail(user);
     }
 
 
-    public Page<SimpleUserDto> getUsers(final UserListForm userListForm) {
+    public Page<DetailUserDto> getUsers(final UserListForm userListForm) {
         return userDao.findAll(userListForm.toSpec(), userListForm.toPageable())
-                        .map(SimpleUserDto::of);
+                        .map(DetailUserDto::of);
     }
     public Page<SimpleUserDto> getCreators(final CreatorListForm creatorListForm) {
         return userDao.findAll(creatorListForm.toSpec(), creatorListForm.toPageable())

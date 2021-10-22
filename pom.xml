@@ -10,7 +10,7 @@
 	</parent>
 	<groupId>ml.psj2867</groupId>
 	<artifactId>fancake</artifactId>
-	<version>Beta.1.0.2</version>
+	<version>Beta.1.1.0</version>
 	<packaging>war</packaging>
 	<name>fancake</name>
 	<description>fancake project 2021</description>
@@ -52,7 +52,11 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-hateoas</artifactId>
         </dependency>
-
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-mail</artifactId>
+            <version>1.4.3.RELEASE</version>
+        </dependency>
 		<!-- spring -security -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
