@@ -78,9 +78,9 @@ public class UserService {
     }
 
 
-    public Page<SimpleUserDto> getUsers(final UserListForm userListForm) {
+    public Page<DetailUserDto> getUsers(final UserListForm userListForm) {
         return userDao.findAll(userListForm.toSpec(), userListForm.toPageable())
-                        .map(SimpleUserDto::of);
+                        .map(DetailUserDto::of);
     }
     public Page<SimpleUserDto> getCreators(final CreatorListForm creatorListForm) {
         return userDao.findAll(creatorListForm.toSpec(), creatorListForm.toPageable())
