@@ -47,6 +47,10 @@ public class UserService {
         return DetailUserDto.of(this.getUserOrThrow());
     }
 
+    public void deleteUser() {
+        UserEntity user = this.getUserOrThrow();
+        userDao.delete(user);
+    } 
     public void updateUser(final UserUpdateForm userUpdateForm) {
         UserEntity user = this.getUserOrThrow();
         userUpdateForm.overWrite(user);
@@ -73,7 +77,6 @@ public class UserService {
         user.ifPresent(this::sendEmail);
     } 
     private void sendEmail(final UserEntity user){
-        // emailService.sendSimpleMessage(user.getEmail(), emailSubject(user), emailContent(user) );
         emailService.sendFindPasswordEmail(user);
     }
 
