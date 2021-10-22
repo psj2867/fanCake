@@ -14,6 +14,7 @@ import ml.psj2867.fancake.service.youtube.modoel.YoutubeThumbnailEnum;
 @Setter
 public class ChannelDto{
 
+    private int channelIdx;
     private String channelId;
     private String channelTitle;
     private String thumbnailUrl;
@@ -21,6 +22,7 @@ public class ChannelDto{
     
     public static ChannelDto of(ChannelEntity channelEntity){
         return ChannelDto.builder()
+                        .channelIdx(channelEntity.getIdx())
                         .channelId(channelEntity.getChannnelId())
                         .channelTitle(channelEntity.getChannelTitle())
                         .thumbnailUrl(getThumbnailUrl(channelEntity.getChannnelId()))

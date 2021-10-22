@@ -6,11 +6,14 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import ml.psj2867.fancake.dao.VideoEntityDao;
+import ml.psj2867.fancake.entity.ChannelEntity;
 import ml.psj2867.fancake.entity.UserEntity;
 import ml.psj2867.fancake.entity.VideoEntity;
 import ml.psj2867.fancake.entity.type.VideoAuctionState;
 import ml.psj2867.fancake.exception.bad.FieldValidException;
 import ml.psj2867.fancake.exception.notfound.ResourceNotFoundException;
+import ml.psj2867.fancake.service.channel.model.ChannelDto;
+import ml.psj2867.fancake.service.channel.model.ChannesVideoslListForm;
 import ml.psj2867.fancake.service.stock.StockService;
 import ml.psj2867.fancake.service.user.UserService;
 import ml.psj2867.fancake.service.video.model.BuyStockErrorDto;
@@ -60,6 +63,10 @@ public class VideoService  {
 
     public Page<VideoDto> getVideoList(VideoListForm form){
         Page<VideoEntity> items = videoDao.findAll(form.toSpec(), form.toPageable());
+        return items.map(VideoDto::of);
+    }
+    public Page<VideoDto> getVideoList(ChannesVideoslListForm form, ChannelEntity channel ){
+        Page<VideoEntity> items = videoDao.findAll(form.toSpec(channel), form.toPageable());
         return items.map(VideoDto::of);
     }
     

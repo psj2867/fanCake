@@ -95,6 +95,22 @@ public abstract class ListForm<T>{
             return p;
         };
     }
+    protected Specification<T> equl(Object q, String fieldName){
+        return (root, query, builder) -> {
+            Predicate p = null;
+            if( q != null )
+                p = builder.equal(root.get(fieldName), q );
+            return p;
+        };
+    }
+    protected Specification<T> equl(Object q, String join, String fieldName){
+        return (root, query, builder) -> {
+            Predicate p = null;
+            if( q != null )
+                p = builder.equal(root.join(join).get(fieldName), q );
+            return p;
+        };
+    }
 
     public Pageable toPageable(){
         page = ( page < 0  ) ? 0 : page;
