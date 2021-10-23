@@ -86,7 +86,7 @@ public class UserRestController {
     }
     @Operation(description = "현재 로그인 된 사용자 제거")
     @DeleteMapping("")
-    public MessageDto deleteRoot(@Validated UserUpdateForm userDetailForm){
+    public MessageDto deleteRoot(){
         userService.deleteUser();
         return MessageDto.success();
     }
