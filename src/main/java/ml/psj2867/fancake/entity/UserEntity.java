@@ -1,6 +1,7 @@
 package ml.psj2867.fancake.entity;
 
 import java.time.LocalDateTime;
+import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -25,6 +26,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import ml.psj2867.fancake.configure.security.AuthEnum;
 import ml.psj2867.fancake.entity.embedded.AddressEmbedded;
 import ml.psj2867.fancake.entity.embedded.BankEmbedded;
 import ml.psj2867.fancake.entity.embedded.TermsEmbedded;
@@ -89,6 +91,8 @@ public class UserEntity{
     }
 
     public List<GrantedAuthority> getGrants(){
+        if(this.getAuths() == null || this.getAuths().isEmpty())
+            return Arrays.asList(AuthEnum.USER);
         return this.getAuths().stream()
                             .map(AuthoritiesEntity::getAuth)
                             .collect(Collectors.toList());

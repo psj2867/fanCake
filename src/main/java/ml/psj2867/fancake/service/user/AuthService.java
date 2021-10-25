@@ -14,6 +14,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 
+import javax.management.RuntimeErrorException;
+
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -71,12 +73,13 @@ public class AuthService {
         return this.login(userEntitiy);
     }
 
-    public UserEntity loginNaverUserOrAdd(NaverOAuthForm naverOAuthForm) {
+    public TokenDto loginNaverUserOrAdd(NaverOAuthForm naverOAuthForm) {
         final NaverToken accessToken = getNaverAccessToekn(naverOAuthForm);
         NaverOAuthUserInfo userInfo= getNaverUserInfo(accessToken).getResponse();        
         Optional<UserEntity> userEntity = userDao.findByIdIsAndLoginTypeIs(userInfo.getId(), LoginTypeEnum.NAVER);        
-        return userEntity
+        UserEntity user = userEntity
             .orElseGet(()->userService.addNaverUser(userInfo.convertToEntity()));
+        return this.login(user);
     }
     private NaverToken getNaverAccessToekn(NaverOAuthForm naverOAuthForm) {
         try {
@@ -90,6 +93,7 @@ public class AuthService {
             HttpRequest request = HttpRequest.newBuilder().uri(uri).build();
             HttpResponse<String> response = client.send(request, BodyHandlers.ofString());
             Map<String, String> tokenInfo = convertJson2Map(response.body());
+            if(tokenInfo.get("error") != null ) throw new RuntimeException(tokenInfo.get("error"));
             NaverToken token = NaverToken.builder()
                                 .access_token(tokenInfo.get("access_token"))
                                 .refresh_token(tokenInfo.get("refresh_token"))

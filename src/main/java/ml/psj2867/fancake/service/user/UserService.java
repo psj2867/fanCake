@@ -1,5 +1,6 @@
 package ml.psj2867.fancake.service.user;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -96,8 +97,9 @@ public class UserService {
         userEntity.setLoginType(LoginTypeEnum.ORIGIN);
         return addUser(userEntity);
     }
-    public UserEntity addNaverUser(final UserEntity user) throws DataIntegrityViolationException{
-        return addUser(user);
+    public UserEntity addNaverUser(final UserEntity userEntity) throws DataIntegrityViolationException{
+        UserEntity user = addUser(userEntity);
+        return user;
     }
     private UserEntity addUser(final UserEntity user) throws DataIntegrityViolationException{
         userDao.save(user);

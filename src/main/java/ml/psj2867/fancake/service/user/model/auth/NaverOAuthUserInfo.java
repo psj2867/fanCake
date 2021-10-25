@@ -18,9 +18,10 @@ public class NaverOAuthUserInfo{
     private String name;    
 
     public UserEntity convertToEntity(){
-        UserEntity user = new UserEntity();
-        user.setId(this.id);
-        user.setLoginType(LoginTypeEnum.NAVER);
+        UserEntity user = UserEntity.builder()
+                                    .id(this.id)
+                                    .loginType(LoginTypeEnum.NAVER)
+                                    .build();
         return user;
     }
 }

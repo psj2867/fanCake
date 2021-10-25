@@ -41,7 +41,7 @@
     <logger name="org.hibernate" level="info"/>
     <logger name="org.hibernate.type.descriptor.sql" level="trace"/>
     <logger name="com.zaxxer.hikari" level="warn"/>
-    <logger name="org.springframework.security.web.access.ExceptionTranslationFilter" level="error"/>
+    <logger name="org.springframework.security.web.access.ExceptionTranslationFilter" level="trace"/>
     <logger name="springfox" level="info"/>
     <logger name="org.thymeleaf" level="info"/>
 

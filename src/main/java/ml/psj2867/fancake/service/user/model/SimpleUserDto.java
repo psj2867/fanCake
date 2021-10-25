@@ -16,25 +16,19 @@ import ml.psj2867.fancake.util.SecurityUtil;
 @AllArgsConstructor
 public class SimpleUserDto {
 
-    private String name;
     private Integer userIdx;
-    private boolean isAuthenticate;
 
     public static SimpleUserDto current() throws UnAuthorizedException{
         if(!SecurityUtil.isAuth())
             throw new UnAuthorizedException();
         return SimpleUserDto.builder()
-                            .name(SecurityUtil.getName().get())
                             .userIdx(SecurityUtil.getUserIdx().get())
-                            .isAuthenticate(true)
                             .build();
     }
 
     public static SimpleUserDto of(UserEntity userEntity) {
         return SimpleUserDto.builder()
-                        .name(userEntity.getName())
                         .userIdx(userEntity.getIdx())
-                        .isAuthenticate(true)  
                         .build();
 
     }

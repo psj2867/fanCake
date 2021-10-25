@@ -12,14 +12,18 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.access.ExceptionTranslationFilter;
 import org.springframework.security.web.firewall.DefaultHttpFirewall;
 import org.springframework.security.web.firewall.HttpFirewall;
 import org.springframework.security.web.firewall.StrictHttpFirewall;
 
+import lombok.extern.slf4j.Slf4j;
 import ml.psj2867.fancake.configure.security.JwtFilter;
 import ml.psj2867.fancake.configure.security.JwtProvider;
+import ml.psj2867.fancake.util.MessageDto;
 
+@Slf4j
 @Configuration
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(securedEnabled = true, prePostEnabled = true)
@@ -41,7 +45,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
 
         web.httpFirewall(defaultHttpFirewall());
     }
-StrictHttpFirewall a;
+
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
@@ -56,7 +60,13 @@ StrictHttpFirewall a;
                 .formLogin()
                 .disable();
         http.addFilterAfter(new JwtFilter(this.jwtProvider), ExceptionTranslationFilter.class);
-
+        http.exceptionHandling().authenticationEntryPoint(authenticationEntryPoint());
+    }
+    private AuthenticationEntryPoint authenticationEntryPoint(){
+        return (request, response, authException) ->{
+            log.error("error in filter",authException);
+            response.getOutputStream().print(MessageDto.of("unAtuh").toJson());
+        };
     }
 
 
