@@ -75,10 +75,10 @@ public class AuthService {
 
     public TokenDto loginNaverUserOrAdd(NaverOAuthForm naverOAuthForm) {
         final NaverToken accessToken = getNaverAccessToekn(naverOAuthForm);
-        NaverOAuthUserInfo userInfo= getNaverUserInfo(accessToken).getResponse();        
-        Optional<UserEntity> userEntity = userDao.findByIdIsAndLoginTypeIs(userInfo.getId(), LoginTypeEnum.NAVER);        
+        NaverOAuthUserInfo naverUserInfo= getNaverUserInfo(accessToken).getResponse();        
+        Optional<UserEntity> userEntity = userDao.findByIdIsAndLoginTypeIs(naverUserInfo.getId(), LoginTypeEnum.NAVER);        
         UserEntity user = userEntity
-            .orElseGet(()->userService.addNaverUser(userInfo.convertToEntity()));
+            .orElseGet(()->userService.addNaverUser(naverUserInfo.convertToEntity()));
         return this.login(user);
     }
     private NaverToken getNaverAccessToekn(NaverOAuthForm naverOAuthForm) {

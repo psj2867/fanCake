@@ -20,6 +20,9 @@ public class NaverOAuthUserInfo{
     public UserEntity convertToEntity(){
         UserEntity user = UserEntity.builder()
                                     .id(this.id)
+                                    .name(this.name)
+                                    .email(this.email)
+                                    .phoneNumber(this.mobile)
                                     .loginType(LoginTypeEnum.NAVER)
                                     .build();
         return user;
