@@ -25,12 +25,9 @@ public class ChannelDto{
                         .channelIdx(channelEntity.getIdx())
                         .channelId(channelEntity.getChannnelId())
                         .channelTitle(channelEntity.getChannelTitle())
-                        .thumbnailUrl(getThumbnailUrl(channelEntity.getChannnelId()))
+                        .thumbnailUrl(channelEntity.getThumbnailUrl())
                         .channelUrl(getChannelUrl(channelEntity.getChannnelId()))
                         .build();
-    }
-    private static String getThumbnailUrl(String channelId){
-        return YoutubeThumbnailEnum.default_size.getUrl(channelId);
     }
     private static String getChannelUrl(String channelId){
         return YoutubeService.getChannelUrl(channelId);

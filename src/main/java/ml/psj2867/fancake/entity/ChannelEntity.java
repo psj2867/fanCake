@@ -36,6 +36,7 @@ public class ChannelEntity{
 
     private String channnelId;
     private String channelTitle;
+    private String thumbnailUrl;
     private LocalDateTime createdDate;    
 
     @PrePersist
@@ -50,5 +51,8 @@ public class ChannelEntity{
     
     @OneToMany(mappedBy = "channel")
     private List<VideoEntity> videos; 
+
+    @OneToMany(mappedBy = "channel")
+    private List<ChannelTopicEntity> topics; 
 
 }
