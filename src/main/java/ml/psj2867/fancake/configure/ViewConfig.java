@@ -23,10 +23,4 @@ public class ViewConfig implements WebMvcConfigurer{
         bean.setValidationMessageSource(messageSource);
         return bean;
     }
-    @Override
-    public void addCorsMappings(CorsRegistry registry) {        
-        registry.addMapping("/**")
-                .allowedOrigins("*")
-                .allowedMethods("*");
-    }
 }
