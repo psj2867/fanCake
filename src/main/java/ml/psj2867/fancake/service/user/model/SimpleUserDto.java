@@ -17,12 +17,14 @@ import ml.psj2867.fancake.util.SecurityUtil;
 public class SimpleUserDto {
 
     private Integer userIdx;
+    private String name;
 
     public static SimpleUserDto current() throws UnAuthorizedException{
         if(!SecurityUtil.isAuth())
             throw new UnAuthorizedException();
         return SimpleUserDto.builder()
                             .userIdx(SecurityUtil.getUserIdx().get())
+                            .name(SecurityUtil.getName().get())
                             .build();
     }
 
