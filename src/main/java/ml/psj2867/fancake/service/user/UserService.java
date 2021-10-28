@@ -47,7 +47,18 @@ public class UserService {
     public DetailUserDto getDetailUser(){
         return DetailUserDto.of(this.getUserOrThrow());
     }
-
+    
+    public void withdrawal(double amount) {
+        UserEntity user = this.getUserOrThrow();
+        withdrawal(amount, user);
+    } 
+    public void withdrawal(double amount, UserEntity user) {
+        double balance = user.getBalance() - amount;
+        if(balance < 0 ) log.info("User`s balance is minus, user - {}", DetailUserDto.of(user) );        
+        user.setBalance(balance);
+        userDao.save(user);
+    } 
+    
     public void deleteUser() {
         UserEntity user = this.getUserOrThrow();
         userDao.delete(user);

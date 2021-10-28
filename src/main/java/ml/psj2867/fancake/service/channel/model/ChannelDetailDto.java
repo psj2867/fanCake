@@ -12,25 +12,21 @@ import ml.psj2867.fancake.entity.ChannelEntity;
 import ml.psj2867.fancake.service.youtube.YoutubeService;
 
 @SuperBuilder
-@AllArgsConstructor
 @NoArgsConstructor
 @Getter
 @Setter
-public class ChannelDto{
+public class ChannelDetailDto extends ChannelDto{
 
-    private int channelIdx;
-    private String channelId;
-    private String channelTitle;
-    private String thumbnailUrl;
-    private String channelUrl;
+    private List<ChannelTopicDto> topics;
     
-    public static ChannelDto of(ChannelEntity channelEntity){
-        return ChannelDto.builder()
+    public static ChannelDetailDto of(ChannelEntity channelEntity){
+        return ChannelDetailDto.builder()
                         .channelIdx(channelEntity.getIdx())
                         .channelId(channelEntity.getChannnelId())
                         .channelTitle(channelEntity.getChannelTitle())
                         .thumbnailUrl(channelEntity.getThumbnailUrl())
                         .channelUrl(getChannelUrl(channelEntity.getChannnelId()))
+                        .topics(ChannelTopicDto.of(channelEntity))
                         .build();
     }
     private static String getChannelUrl(String channelId){

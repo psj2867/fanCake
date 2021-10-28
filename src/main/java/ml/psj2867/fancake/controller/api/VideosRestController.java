@@ -15,6 +15,7 @@ import io.swagger.annotations.Api;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import ml.psj2867.fancake.entity.type.VideoAuctionState;
+import ml.psj2867.fancake.service.user.UserService;
 import ml.psj2867.fancake.service.video.VideoService;
 import ml.psj2867.fancake.service.video.model.BuyStockForm;
 import ml.psj2867.fancake.service.video.model.VideoDto;
@@ -28,6 +29,8 @@ import ml.psj2867.fancake.util.MessageDto;
 public class VideosRestController {
     @Autowired
     private VideoService videoService;
+    @Autowired
+    private UserService userService;
     
 
     @Operation(description = "전체 영상 목록")
@@ -52,7 +55,7 @@ public class VideosRestController {
 
     @Operation(description = "영상 구매하기")
     @ApiResponse(responseCode = "201",description = "구매 성공" )
-    @ApiResponse(responseCode = "400",description = "validation 또는 남아있는 크키보다 사려는 값이 더 클 때" )
+    @ApiResponse(responseCode = "400",description = "validation 또는 남아있는 크키보다 사려는 값이 더 클 때, 돈이 모자랄 때" )
     @ApiResponse(responseCode = "404",description = "videoIdx 가 없는 값 일 때" )
     @PostMapping("{videoIdx}/stock")
     public ResponseEntity<MessageDto> postVideIdxStockBuyStock(@PathVariable int videoIdx, BuyStockForm form) {      
