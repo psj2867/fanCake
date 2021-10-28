@@ -23,7 +23,7 @@ import springfox.documentation.spring.web.plugins.Docket;
 public class ApplicationConfig implements WebMvcConfigurer{
     
     @Bean
-    public Docket api() {		
+    public Docket api(ConfigureProperties properties) {		
 		//Authentication header 처리를 위해 사용
 		List<RequestParameter> global = new ArrayList<>();
         global.add(new RequestParameterBuilder()
@@ -40,6 +40,7 @@ public class ApplicationConfig implements WebMvcConfigurer{
                         .build());
                                   
         return new Docket(DocumentationType.SWAGGER_2)
+                .host(properties.getHost())
                 .globalRequestParameters(global)
                 .consumes(getConsumeContentTypes())
                 .select()

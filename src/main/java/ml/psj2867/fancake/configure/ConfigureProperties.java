@@ -24,5 +24,6 @@ public class ConfigureProperties {
     private JwtProperty jwt;
     private NaverProperty naver; 
     private GoogleProperty google; 
-    
+
+    private String host;
 }
