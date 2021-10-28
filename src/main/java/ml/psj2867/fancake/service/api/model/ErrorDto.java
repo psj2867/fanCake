@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Locale;
 
 import org.springframework.context.MessageSource;
+import org.springframework.context.NoSuchMessageException;
 import org.springframework.util.StringUtils;
 import org.springframework.validation.FieldError;
 
@@ -13,7 +14,9 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.SuperBuilder;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 @Getter
 @Setter
 @AllArgsConstructor
@@ -40,7 +43,12 @@ public class ErrorDto{
 
     public ErrorDto resolve(MessageSource messageSource){
         if(! StringUtils.hasLength(this.message))
-            this.message = messageSource.getMessage(this.code,null, Locale.ROOT);
+            try {
+                this.message = messageSource.getMessage(this.code,null, Locale.ROOT);                
+            } catch (NoSuchMessageException e) {
+                log.warn("message is not found", e);
+                this.message = "";
+            }
         return this;
     }
     public List<ErrorDto> toList(){
