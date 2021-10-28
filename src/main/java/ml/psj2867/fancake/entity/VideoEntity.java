@@ -53,12 +53,12 @@ public class VideoEntity{
     @JoinColumn(name = "CHANNEL_IDX")
     private ChannelEntity channel;
 
-    @Formula("( select sum(stock.size) from stock where stock.idx = idx )")
+    @Formula("( select sum(s.size) from stock s where s.VIDEO_IDX = idx )")
     private Long size;
 
 
     @OneToMany(mappedBy = "video")
-    private List<StockEntity> sotkcs;
+    private List<StockEntity> stocks;
 
     public long getSize(){
         return this.size == null ? 0 : this.size;        
