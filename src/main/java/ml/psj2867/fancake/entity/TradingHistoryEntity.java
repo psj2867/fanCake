@@ -42,7 +42,7 @@ public class TradingHistoryEntity{
     
     private int size;
     private double price;
-    private double userBalance;
+    private double userAfterBalance;
     private LocalDateTime createdDate;   
     
     private String userId; 

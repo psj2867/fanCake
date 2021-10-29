@@ -43,7 +43,7 @@ public class TradingService  {
                             .price(form.calcAmmountOfStock(video))
                             .size(form.getSize())
                             .type(TradingTypeEnum.BUY)
-                            .userBalance(user.getBalance())
+                            .userAfterBalance(user.getBalance())
                             .videoTitle(video.getVideoTitle())
                             .videoId(video.getVideoId())
                             .build();

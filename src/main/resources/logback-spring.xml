@@ -38,7 +38,7 @@
     <logger name="ml.psj2867" level="trace"/>
     <logger name="org.springframework" level="info"/>
     <logger name="org.hibernate" level="info"/>
-    <logger name="org.hibernate.type.descriptor.sql" level="trace"/>
+    <logger name="org.hibernate.type.descriptor.sql" level="info"/>
     <logger name="com.zaxxer.hikari" level="warn"/>
     <logger name="org.springframework.security.web.access.ExceptionTranslationFilter" level="trace"/>
     <logger name="springfox" level="info"/>

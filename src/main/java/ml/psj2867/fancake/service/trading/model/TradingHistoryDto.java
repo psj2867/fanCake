@@ -33,7 +33,7 @@ public class TradingHistoryDto{
                                 .videoTitle(entity.getVideoTitle())
                                 .size(entity.getSize())
                                 .price(entity.getPrice())
-                                .userBalance(entity.getUserBalance())
+                                .userBalance(entity.getUserAfterBalance())
                                 .createdDate(entity.getCreatedDate())
                                 .build();
     }
