@@ -29,4 +29,8 @@ public class BuyStockForm {
                             .size(this.getSize())
                             .build();
     }
+
+    public double calcAmmountOfStock(VideoEntity video){
+        return video.getPricePerShare() * this.getSize();
+    }
 }

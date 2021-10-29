@@ -8,7 +8,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import ml.psj2867.fancake.service.user.UserService;
 import ml.psj2867.fancake.service.user.model.DetailUserDto;
-import ml.psj2867.fancake.service.user.model.SimpleUserDto;
 import ml.psj2867.fancake.service.user.model.UserListForm;
 @RestController
 @RequestMapping("api/users")

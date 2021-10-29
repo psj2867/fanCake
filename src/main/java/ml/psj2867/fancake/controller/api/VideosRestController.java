@@ -15,7 +15,6 @@ import io.swagger.annotations.Api;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import ml.psj2867.fancake.entity.type.VideoAuctionState;
-import ml.psj2867.fancake.service.user.UserService;
 import ml.psj2867.fancake.service.video.VideoService;
 import ml.psj2867.fancake.service.video.model.BuyStockForm;
 import ml.psj2867.fancake.service.video.model.VideoDto;
@@ -29,8 +28,6 @@ import ml.psj2867.fancake.util.MessageDto;
 public class VideosRestController {
     @Autowired
     private VideoService videoService;
-    @Autowired
-    private UserService userService;
     
 
     @Operation(description = "전체 영상 목록")

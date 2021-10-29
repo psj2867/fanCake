@@ -12,13 +12,13 @@ import ml.psj2867.fancake.entity.VideoEntity;
 import ml.psj2867.fancake.entity.type.VideoAuctionState;
 import ml.psj2867.fancake.exception.bad.FieldValidException;
 import ml.psj2867.fancake.exception.notfound.ResourceNotFoundException;
-import ml.psj2867.fancake.service.channel.model.ChannelDto;
 import ml.psj2867.fancake.service.channel.model.ChannesVideoslListForm;
 import ml.psj2867.fancake.service.stock.StockService;
+import ml.psj2867.fancake.service.trading.TradingService;
 import ml.psj2867.fancake.service.user.UserService;
-import ml.psj2867.fancake.service.video.model.BuyStockSizeErrorDto;
 import ml.psj2867.fancake.service.video.model.BuyStockErrorBalanceDto;
 import ml.psj2867.fancake.service.video.model.BuyStockForm;
+import ml.psj2867.fancake.service.video.model.BuyStockSizeErrorDto;
 import ml.psj2867.fancake.service.video.model.VideoDto;
 import ml.psj2867.fancake.service.video.model.VideoForm;
 import ml.psj2867.fancake.service.video.model.VideoListForm;
@@ -33,12 +33,19 @@ public class VideoService  {
     private StockService stockService;    
     @Autowired
     private UserService userService;
+    @Autowired
+    private TradingService tradingService;
 
     public void buyStock(int videoIdx, BuyStockForm form){
         UserEntity user = userService.getUserOrThrow();
         VideoEntity video = videoDao.findById(videoIdx)
                                 .orElseThrow( ()->  ResourceNotFoundException.of("video", videoIdx) );
-              
+        checkBuyValid(user, video,form);
+        userService.withdrawal(form.calcAmmountOfStock(video));
+        stockService.buyStock(video, user, form);
+        tradingService.saveBuyTrading(video, user, form);
+    }
+    private void checkBuyValid(UserEntity user, VideoEntity video, BuyStockForm form){
         long remainSize = video.getStockSize() - video.getSize();
         if(  remainSize < form.getSize() ){
             BuyStockSizeErrorDto error = BuyStockSizeErrorDto.builder()
@@ -48,9 +55,7 @@ public class VideoService  {
                                                         .build();
             throw FieldValidException.of(error);
         }
-
-        double ammountOfStock = video.getPricePerShare() * form.getSize();
-        if( user.getBalance() < ammountOfStock  ){
+        if( user.getBalance() < form.calcAmmountOfStock(video)  ){
             BuyStockErrorBalanceDto error = BuyStockErrorBalanceDto.builder()
                                                         .code("video.buyStock.outOfBalance")
                                                         .rejectedValue(form.getSize())
@@ -58,8 +63,6 @@ public class VideoService  {
                                                         .build();
             throw FieldValidException.of(error);
         }
-        userService.withdrawal(ammountOfStock);
-        stockService.buyStock(video, user, form);
     }
 
     public void updateVideoState(int videoIdx, VideoAuctionState state){

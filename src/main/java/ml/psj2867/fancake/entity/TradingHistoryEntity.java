@@ -38,14 +38,19 @@ public class TradingHistoryEntity{
     private TradingTypeEnum type;
 
     private String videoTitle;
+    private String videoId;
+    
     private int size;
     private double price;
     private double userBalance;
-    private LocalDateTime createdDate;    
+    private LocalDateTime createdDate;   
+    
+    private String userId; 
 
     @JoinColumn(name =  "owner_idx")
     @ManyToOne
     private UserEntity owner;
+    
 
     @PrePersist
     private void saveAt(){
