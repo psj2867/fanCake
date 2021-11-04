@@ -39,14 +39,10 @@ public class VideoDto{
                     .channel(ChannelDto.of(videoEntity.getChannel()))
                     .videoIdx(videoEntity.getIdx())
                     .videoId(videoEntity.getVideoId())
-                    .isOnSale(checkOnSale(videoEntity))
+                    .isOnSale(videoEntity.checkOnSale())
                     .auctionState(videoEntity.getAuctionState() )
                     .build();
     }
-    private static boolean checkOnSale(VideoEntity videoEntity){
-        VideoAuctionState autctionState = videoEntity.getAuctionState();
-        if(autctionState == null) return videoEntity.getExpirationDate().isAfter(LocalDateTime.now());
-        return autctionState.isSuccess();
-    }
+   
 
 }

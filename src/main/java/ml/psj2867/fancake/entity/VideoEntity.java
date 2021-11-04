@@ -54,14 +54,20 @@ public class VideoEntity{
     private ChannelEntity channel;
 
     @Formula("( select sum(s.size) from stock s where s.VIDEO_IDX = idx )")
-    private Long size;
+    private Long currentAmount;
 
 
     @OneToMany(mappedBy = "video")
     private List<StockEntity> stocks;
 
     public long getSize(){
-        return this.size == null ? 0 : this.size;        
+        return this.currentAmount == null ? 0 : this.currentAmount;        
+    }
+    public boolean checkOnSale(){
+        VideoAuctionState autctionState = this.getAuctionState();
+        if(autctionState != null) return autctionState.isSuccess();
+        else if(this.getStockSize() == this.getCurrentAmount() ) return false;        
+        return this.getExpirationDate().isAfter(LocalDateTime.now());
     }
 
 }
