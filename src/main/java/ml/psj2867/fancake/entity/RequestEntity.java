@@ -7,6 +7,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.PrePersist;
+import javax.validation.constraints.NotNull;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -27,7 +28,7 @@ public class RequestEntity{
     private int idx;
 
     private String channelUrl;
-    private LocalDateTime createdDate;    
+    @NotNull  private LocalDateTime createdDate;    
 
     @PrePersist
     private void saveAt(){

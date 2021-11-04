@@ -7,6 +7,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.PrePersist;
+import javax.validation.constraints.NotNull;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -26,10 +27,10 @@ public class AdvanceBookingEntity{
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int idx;
 
-    private String channelUrl;
-    private String email;
+    @NotNull private String channelUrl;
+    @NotNull private String email;
 
-    private LocalDateTime createdDate;    
+    @NotNull private LocalDateTime createdDate;    
 
     @PrePersist
     private void saveAt(){

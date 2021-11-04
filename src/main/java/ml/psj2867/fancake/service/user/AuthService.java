@@ -10,16 +10,14 @@ import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.net.http.HttpResponse.BodyHandlers;
 import java.security.SecureRandom;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Optional;
 
-import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import org.apache.http.client.utils.URIBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import lombok.extern.slf4j.Slf4j;
@@ -31,13 +29,11 @@ import ml.psj2867.fancake.entity.UserEntity;
 import ml.psj2867.fancake.exception.inner.NotMatchedCredentialException;
 import ml.psj2867.fancake.exception.servererror.ServerErrorException;
 import ml.psj2867.fancake.exception.unauth.LoginException;
-import ml.psj2867.fancake.service.user.model.UserForm;
+import ml.psj2867.fancake.service.user.model.UserLoginForm;
 import ml.psj2867.fancake.service.user.model.auth.LoginTypeEnum;
-import ml.psj2867.fancake.service.user.model.auth.NaverOAuthForm;
 import ml.psj2867.fancake.service.user.model.auth.NaverOAuthResponse;
 import ml.psj2867.fancake.service.user.model.auth.NaverOAuthUserInfo;
 import ml.psj2867.fancake.service.user.model.auth.NaverToken;
-import ml.psj2867.fancake.util.OptionalUtil;
 
 @Slf4j
 @Service
@@ -48,6 +44,8 @@ public class AuthService {
     private UserEntityDao userDao;
     @Autowired
     private UserService userService;
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     @Autowired
     private ConfigureProperties properties;
@@ -64,47 +62,22 @@ public class AuthService {
         }
     }
 
-    public TokenDto loginOriginUser(UserForm userForm)throws LoginException  {
+    public TokenDto loginOriginUser(UserLoginForm userForm)throws LoginException  {
         Optional<UserEntity> nullableUserEntity = userDao.findByIdIsAndLoginTypeIs(userForm.getId(), LoginTypeEnum.ORIGIN);
-        UserEntity userEntitiy = nullableUserEntity
+        UserEntity userEntity = nullableUserEntity
                         .orElseThrow( ()->new NotMatchedCredentialException() );
-        return this.login(userEntitiy);
+        if(! this.isValidPassword(userEntity, userForm.getPassword()) )
+            throw new NotMatchedCredentialException();
+        return this.login(userEntity);
     }
 
+
     public TokenDto loginNaverUserOrAdd(NaverToken accessToken) {
-        // final NaverToken accessToken = getNaverAccessToekn(naverOAuthForm);
         NaverOAuthUserInfo naverUserInfo= getNaverUserInfo(accessToken).getResponse();        
         Optional<UserEntity> userEntity = userDao.findByIdIsAndLoginTypeIs(naverUserInfo.getId(), LoginTypeEnum.NAVER);        
         UserEntity user = userEntity
             .orElseGet(()->userService.addNaverUser(naverUserInfo.convertToEntity()));
         return this.login(user);
-    }
-    private NaverToken getNaverAccessToekn(NaverOAuthForm naverOAuthForm) {
-        try {
-            HttpClient client = HttpClient.newBuilder().version(Version.HTTP_1_1).build();
-            URI uri = new URIBuilder("https://nid.naver.com/oauth2.0/token")
-                    .addParameter("grant_type", "authorization_code")
-                    .addParameter("client_id", properties.getNaver().getClient_id())
-                    .addParameter("client_secret", properties.getNaver().getClient_secret())
-                    .addParameter("code", naverOAuthForm.getCode()).addParameter("state", naverOAuthForm.getState())
-                    .build();
-            HttpRequest request = HttpRequest.newBuilder().uri(uri).build();
-            HttpResponse<String> response = client.send(request, BodyHandlers.ofString());
-            Map<String, String> tokenInfo = convertJson2Map(response.body());
-            if(tokenInfo.get("error") != null ) throw new RuntimeException(tokenInfo.get("error"));
-            NaverToken token = NaverToken.builder()
-                                .access_token(tokenInfo.get("access_token"))
-                                .refresh_token(tokenInfo.get("refresh_token"))
-                                .token_type(tokenInfo.get("token_type"))
-                                .expires_in(OptionalUtil.parseLong(tokenInfo.get("expires_in"))
-                                    .orElseThrow(()->new RuntimeException("naver token parsing error : expires_in"))
-                                    )
-                                .build();
-            return token;
-        } catch (URISyntaxException | IOException | InterruptedException  e) {
-            log.debug("",e);
-            throw new LoginException(e);
-        }
     }
 
     private NaverOAuthResponse getNaverUserInfo(final NaverToken accessToken) {
@@ -126,7 +99,9 @@ public class AuthService {
         }
     }
 
-
+    public boolean isValidPassword(UserEntity userEntity, String rawPassword){
+        return userEntity.isValidPassword(rawPassword,passwordEncoder);
+    }
     public URI getNaverOAuthUri() {
         try {
             URI uri = new URIBuilder("https://nid.naver.com/oauth2.0/authorize").addParameter("response_type", "code")
@@ -151,17 +126,5 @@ public class AuthService {
             log.debug("convert json : {} - {}" , json, result);
         }
     }
-    
-    private Map<String,String> convertJson2Map(String json){  
-        ObjectMapper mapper = new ObjectMapper();
-        Map<String, String> map = null;
-        try { 
-            map = mapper.readValue(json, new TypeReference<Map<String, String>>() {}); 
-            return map;
-        } catch (IOException e) {
-            return new HashMap<>();
-        } finally{                  
-            log.debug("convert json : {} - {}" , json, map);
-        }
-    }
+
 }

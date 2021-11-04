@@ -22,11 +22,11 @@ public class AddressEmbedded{
 
     public static AddressEmbedded of(UserEntity user){
         return AddressEmbedded.builder() 
-                            .addressRecipient(user.getAddress().getAddressRecipient())
-                            .address(user.getAddress().getAddress())
-                            .addressDetail(user.getAddress().getAddressDetail())
-                            .addressZipCode(user.getAddress().getAddressZipCode())
-                            .addressPhoneNumber(user.getAddress().getAddressPhoneNumber())
+                            .addressRecipient(user.getDetail().getAddress().getAddressRecipient())
+                            .address(user.getDetail().getAddress().getAddress())
+                            .addressDetail(user.getDetail().getAddress().getAddressDetail())
+                            .addressZipCode(user.getDetail().getAddress().getAddressZipCode())
+                            .addressPhoneNumber(user.getDetail().getAddress().getAddressPhoneNumber())
                             .build();
     }
 }

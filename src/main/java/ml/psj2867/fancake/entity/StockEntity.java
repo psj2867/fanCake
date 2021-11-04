@@ -9,6 +9,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.PrePersist;
+import javax.validation.constraints.NotNull;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -28,9 +29,9 @@ public class StockEntity{
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int idx;
 
-    private double price;
-    private int size;
-    private LocalDateTime createdDate;    
+    @NotNull private double price;
+    @NotNull private int size;
+    @NotNull private LocalDateTime createdDate;    
     
     @PrePersist
     private void saveAt(){

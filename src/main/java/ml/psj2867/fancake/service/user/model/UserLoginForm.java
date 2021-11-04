@@ -14,7 +14,7 @@ import ml.psj2867.fancake.entity.UserEntity;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class UserForm {
+public class UserLoginForm{
     
     @NotBlank
     private String id;
@@ -27,5 +27,4 @@ public class UserForm {
         user.setPassword(this.password);
         return user;
     }
-
 }

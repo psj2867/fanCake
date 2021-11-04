@@ -11,6 +11,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.PrePersist;
+import javax.validation.constraints.NotNull;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -31,25 +32,25 @@ public class TradingHistoryEntity{
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int idx;
 
-    private String channelTitle;
-    private String channelID;
+    @NotNull private String channelTitle;
+    @NotNull private String channelID;
 
     @Enumerated(EnumType.STRING)
-    private TradingTypeEnum type;
+    @NotNull private TradingTypeEnum type;
 
-    private String videoTitle;
-    private String videoId;
+    @NotNull private String videoTitle;
+    @NotNull private String videoId;
     
-    private int size;
-    private double price;
-    private double userAfterBalance;
-    private LocalDateTime createdDate;   
+    @NotNull private int size;
+    @NotNull private double price;
+    @NotNull private double userAfterBalance;
+    @NotNull private LocalDateTime createdDate;   
     
-    private String userId; 
+    @NotNull private String userId; 
 
-    @JoinColumn(name =  "owner_idx")
     @ManyToOne
-    private UserEntity owner;
+    @JoinColumn(name =  "owner_idx")
+    @NotNull private UserEntity owner;
     
 
     @PrePersist

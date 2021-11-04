@@ -73,7 +73,7 @@
     <root level="warn">
       <appender-ref ref="FILE" />
     </root>
-  <logger name="ml.psj2867" level="trace"/>
+  <logger name="ml.psj2867" level="info"/>
   </springProfile> 
 
   

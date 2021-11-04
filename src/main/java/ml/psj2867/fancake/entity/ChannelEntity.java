@@ -12,6 +12,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.PrePersist;
+import javax.validation.constraints.NotNull;
 
 import org.hibernate.annotations.BatchSize;
 
@@ -34,10 +35,10 @@ public class ChannelEntity{
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int idx;
 
-    private String channnelId;
-    private String channelTitle;
+    @NotNull private String channnelId;
+    @NotNull private String channelTitle;
     private String thumbnailUrl;
-    private LocalDateTime createdDate;    
+    @NotNull private LocalDateTime createdDate;    
 
     @PrePersist
     private void saveAt(){
@@ -47,7 +48,7 @@ public class ChannelEntity{
     
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "owner_idx")
-    private UserEntity owner;
+    @NotNull private UserEntity owner;
     
     @OneToMany(mappedBy = "channel")
     private List<VideoEntity> videos; 

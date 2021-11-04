@@ -19,9 +19,9 @@ public class BankEmbedded{
     
     public static BankEmbedded of(UserEntity user){
         return BankEmbedded.builder() 
-                            .accountName(user.getBank().getAccountName())
-                            .accountNumber(user.getBank().getAccountNumber())
-                            .accountOwner(user.getBank().getAccountOwner())
+                            .accountName(user.getDetail().getBank().getAccountName())
+                            .accountNumber(user.getDetail().getBank().getAccountNumber())
+                            .accountOwner(user.getDetail().getBank().getAccountOwner())
                             .build();
     }
 }
