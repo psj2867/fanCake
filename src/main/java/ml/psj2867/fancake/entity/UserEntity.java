@@ -41,7 +41,6 @@ import ml.psj2867.fancake.service.user.model.auth.LoginTypeEnum;
 @Builder
 @Table(uniqueConstraints = {
      @UniqueConstraint( columnNames = {"id","loginType"})
-    ,@UniqueConstraint( columnNames = {"phoneNumber"})
     ,@UniqueConstraint( columnNames = {"email"})
 })
 public class UserEntity{
@@ -63,7 +62,7 @@ public class UserEntity{
     @NotNull private LocalDateTime updatedDate;
 
     @Enumerated(EnumType.STRING)
-    private LoginTypeEnum loginType;
+    @NotNull private LoginTypeEnum loginType;
 
     
     @OneToMany(mappedBy = "user" )
