@@ -52,7 +52,7 @@ public class VideosRestController {
 
     @Operation(description = "영상 구매하기")
     @ApiResponse(responseCode = "201",description = "구매 성공" )
-    @ApiResponse(responseCode = "400",description = "validation 또는 남아있는 크키보다 사려는 값이 더 클 때, 돈이 모자랄 때" )
+    @ApiResponse(responseCode = "400",description = "validation 또는 남아있는 크키보다 사려는 값이 더 클 때, 돈이 모자랄 때, 이미 종료된 영상일 때" )
     @ApiResponse(responseCode = "404",description = "videoIdx 가 없는 값 일 때" )
     @PostMapping("{videoIdx}/stock")
     public ResponseEntity<MessageDto> postVideIdxStockBuyStock(@PathVariable int videoIdx, BuyStockForm form) {      
