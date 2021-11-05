@@ -31,7 +31,7 @@ public class SignUpUserForm implements WithEncodedPassword{
     @NotBlank
     private String password;
     @Setter(AccessLevel.NONE)
-    private String temp_password;
+    private String _temp_password;
     
     public UserEntity toEntity(){
         return UserEntity.builder()
@@ -39,12 +39,12 @@ public class SignUpUserForm implements WithEncodedPassword{
                         .id(this.id)
                         .email(this.id)
                         .password( this.password )                        
-                        .temp_origin_password(this.temp_password)
+                        .temp_origin_password(this._temp_password)
                         .build();
     }
     @Override
     public void encode(PasswordEncoder passwordEncoder) {
-        this.temp_password = this.password;
+        this._temp_password = this.password;
         this.password = passwordEncoder.encode(password);
     }
    

@@ -26,16 +26,16 @@ public class UpdateUserPasswordForm implements WithEncodedPassword {
     private String newPassword;
     
     @Setter(AccessLevel.NONE)
-    private String originNewPassword;
+    private String _originNewPassword;
 
     public void overWrite(UserEntity user) {
         user.setPassword(this.newPassword);
-        user.setTemp_origin_password(this.originNewPassword);
+        user.setTemp_origin_password(this._originNewPassword);
     }
 
     @Override
     public void encode(PasswordEncoder passwordEncoder) {
-        this.originNewPassword = newPassword;
+        this._originNewPassword = newPassword;
         this.newPassword = passwordEncoder.encode(newPassword);
     }
 
