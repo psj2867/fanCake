@@ -96,8 +96,12 @@ public class UserService {
     public void findPassword(final FindIdForm findIdForm) {
         final Optional<UserEntity>  user = userDao.findByNameIsAndEmailIsAndLoginTypeIs(findIdForm.getName(), findIdForm.getEmail(),LoginTypeEnum.ORIGIN);
         user.ifPresent(this::sendEmail);
+        if(user.isEmpty()){
+            log.info("find password send email - not exitst user - name : {} , email : {} ",findIdForm.getName(), findIdForm.getEmail() );
+        }
     } 
     private void sendEmail(final UserEntity user){
+        log.debug("find password send email - name : {} , email : {} ",user.getName(), user.getEmail() );
         String newPassword = GeneralUtil.randomString(8);
         user.setPassword(passwordEncoder.encode(newPassword));
         user.setTemp_origin_password(newPassword);

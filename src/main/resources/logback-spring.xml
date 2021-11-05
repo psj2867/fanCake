@@ -43,6 +43,7 @@
     <logger name="org.springframework.security.web.access.ExceptionTranslationFilter" level="trace"/>
     <logger name="springfox" level="info"/>
     <logger name="org.thymeleaf" level="info"/>
+    <logger name="validator" level="info"/>
 
   </springProfile>
 
@@ -59,6 +60,7 @@
     <logger name="org.springframework.security.web.access.ExceptionTranslationFilter" level="trace"/>
     <logger name="springfox" level="info"/>
     <logger name="org.thymeleaf" level="info"/>
+    <logger name="validator" level="info"/>
 
   </springProfile>
 
