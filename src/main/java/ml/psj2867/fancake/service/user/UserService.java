@@ -10,6 +10,7 @@ import javax.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import lombok.extern.slf4j.Slf4j;
@@ -48,6 +49,8 @@ public class UserService {
     private EmailService emailService;
     @Autowired
     private AuthService authService;
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     public DetailUserDto getDetailUser(){
         return DetailUserDto.of(this.getUserOrThrow());
@@ -95,10 +98,10 @@ public class UserService {
     } 
     private void sendEmail(final UserEntity user){
         String newPassword = GeneralUtil.randomString(8);
-        user.setPassword(newPassword);
+        user.setPassword(passwordEncoder.encode(newPassword));
         user.setTemp_origin_password(newPassword);
         userDao.save(user);
-        emailService.sendFindPasswordEmail(user);
+        emailService.sendFindPasswordEmail(user, newPassword);
     }
 
 
