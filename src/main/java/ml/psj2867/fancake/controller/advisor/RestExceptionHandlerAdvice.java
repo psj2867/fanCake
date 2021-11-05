@@ -17,6 +17,7 @@ import org.springframework.core.annotation.Order;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindException;
+import org.springframework.web.HttpMediaTypeNotSupportedException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
@@ -80,6 +81,15 @@ public class RestExceptionHandlerAdvice {
             final HttpServletResponse reponse, final UnAuthorizedException e) {
         this.log(request, reponse, e);
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(MessageDto.of("Unauthorized"));
+    }
+    // 415
+    @ExceptionHandler(HttpMediaTypeNotSupportedException.class)
+    public ResponseEntity<ErrorDto> HttpMediaTypeNotSupportedException(final HttpServletRequest request,
+            final HttpServletResponse reponse, final HttpMediaTypeNotSupportedException e) {
+        this.log(request, reponse, e);
+        ErrorDto error = ErrorDto.of("HttpMediaTypeNotSupported", "HEADER" , e.getContentType().toString() ,e.getMessage());
+        return ResponseEntity.status(HttpStatus.UNSUPPORTED_MEDIA_TYPE)
+                                .body(error);
     }
 
     // 500

@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -62,7 +63,7 @@ public class UserRestController {
     
     @Operation(description = "로그인 된 사용자 정보")
     @GetMapping("")
-    public SimpleUserDto getRoot(@Nullable UserInfoForm form){
+    public SimpleUserDto getRoot(@Validated @Nullable UserInfoForm form){
         if(!SecurityUtil.isAuth())
             throw new UnAuthorizedException();
         if(form.isDetail())
@@ -72,7 +73,7 @@ public class UserRestController {
     }
     @Operation(description = "회원가입")
     @PostMapping("")
-    public MessageDto postRoot(@Validated SignUpUserForm signUpForm){
+    public MessageDto postRoot(@Validated @RequestBody SignUpUserForm signUpForm){
         signUpForm.encode(passwordEncoder);
         try {
             userService.addOriginUser(signUpForm);
@@ -84,7 +85,7 @@ public class UserRestController {
     }
     @Operation(description = "정보 수정")
     @PutMapping("")
-    public MessageDto putRoot(@Validated UserUpdateForm userDetailForm){
+    public MessageDto putRoot(@Validated @RequestBody UserUpdateForm userDetailForm){
         userService.updateUser(userDetailForm);
         return MessageDto.success();
     }
@@ -111,15 +112,16 @@ public class UserRestController {
     }
     
     @Operation(description = "비밀번호 변경")
+    @ApiResponse(responseCode = "400", description = "현재 비밀번호와 다를 시")
     @PutMapping("password")
-    public MessageDto putPassword(@Validated UpdateUserPasswordForm passwordForm){
+    public MessageDto putPassword(@Validated @RequestBody UpdateUserPasswordForm passwordForm){
         passwordForm.encode(passwordEncoder);
         userService.updatePassword(passwordForm);
         return MessageDto.success();
     }
     @Operation(description = "로그인")
     @PostMapping("login")
-    public TokenDto postLogin(@Validated UserLoginForm userForm){
+    public TokenDto postLogin(@Validated @RequestBody UserLoginForm userForm){
         try {
             TokenDto token = authService.loginOriginUser(userForm);
             return token;
@@ -131,12 +133,12 @@ public class UserRestController {
 
     @Operation(description = "로그인 된 사용자의 조각들")
     @GetMapping("stocks")
-    public Page<StockDto> getStocks(@Nullable StockListForm form){
+    public Page<StockDto> getStocks(@Validated @Nullable StockListForm form){
         return stockService.getUserStock(form);
     }
     @Operation(description = "로그인 된 사용자의 거래 내용")
     @GetMapping("tradings")
-    public Page<TradingHistoryDto> getTradings(@Nullable TradingHistoryListForm form){
+    public Page<TradingHistoryDto> getTradings(@Validated @Nullable TradingHistoryListForm form){
         return tradingService.getTradingList(form);
     }   
   

@@ -4,10 +4,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -32,7 +34,7 @@ public class VideosRestController {
 
     @Operation(description = "전체 영상 목록")
     @GetMapping("")
-    public Page<VideoDto> getRootGetVideos(VideoListForm videoListForm) {
+    public Page<VideoDto> getRootGetVideos(@Validated VideoListForm videoListForm) {
         return videoService.getVideoList(videoListForm);
     }
 
@@ -45,7 +47,7 @@ public class VideosRestController {
     @Operation(description = "영상 state 변경")
     @ApiResponse(responseCode = "404",description = "videoIdx 가 없는 값 일때" )
     @PatchMapping("{videoIdx}")
-    public MessageDto patchVideoIdxGetVideInfo(@PathVariable int videoIdx, VideoAuctionState state ) {
+    public MessageDto patchVideoIdxGetVideInfo(@PathVariable int videoIdx,@Validated @RequestBody VideoAuctionState state ) {
         videoService.updateVideoState(videoIdx, state);
         return MessageDto.success();
     }
@@ -55,7 +57,7 @@ public class VideosRestController {
     @ApiResponse(responseCode = "400",description = "validation 또는 남아있는 크키보다 사려는 값이 더 클 때, 돈이 모자랄 때, 이미 종료된 영상일 때" )
     @ApiResponse(responseCode = "404",description = "videoIdx 가 없는 값 일 때" )
     @PostMapping("{videoIdx}/stock")
-    public ResponseEntity<MessageDto> postVideIdxStockBuyStock(@PathVariable int videoIdx, BuyStockForm form) {      
+    public ResponseEntity<MessageDto> postVideIdxStockBuyStock(@PathVariable int videoIdx,@Validated @RequestBody BuyStockForm form) {      
         videoService.buyStock(videoIdx, form);    
         return ResponseEntity.status(HttpStatus.CREATED).body(MessageDto.success());
     }

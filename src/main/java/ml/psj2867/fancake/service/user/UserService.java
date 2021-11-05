@@ -20,8 +20,9 @@ import ml.psj2867.fancake.dao.UserDetailEntityDao;
 import ml.psj2867.fancake.dao.UserEntityDao;
 import ml.psj2867.fancake.entity.AuthoritiesEntity;
 import ml.psj2867.fancake.entity.UserEntity;
-import ml.psj2867.fancake.exception.conflict.ConflictException;
+import ml.psj2867.fancake.exception.bad.FieldValidException;
 import ml.psj2867.fancake.exception.unauth.UnAuthorizedException;
+import ml.psj2867.fancake.service.api.model.ErrorDto;
 import ml.psj2867.fancake.service.email.EmailService;
 import ml.psj2867.fancake.service.user.model.CreatorListForm;
 import ml.psj2867.fancake.service.user.model.DetailUserDto;
@@ -85,7 +86,7 @@ public class UserService {
     }
     private void checkCurrentPasswordIsValid(UserEntity user, UpdateUserPasswordForm passwordForm){
       if(! authService.isValidPassword(user, passwordForm.getCurrentPassword()) )
-        throw new ConflictException();
+        throw new FieldValidException(ErrorDto.of("user.updatePassword.notMatched.currentPassword", "currentPassword", passwordForm.getCurrentPassword()));
     }
 
     public Optional<UserEntity> findId(final FindIdForm findIdForm) {
