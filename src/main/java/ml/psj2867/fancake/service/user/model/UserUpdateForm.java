@@ -35,15 +35,15 @@ public class UserUpdateForm {
         if(this.password != null) user.setPassword(password);
         if(this.phoneNumber != null) user.setPhoneNumber(phoneNumber);
 
-        if(this.accountNumber != null) user.getBank().setAccountNumber(this.accountNumber);
-        if(this.accountName != null) user.getBank().setAccountName(this.accountName);
-        if(this.accountOwner != null) user.getBank().setAccountOwner(this.accountOwner);
+        if(this.accountNumber != null) user.getDetail().getBank().setAccountNumber(this.accountNumber);
+        if(this.accountName != null) user.getDetail().getBank().setAccountName(this.accountName);
+        if(this.accountOwner != null) user.getDetail().getBank().setAccountOwner(this.accountOwner);
 
-        if(this.addressPhoneNumber != null) user.getAddress().setAddressPhoneNumber(addressPhoneNumber);
-        if(this.addressRecipient != null) user.getAddress().setAddressRecipient(this.addressRecipient);
-        if(this.address != null) user.getAddress().setAddress(this.address);
-        if(this.addressDetail != null) user.getAddress().setAddressDetail(this.addressDetail);
-        if(this.zipCode != null) user.getAddress().setAddressZipCode(this.zipCode);
+        if(this.addressPhoneNumber != null) user.getDetail().getAddress().setAddressPhoneNumber(addressPhoneNumber);
+        if(this.addressRecipient != null) user.getDetail().getAddress().setAddressRecipient(this.addressRecipient);
+        if(this.address != null) user.getDetail().getAddress().setAddress(this.address);
+        if(this.addressDetail != null) user.getDetail().getAddress().setAddressDetail(this.addressDetail);
+        if(this.zipCode != null) user.getDetail().getAddress().setAddressZipCode(this.zipCode);
     }
 
 }

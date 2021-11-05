@@ -1,7 +1,5 @@
 package ml.psj2867.fancake.exception;
 
-import org.apache.http.HttpStatus;
-
 import lombok.Getter;
 
 @Getter

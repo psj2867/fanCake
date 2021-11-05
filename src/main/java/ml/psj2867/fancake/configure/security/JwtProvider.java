@@ -59,11 +59,9 @@ public class JwtProvider {
 
     public TokenDto generateTokenDto(Authentication authentication) {
         // 권한들 가져오기
-        GrantedAuthority defaultGrant = AuthEnum.USER;
         List<String> authoritieList = authentication.getAuthorities().stream()
                                             .map(GrantedAuthority::getAuthority)
                                             .collect(Collectors.toList());
-        authoritieList.add(defaultGrant.getAuthority());
         String authorities = String.join(",", authoritieList);
                                     
 

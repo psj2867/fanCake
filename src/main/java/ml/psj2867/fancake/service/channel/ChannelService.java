@@ -8,6 +8,7 @@ import org.springframework.transaction.annotation.Transactional;
 import ml.psj2867.fancake.dao.ChannelEntityDao;
 import ml.psj2867.fancake.entity.ChannelEntity;
 import ml.psj2867.fancake.exception.notfound.ResourceNotFoundException;
+import ml.psj2867.fancake.service.channel.model.ChannelDetailDto;
 import ml.psj2867.fancake.service.channel.model.ChannelDto;
 import ml.psj2867.fancake.service.channel.model.ChannelForm;
 import ml.psj2867.fancake.service.channel.model.ChannelListForm;
@@ -26,12 +27,12 @@ public class ChannelService  {
 
     public ChannelDto getChannel(int channelIdx){
         return channelDao.findById(channelIdx)
-                        .map(ChannelDto::of)
+                        .map(ChannelDetailDto::of)
                         .orElseThrow(  ()->  ResourceNotFoundException.of("channel", channelIdx) );
     }
     public Page<ChannelDto> getChannels(ChannelListForm channelListForm){
         return channelDao.findAll(channelListForm.toSpec(),channelListForm.toPageable())
-                .map(ChannelDto::of);
+                .map(ChannelDetailDto::of);
     }
     public Page<VideoDto> getChannelsVideos(int channelIdx, ChannesVideoslListForm channesVideoslListForm){
         ChannelEntity channel = channelDao.findById(channelIdx)

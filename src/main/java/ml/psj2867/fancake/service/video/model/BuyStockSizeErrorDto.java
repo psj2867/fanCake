@@ -8,7 +8,7 @@ import ml.psj2867.fancake.service.api.model.ErrorDto;
 @Getter
 @Setter
 @SuperBuilder
-public class BuyStockErrorDto extends ErrorDto{
+public class BuyStockSizeErrorDto extends ErrorDto{
 
     private long reaminSize;
     

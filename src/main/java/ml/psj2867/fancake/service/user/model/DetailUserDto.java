@@ -35,7 +35,6 @@ public class DetailUserDto extends SimpleUserDto {
         return DetailUserDto.builder()
                     .name(userEntity.getName())
                     .userIdx(userEntity.getIdx())
-                    .isAuthenticate(true) 
                     .userID(userEntity.getId())
                     .balance(userEntity.getBalance())
                     .createdDate(userEntity.getCreatedDate())

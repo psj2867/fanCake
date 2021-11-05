@@ -9,7 +9,6 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
-import ml.psj2867.fancake.configure.security.JwtFilter;
 import ml.psj2867.fancake.configure.security.JwtProvider;
 import springfox.documentation.builders.PathSelectors;
 import springfox.documentation.builders.RequestHandlerSelectors;
@@ -23,7 +22,7 @@ import springfox.documentation.spring.web.plugins.Docket;
 public class ApplicationConfig implements WebMvcConfigurer{
     
     @Bean
-    public Docket api() {		
+    public Docket api(ConfigureProperties properties) {		
 		//Authentication header 처리를 위해 사용
 		List<RequestParameter> global = new ArrayList<>();
         global.add(new RequestParameterBuilder()
@@ -40,6 +39,7 @@ public class ApplicationConfig implements WebMvcConfigurer{
                         .build());
                                   
         return new Docket(DocumentationType.SWAGGER_2)
+                .host(properties.getHost())
                 .globalRequestParameters(global)
                 .consumes(getConsumeContentTypes())
                 .select()

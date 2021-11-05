@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 import lombok.extern.slf4j.Slf4j;
 import ml.psj2867.fancake.configure.security.AuthEnum;
 import ml.psj2867.fancake.dao.AuthoritiesEntityDao;
+import ml.psj2867.fancake.dao.UserDetailEntityDao;
 import ml.psj2867.fancake.dao.UserEntityDao;
 import ml.psj2867.fancake.entity.AuthoritiesEntity;
 import ml.psj2867.fancake.entity.UserEntity;
@@ -30,6 +31,7 @@ import ml.psj2867.fancake.service.user.model.UserListForm;
 import ml.psj2867.fancake.service.user.model.UserUpdateForm;
 import ml.psj2867.fancake.service.user.model.auth.LoginTypeEnum;
 import ml.psj2867.fancake.service.user.model.sign.SignUpUserForm;
+import ml.psj2867.fancake.util.GeneralUtil;
 import ml.psj2867.fancake.util.SecurityUtil;
 
 @Slf4j
@@ -39,14 +41,29 @@ public class UserService {
     @Autowired
     private UserEntityDao userDao;
     @Autowired
+    private UserDetailEntityDao userDetailDao;
+    @Autowired
     private AuthoritiesEntityDao authDao;
     @Autowired
     private EmailService emailService;
+    @Autowired
+    private AuthService authService;
 
     public DetailUserDto getDetailUser(){
         return DetailUserDto.of(this.getUserOrThrow());
     }
-
+    
+    public void withdrawal(double amount) {
+        UserEntity user = this.getUserOrThrow();
+        withdrawal(amount, user);
+    } 
+    public void withdrawal(double amount, UserEntity user) {
+        double balance = user.getBalance() - amount;
+        if(balance < 0 ) log.info("User`s balance is minus, user - {}", DetailUserDto.of(user) );        
+        user.setBalance(balance);
+        userDao.save(user);
+    } 
+    
     public void deleteUser() {
         UserEntity user = this.getUserOrThrow();
         userDao.delete(user);
@@ -64,7 +81,7 @@ public class UserService {
         userDao.save(user);
     }
     private void checkCurrentPasswordIsValid(UserEntity user, UpdateUserPasswordForm passwordForm){
-      if(! user.getPassword().equals(passwordForm.getCurrentPassword()) )
+      if(! authService.isValidPassword(user, passwordForm.getCurrentPassword()) )
         throw new ConflictException();
     }
 
@@ -77,6 +94,10 @@ public class UserService {
         user.ifPresent(this::sendEmail);
     } 
     private void sendEmail(final UserEntity user){
+        String newPassword = GeneralUtil.randomString(8);
+        user.setPassword(newPassword);
+        user.setTemp_origin_password(newPassword);
+        userDao.save(user);
         emailService.sendFindPasswordEmail(user);
     }
 
@@ -90,16 +111,19 @@ public class UserService {
                         .map(SimpleUserDto::of);
     }
    
-
+    private final double defaultSignOnBalance = 20000;
     public UserEntity addOriginUser(final SignUpUserForm user) throws DataIntegrityViolationException{
         final UserEntity userEntity = user.toEntity();
+        userEntity.setBalance(defaultSignOnBalance);
         userEntity.setLoginType(LoginTypeEnum.ORIGIN);
         return addUser(userEntity);
     }
-    public UserEntity addNaverUser(final UserEntity user) throws DataIntegrityViolationException{
-        return addUser(user);
+    public UserEntity addNaverUser(final UserEntity userEntity) throws DataIntegrityViolationException{
+        UserEntity user = addUser(userEntity);
+        return user;
     }
     private UserEntity addUser(final UserEntity user) throws DataIntegrityViolationException{
+        userDetailDao.save(user.getDetail());
         userDao.save(user);
         return user;
     }    

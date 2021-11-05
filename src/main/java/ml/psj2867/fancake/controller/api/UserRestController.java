@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -37,8 +38,8 @@ import ml.psj2867.fancake.service.user.model.FindIdForm;
 import ml.psj2867.fancake.service.user.model.IdDto;
 import ml.psj2867.fancake.service.user.model.SimpleUserDto;
 import ml.psj2867.fancake.service.user.model.UpdateUserPasswordForm;
-import ml.psj2867.fancake.service.user.model.UserForm;
 import ml.psj2867.fancake.service.user.model.UserInfoForm;
+import ml.psj2867.fancake.service.user.model.UserLoginForm;
 import ml.psj2867.fancake.service.user.model.UserUpdateForm;
 import ml.psj2867.fancake.service.user.model.sign.SignUpUserForm;
 import ml.psj2867.fancake.util.MessageDto;
@@ -56,6 +57,8 @@ public class UserRestController {
     private StockService stockService;
     @Autowired
     private TradingService tradingService;
+    @Autowired
+    private PasswordEncoder passwordEncoder;
     
     @Operation(description = "로그인 된 사용자 정보")
     @GetMapping("")
@@ -70,6 +73,7 @@ public class UserRestController {
     @Operation(description = "회원가입")
     @PostMapping("")
     public MessageDto postRoot(@Validated SignUpUserForm signUpForm){
+        signUpForm.encode(passwordEncoder);
         try {
             userService.addOriginUser(signUpForm);
             return MessageDto.success();
@@ -86,7 +90,7 @@ public class UserRestController {
     }
     @Operation(description = "현재 로그인 된 사용자 제거")
     @DeleteMapping("")
-    public MessageDto deleteRoot(@Validated UserUpdateForm userDetailForm){
+    public MessageDto deleteRoot(){
         userService.deleteUser();
         return MessageDto.success();
     }
@@ -109,12 +113,13 @@ public class UserRestController {
     @Operation(description = "비밀번호 변경")
     @PutMapping("password")
     public MessageDto putPassword(@Validated UpdateUserPasswordForm passwordForm){
+        passwordForm.encode(passwordEncoder);
         userService.updatePassword(passwordForm);
         return MessageDto.success();
     }
     @Operation(description = "로그인")
     @PostMapping("login")
-    public TokenDto postLogin(@Validated UserForm userForm){
+    public TokenDto postLogin(@Validated UserLoginForm userForm){
         try {
             TokenDto token = authService.loginOriginUser(userForm);
             return token;
@@ -133,7 +138,6 @@ public class UserRestController {
     @GetMapping("tradings")
     public Page<TradingHistoryDto> getTradings(@Nullable TradingHistoryListForm form){
         return tradingService.getTradingList(form);
-    }
-
-
+    }   
+  
 }

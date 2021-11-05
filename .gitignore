@@ -1,6 +1,7 @@
 application-private.properties
+application-private*.properties
 
-*.log
+logs/
 
 HELP.md
 target/

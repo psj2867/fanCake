@@ -11,6 +11,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.PrePersist;
+import javax.validation.constraints.NotNull;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -32,8 +33,8 @@ public class AuthoritiesEntity{
     private int idx;    
     
     @Enumerated(EnumType.STRING)
-    private AuthEnum auth;
-    private LocalDateTime createdDate;    
+    @NotNull private AuthEnum auth;
+    @NotNull private LocalDateTime createdDate;    
 
     @PrePersist
     private void saveAt(){
@@ -43,6 +44,6 @@ public class AuthoritiesEntity{
 
     @ManyToOne
     @JoinColumn(name = "user_idx"  )
-    private UserEntity user;
+    @NotNull private UserEntity user;
 
 }

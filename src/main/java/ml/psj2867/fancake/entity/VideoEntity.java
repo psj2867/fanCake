@@ -12,6 +12,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.PrePersist;
+import javax.validation.constraints.NotNull;
 
 import org.hibernate.annotations.Formula;
 
@@ -35,12 +36,12 @@ public class VideoEntity{
     private int idx;
 
     @Column(name = "VIDEO_ID")
-    private String videoId;
-    private String videoTitle;
+    @NotNull private String videoId;
+    @NotNull private String videoTitle;
     private long stockSize;
     private double pricePerShare;    
     private VideoAuctionState auctionState;
-    private LocalDateTime createdDate;    
+    @NotNull private LocalDateTime createdDate;    
     private LocalDateTime expirationDate;
 
     @PrePersist
@@ -51,17 +52,23 @@ public class VideoEntity{
     
     @ManyToOne
     @JoinColumn(name = "CHANNEL_IDX")
-    private ChannelEntity channel;
+    @NotNull private ChannelEntity channel;
 
-    @Formula("( select sum(stock.size) from stock where stock.idx = idx )")
-    private Long size;
+    @Formula("( select sum(s.size) from stock s where s.VIDEO_IDX = idx )")
+    private Long currentAmount;
 
 
     @OneToMany(mappedBy = "video")
-    private List<StockEntity> sotkcs;
+    private List<StockEntity> stocks;
 
     public long getSize(){
-        return this.size == null ? 0 : this.size;        
+        return this.currentAmount == null ? 0 : this.currentAmount;        
+    }
+    public boolean checkOnSale(){
+        VideoAuctionState autctionState = this.getAuctionState();
+        if(autctionState != null) return autctionState.isSuccess();
+        else if(this.getStockSize() == this.getCurrentAmount() ) return false;        
+        return this.getExpirationDate().isAfter(LocalDateTime.now());
     }
 
 }
