@@ -54,16 +54,13 @@ public class VideoEntity{
     @JoinColumn(name = "CHANNEL_IDX")
     @NotNull private ChannelEntity channel;
 
-    @Formula("( select sum(s.size) from stock s where s.VIDEO_IDX = idx )")
-    private Long currentAmount;
+    @Formula("( select COALESCE(sum(s.size), 0) from stock s where s.VIDEO_IDX = idx )")
+    private long currentAmount;
 
 
     @OneToMany(mappedBy = "video")
     private List<StockEntity> stocks;
 
-    public long getSize(){
-        return this.currentAmount == null ? 0 : this.currentAmount;        
-    }
     public boolean checkOnSale(){
         VideoAuctionState autctionState = this.getAuctionState();
         if(autctionState != null) return autctionState.isSuccess();

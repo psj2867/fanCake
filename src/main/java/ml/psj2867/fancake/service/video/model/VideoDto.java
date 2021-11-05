@@ -31,7 +31,7 @@ public class VideoDto{
     public static VideoDto of(VideoEntity videoEntity){
         return VideoDto.builder()
                     .title(videoEntity.getVideoTitle())
-                    .currentAmount(videoEntity.getSize())
+                    .currentAmount(videoEntity.getCurrentAmount())
                     .expirationDate(videoEntity.getExpirationDate())
                     .marketCap(videoEntity.getPricePerShare() * videoEntity.getStockSize())
                     .pricePerShare(videoEntity.getPricePerShare())

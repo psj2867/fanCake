@@ -46,7 +46,7 @@ public class VideoService  {
         tradingService.saveBuyTrading(video, user, form);
     }
     private void checkBuyValid(UserEntity user, VideoEntity video, BuyStockForm form){
-        long remainSize = video.getStockSize() - video.getSize();
+        long remainSize = video.getStockSize() - video.getCurrentAmount();
         if(  remainSize < form.getSize() ){
             BuyStockSizeErrorDto error = BuyStockSizeErrorDto.builder()
                                                         .code("video.buyStock.outOfSize")
