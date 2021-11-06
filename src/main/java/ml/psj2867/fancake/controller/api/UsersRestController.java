@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import io.swagger.annotations.Api;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import ml.psj2867.fancake.configure.security.TokenDto;
@@ -30,6 +31,8 @@ import ml.psj2867.fancake.service.user.model.UserListForm;
 import ml.psj2867.fancake.service.user.model.UserLoginForm;
 import ml.psj2867.fancake.service.user.model.sign.SignUpUserForm;
 import ml.psj2867.fancake.util.MessageDto;
+
+@Api(basePath = "api/users", description="사용자 정보")
 @RestController
 @RequestMapping("api/users")
 public class UsersRestController {
