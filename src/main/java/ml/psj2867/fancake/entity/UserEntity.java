@@ -31,6 +31,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import ml.psj2867.fancake.configure.security.AuthEnum;
+import ml.psj2867.fancake.dao.UserDetailEntityDao;
+import ml.psj2867.fancake.dao.UserEntityDao;
 import ml.psj2867.fancake.service.user.model.auth.LoginTypeEnum;
 
 @Entity(name = UserEntity.ENTITY_NAME )
@@ -79,10 +81,10 @@ public class UserEntity{
 
     @PrePersist
     private void saveAt(){
-        if(this.detail == null)
-            this.detail = new UserDetailEntity();
         if(this.createdDate == null)
             this.createdDate = LocalDateTime.now();
+        if(this.updatedDate == null)
+            this.updatedDate = LocalDateTime.now();
     }
 
     @PreUpdate
@@ -99,5 +101,12 @@ public class UserEntity{
     }
     public boolean isValidPassword(String password, PasswordEncoder passwordEncoder){
         return passwordEncoder.matches(password, this.getPassword());
+    }
+
+    public void save(UserEntityDao userDao, UserDetailEntityDao userDetailDao){
+        if(this.getDetail() == null)
+            this.setDetail(new UserDetailEntity());
+        userDetailDao.save(this.getDetail());
+        userDao.save(this);
     }
 }

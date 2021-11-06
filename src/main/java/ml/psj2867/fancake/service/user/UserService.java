@@ -131,8 +131,7 @@ public class UserService {
         return user;
     }
     private UserEntity addUser(final UserEntity user) throws DataIntegrityViolationException{
-        userDetailDao.save(user.getDetail());
-        userDao.save(user);
+        user.save(userDao, userDetailDao);
         return user;
     }    
 
