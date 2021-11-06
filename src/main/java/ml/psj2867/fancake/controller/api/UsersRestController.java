@@ -44,13 +44,14 @@ public class UsersRestController {
     private PasswordEncoder passwordEncoder;
 
     @GetMapping("")
-    public Page<DetailUserDto> getList(UserListForm userListForm){        
+    @Operation(description = "사용자들 목록")
+    public Page<DetailUserDto> getRootGetList(UserListForm userListForm){        
         return userService.getUsers(userListForm);
     }
 
     @Operation(description = "회원가입")
     @PostMapping("")
-    public MessageDto postRoot(@Validated @RequestBody SignUpUserForm signUpForm){
+    public MessageDto postRootSignUp(@Validated @RequestBody SignUpUserForm signUpForm){
         signUpForm.encode(passwordEncoder);
         try {
             userService.addOriginUser(signUpForm);

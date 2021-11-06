@@ -46,7 +46,7 @@ public class UsersMeRestController {
     
     @Operation(description = "로그인 된 사용자 정보")
     @GetMapping("")
-    public SimpleUserDto getRoot(@Validated @Nullable UserInfoForm form){
+    public SimpleUserDto getRootGetUserIfno(@Validated @Nullable UserInfoForm form){
         if(!SecurityUtil.isAuth())
             throw new UnAuthorizedException();
         if(form.isDetail())
@@ -56,13 +56,13 @@ public class UsersMeRestController {
     }
     @Operation(description = "정보 수정")
     @PutMapping("")
-    public MessageDto putRoot(@Validated @RequestBody UserUpdateForm userDetailForm){
+    public MessageDto putRootUpdateUser(@Validated @RequestBody UserUpdateForm userDetailForm){
         userService.updateUser(userDetailForm);
         return MessageDto.success();
     }
     @Operation(description = "현재 로그인 된 사용자 제거")
     @DeleteMapping("")
-    public MessageDto deleteRoot(){
+    public MessageDto deleteRootDeleteUser(){
         userService.deleteUser();
         return MessageDto.success();
     }
@@ -71,7 +71,7 @@ public class UsersMeRestController {
     @Operation(description = "비밀번호 변경")
     @ApiResponse(responseCode = "400", description = "현재 비밀번호와 다를 시")
     @PutMapping("password")
-    public MessageDto putPassword(@Validated @RequestBody UpdateUserPasswordForm passwordForm){
+    public MessageDto putPasswordUpdatePassword(@Validated @RequestBody UpdateUserPasswordForm passwordForm){
         passwordForm.encode(passwordEncoder);
         userService.updatePassword(passwordForm);
         return MessageDto.success();
