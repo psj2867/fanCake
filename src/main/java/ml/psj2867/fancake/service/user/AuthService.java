@@ -10,9 +10,8 @@ import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.net.http.HttpResponse.BodyHandlers;
 import java.security.SecureRandom;
+import java.util.Map;
 import java.util.Optional;
-
-import com.fasterxml.jackson.databind.ObjectMapper;
 
 import org.apache.http.client.utils.URIBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,9 +30,12 @@ import ml.psj2867.fancake.exception.servererror.ServerErrorException;
 import ml.psj2867.fancake.exception.unauth.LoginException;
 import ml.psj2867.fancake.service.user.model.UserLoginForm;
 import ml.psj2867.fancake.service.user.model.auth.LoginTypeEnum;
+import ml.psj2867.fancake.service.user.model.auth.NaverOAuthForm;
 import ml.psj2867.fancake.service.user.model.auth.NaverOAuthResponse;
 import ml.psj2867.fancake.service.user.model.auth.NaverOAuthUserInfo;
 import ml.psj2867.fancake.service.user.model.auth.NaverToken;
+import ml.psj2867.fancake.util.GeneralUtil;
+import ml.psj2867.fancake.util.OptionalUtil;
 
 @Slf4j
 @Service
@@ -71,7 +73,37 @@ public class AuthService {
         return this.login(userEntity);
     }
 
-
+    public TokenDto loginNaverCallBack(NaverOAuthForm naverOAuthForm) {
+        NaverToken naverToken = getNaverAccessToekn(naverOAuthForm);
+        return loginNaverUserOrAdd(naverToken);
+    }
+    private NaverToken getNaverAccessToekn(NaverOAuthForm naverOAuthForm) {
+        try {
+            HttpClient client = HttpClient.newBuilder().version(Version.HTTP_1_1).build();
+            URI uri = new URIBuilder("https://nid.naver.com/oauth2.0/token")
+                    .addParameter("grant_type", "authorization_code")
+                    .addParameter("client_id", properties.getNaver().getClient_id())
+                    .addParameter("client_secret", properties.getNaver().getClient_secret())
+                    .addParameter("code", naverOAuthForm.getCode()).addParameter("state", naverOAuthForm.getState())
+                    .build();
+            HttpRequest request = HttpRequest.newBuilder().uri(uri).build();
+            HttpResponse<String> response = client.send(request, BodyHandlers.ofString());
+            Map<String, String> tokenInfo = GeneralUtil.convertJson2Map(response.body());
+            if(tokenInfo.get("error") != null ) throw new RuntimeException(tokenInfo.get("error"));
+            NaverToken token = NaverToken.builder()
+                                .access_token(tokenInfo.get("access_token"))
+                                .refresh_token(tokenInfo.get("refresh_token"))
+                                .token_type(tokenInfo.get("token_type"))
+                                .expires_in(OptionalUtil.parseLong(tokenInfo.get("expires_in"))
+                                    .orElseThrow(()->new RuntimeException("naver token parsing error : expires_in"))
+                                    )
+                                .build();
+            return token;
+        } catch (URISyntaxException | IOException | InterruptedException  e) {
+            log.debug("",e);
+            throw new LoginException(e);
+        }
+    }
     public TokenDto loginNaverUserOrAdd(NaverToken accessToken) {
         NaverOAuthUserInfo naverUserInfo= getNaverUserInfo(accessToken).getResponse();        
         Optional<UserEntity> userEntity = userDao.findByIdIsAndLoginTypeIs(naverUserInfo.getId(), LoginTypeEnum.NAVER);        
@@ -92,7 +124,8 @@ public class AuthService {
                                     .build();
             HttpResponse<String> response = client.send(request, BodyHandlers.ofString());
             String userInfoJson = response.body();
-            return convertJson(userInfoJson, NaverOAuthResponse.class);
+            return GeneralUtil.convertJson(userInfoJson, NaverOAuthResponse.class)
+                            .orElseThrow(() -> new RuntimeException("json parsing error"));
         } catch (URISyntaxException | IOException | InterruptedException e) {
             log.info("make uri error",e);
             throw new RuntimeException(e);
@@ -111,19 +144,6 @@ public class AuthService {
             return uri;
         } catch (URISyntaxException e) {
             throw new RuntimeException(e);
-        }
-    }
-
-    private <T> T convertJson(String json,Class<T> clazz ){  
-        ObjectMapper mapper = new ObjectMapper();
-        T result = null;
-        try { 
-            result = mapper.readValue(json,clazz); 
-            return result;
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        } finally{                  
-            log.debug("convert json : {} - {}" , json, result);
         }
     }
 
