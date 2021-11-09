@@ -22,14 +22,14 @@ import ml.psj2867.fancake.entity.UserEntity;
 import ml.psj2867.fancake.exception.bad.FieldValidException;
 import ml.psj2867.fancake.exception.inner.NotMatchedCredentialException;
 import ml.psj2867.fancake.service.api.model.ErrorDto;
-import ml.psj2867.fancake.service.user.AuthService;
+import ml.psj2867.fancake.service.oauth.AuthService;
 import ml.psj2867.fancake.service.user.UserService;
 import ml.psj2867.fancake.service.user.model.DetailUserDto;
 import ml.psj2867.fancake.service.user.model.FindIdForm;
 import ml.psj2867.fancake.service.user.model.IdDto;
+import ml.psj2867.fancake.service.user.model.SignUpUserForm;
 import ml.psj2867.fancake.service.user.model.UserListForm;
 import ml.psj2867.fancake.service.user.model.UserLoginForm;
-import ml.psj2867.fancake.service.user.model.sign.SignUpUserForm;
 import ml.psj2867.fancake.util.MessageDto;
 
 @Api(basePath = "api/users", description="사용자 정보")

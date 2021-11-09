@@ -1,4 +1,4 @@
-package ml.psj2867.fancake.service.user;
+package ml.psj2867.fancake.service.oauth;
 
 import java.io.IOException;
 import java.math.BigInteger;
@@ -28,20 +28,19 @@ import ml.psj2867.fancake.entity.UserEntity;
 import ml.psj2867.fancake.exception.inner.NotMatchedCredentialException;
 import ml.psj2867.fancake.exception.servererror.ServerErrorException;
 import ml.psj2867.fancake.exception.unauth.LoginException;
+import ml.psj2867.fancake.service.oauth.model.LoginTypeEnum;
+import ml.psj2867.fancake.service.oauth.model.NaverOAuthForm;
+import ml.psj2867.fancake.service.oauth.model.NaverOAuthResponse;
+import ml.psj2867.fancake.service.oauth.model.NaverOAuthUserInfo;
+import ml.psj2867.fancake.service.oauth.model.NaverToken;
+import ml.psj2867.fancake.service.user.UserService;
 import ml.psj2867.fancake.service.user.model.UserLoginForm;
-import ml.psj2867.fancake.service.user.model.auth.LoginTypeEnum;
-import ml.psj2867.fancake.service.user.model.auth.NaverOAuthForm;
-import ml.psj2867.fancake.service.user.model.auth.NaverOAuthResponse;
-import ml.psj2867.fancake.service.user.model.auth.NaverOAuthUserInfo;
-import ml.psj2867.fancake.service.user.model.auth.NaverToken;
 import ml.psj2867.fancake.util.GeneralUtil;
 import ml.psj2867.fancake.util.OptionalUtil;
 
 @Slf4j
 @Service
 public class AuthService {
-    private final String NAVER_CALL_BACK_URI = "http://34.70.43.54/login/naver/callback";
-
     @Autowired
     private UserEntityDao userDao;
     @Autowired
@@ -135,11 +134,12 @@ public class AuthService {
     public boolean isValidPassword(UserEntity userEntity, String rawPassword){
         return userEntity.isValidPassword(rawPassword,passwordEncoder);
     }
-    public URI getNaverOAuthUri() {
+
+    public URI getNaverOAuthUri(String callBackUrl) {
         try {
             URI uri = new URIBuilder("https://nid.naver.com/oauth2.0/authorize").addParameter("response_type", "code")
                     .addParameter("client_id", properties.getNaver().getClient_id())
-                    .addParameter("redirect_uri", NAVER_CALL_BACK_URI)
+                    .addParameter("redirect_uri", callBackUrl)
                     .addParameter("state", new BigInteger(130, new SecureRandom()).toString()).build();
             return uri;
         } catch (URISyntaxException e) {

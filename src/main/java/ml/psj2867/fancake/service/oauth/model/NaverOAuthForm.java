@@ -1,4 +1,4 @@
-package ml.psj2867.fancake.service.user.model.auth;
+package ml.psj2867.fancake.service.oauth.model;
 
 import javax.validation.constraints.NotNull;
 

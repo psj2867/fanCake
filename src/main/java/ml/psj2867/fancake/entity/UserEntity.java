@@ -33,7 +33,7 @@ import lombok.Setter;
 import ml.psj2867.fancake.configure.security.AuthEnum;
 import ml.psj2867.fancake.dao.UserDetailEntityDao;
 import ml.psj2867.fancake.dao.UserEntityDao;
-import ml.psj2867.fancake.service.user.model.auth.LoginTypeEnum;
+import ml.psj2867.fancake.service.oauth.model.LoginTypeEnum;
 
 @Entity(name = UserEntity.ENTITY_NAME )
 @Getter

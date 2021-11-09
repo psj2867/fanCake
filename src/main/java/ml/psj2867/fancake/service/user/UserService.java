@@ -24,15 +24,16 @@ import ml.psj2867.fancake.exception.bad.FieldValidException;
 import ml.psj2867.fancake.exception.unauth.UnAuthorizedException;
 import ml.psj2867.fancake.service.api.model.ErrorDto;
 import ml.psj2867.fancake.service.email.EmailService;
+import ml.psj2867.fancake.service.oauth.AuthService;
+import ml.psj2867.fancake.service.oauth.model.LoginTypeEnum;
 import ml.psj2867.fancake.service.user.model.CreatorListForm;
 import ml.psj2867.fancake.service.user.model.DetailUserDto;
 import ml.psj2867.fancake.service.user.model.FindIdForm;
+import ml.psj2867.fancake.service.user.model.SignUpUserForm;
 import ml.psj2867.fancake.service.user.model.SimpleUserDto;
 import ml.psj2867.fancake.service.user.model.UpdateUserPasswordForm;
 import ml.psj2867.fancake.service.user.model.UserListForm;
 import ml.psj2867.fancake.service.user.model.UserUpdateForm;
-import ml.psj2867.fancake.service.user.model.auth.LoginTypeEnum;
-import ml.psj2867.fancake.service.user.model.sign.SignUpUserForm;
 import ml.psj2867.fancake.util.GeneralUtil;
 import ml.psj2867.fancake.util.SecurityUtil;
 
