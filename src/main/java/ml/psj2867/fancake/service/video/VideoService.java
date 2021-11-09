@@ -47,29 +47,31 @@ public class VideoService  {
         tradingService.saveBuyTrading(video, user, form);
     }
     private void checkBuyValid(UserEntity user, VideoEntity video, BuyStockForm form){
-        ErrorDto error = null;
-        if( ! video.checkOnSale() )
-            error  = ErrorDto.builder()
+        if( ! video.checkOnSale() ){
+            ErrorDto error  = ErrorDto.builder()
                             .code("video.buyStock.isNotOnSale")
                             .rejectedValue(video.getVideoTitle())
                             .build();
-        
+            throw FieldValidException.of(error);
+        }
         long remainSize = video.getStockSize() - video.getCurrentAmount();
-        if(  remainSize < form.getSize() )
-            error = BuyStockSizeErrorDto.builder()
+        if(  remainSize < form.getSize() ){
+            ErrorDto error = BuyStockSizeErrorDto.builder()
                                         .code("video.buyStock.outOfSize")
                                         .rejectedValue(form.getSize())
                                         .reaminSize(remainSize)
                                         .build();
+            throw FieldValidException.of(error);
+        }
 
-        if( user.getBalance() < form.calcAmmountOfStock(video)  )
-            error = BuyStockErrorBalanceDto.builder()
+        if( user.getBalance() < form.calcAmmountOfStock(video)  ){
+            ErrorDto error = BuyStockErrorBalanceDto.builder()
                                             .code("video.buyStock.outOfBalance")
                                             .rejectedValue(form.getSize())
                                             .balance(user.getBalance())
                                             .build();
-        if(error != null)
             throw FieldValidException.of(error);
+        }
     }
 
     public void updateVideoState(int videoIdx, VideoAuctionState state){
