@@ -28,6 +28,7 @@ import ml.psj2867.fancake.entity.UserEntity;
 import ml.psj2867.fancake.exception.inner.NotMatchedCredentialException;
 import ml.psj2867.fancake.exception.servererror.ServerErrorException;
 import ml.psj2867.fancake.exception.unauth.LoginException;
+import ml.psj2867.fancake.exception.unauth.UnAuthorizedException;
 import ml.psj2867.fancake.service.oauth.model.LoginTypeEnum;
 import ml.psj2867.fancake.service.oauth.model.NaverOAuthForm;
 import ml.psj2867.fancake.service.oauth.model.NaverOAuthResponse;
@@ -123,8 +124,11 @@ public class AuthService {
                                     .build();
             HttpResponse<String> response = client.send(request, BodyHandlers.ofString());
             String userInfoJson = response.body();
-            return GeneralUtil.convertJson(userInfoJson, NaverOAuthResponse.class)
+            NaverOAuthResponse parsedResponse = GeneralUtil.convertJson(userInfoJson, NaverOAuthResponse.class)
                             .orElseThrow(() -> new RuntimeException("json parsing error"));
+            if( ! "00".equals(parsedResponse.getResultcode()) )
+                throw new UnAuthorizedException();
+            return parsedResponse;
         } catch (URISyntaxException | IOException | InterruptedException e) {
             log.info("make uri error",e);
             throw new RuntimeException(e);

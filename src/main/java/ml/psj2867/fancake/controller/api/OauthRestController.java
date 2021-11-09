@@ -39,8 +39,8 @@ public class OauthRestController {
     
     @ResponseBody
     @PostMapping("naver") 
-    public String postNaverAccessToken(@RequestBody @Validated NaverToken naverToken){
-        return authService.loginNaverUserOrAdd(naverToken).getAccessToken();
+    public TokenDto postNaverAccessToken(@RequestBody @Validated NaverToken naverToken){
+        return authService.loginNaverUserOrAdd(naverToken);
     }
     
     @ResponseBody

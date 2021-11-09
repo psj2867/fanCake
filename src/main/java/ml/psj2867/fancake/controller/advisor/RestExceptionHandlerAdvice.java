@@ -75,7 +75,7 @@ public class RestExceptionHandlerAdvice {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(MessageDto.of(message));
     }
 
-    // 403
+    // 401
     @ExceptionHandler(UnAuthorizedException.class)
     public ResponseEntity<MessageDto> UnAuthorizedException(final HttpServletRequest request,
             final HttpServletResponse reponse, final UnAuthorizedException e) {
