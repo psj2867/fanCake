@@ -76,7 +76,7 @@ public class AuthService {
         NaverToken naverToken = getNaverAccessToekn(naverOAuthForm);
         return loginNaverUserOrAdd(naverToken);
     }
-    private NaverToken getNaverAccessToekn(NaverOAuthForm naverOAuthForm) {
+    public NaverToken getNaverAccessToekn(NaverOAuthForm naverOAuthForm) {
         try {
             HttpClient client = HttpClient.newBuilder().version(Version.HTTP_1_1).build();
             URI uri = new URIBuilder("https://nid.naver.com/oauth2.0/token")
