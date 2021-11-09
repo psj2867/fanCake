@@ -1,5 +1,6 @@
 package ml.psj2867.fancake.service.video.model;
 
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 
 import lombok.AllArgsConstructor;
@@ -18,6 +19,7 @@ import ml.psj2867.fancake.entity.VideoEntity;
 @Getter
 public class BuyStockForm {
     @NotNull
+    @Min(0)
     private int size;
 
 
