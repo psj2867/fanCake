@@ -52,7 +52,8 @@ public class UserEntity{
     private Integer idx;
     
     @NotNull private String id;
-    @NotNull private String password;
+    @Builder.Default
+    @NotNull private String password="";
              private String temp_origin_password;
     @NotNull private String name;
              private String phoneNumber;
