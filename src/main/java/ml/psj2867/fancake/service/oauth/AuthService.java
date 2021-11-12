@@ -22,6 +22,7 @@ import org.springframework.stereotype.Service;
 import lombok.extern.slf4j.Slf4j;
 import ml.psj2867.fancake.configure.ConfigureProperties;
 import ml.psj2867.fancake.configure.security.JwtProvider;
+import ml.psj2867.fancake.configure.security.SignOnTokenDto;
 import ml.psj2867.fancake.configure.security.TokenDto;
 import ml.psj2867.fancake.dao.UserEntityDao;
 import ml.psj2867.fancake.entity.UserEntity;
@@ -107,9 +108,13 @@ public class AuthService {
     public TokenDto loginNaverUserOrAdd(NaverToken accessToken) {
         NaverOAuthUserInfo naverUserInfo= getNaverUserInfo(accessToken).getResponse();        
         Optional<UserEntity> userEntity = userDao.findByIdIsAndLoginTypeIs(naverUserInfo.getId(), LoginTypeEnum.NAVER);        
-        UserEntity user = userEntity
-            .orElseGet(()->userService.addNaverUser(naverUserInfo.convertToEntity()));
-        return this.login(user);
+        if(userEntity.isPresent()){
+            return this.login(userEntity.get());
+        }else{
+            TokenDto token = this.login(userService.addNaverUser(naverUserInfo.convertToEntity()));   
+            return SignOnTokenDto.of(token);
+        }
+        
     }
 
     private NaverOAuthResponse getNaverUserInfo(final NaverToken accessToken) {
