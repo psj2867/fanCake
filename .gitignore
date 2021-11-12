@@ -2,6 +2,7 @@ application-private.properties
 application-private*.properties
 
 logs/
+*.sh
 
 HELP.md
 target/

@@ -120,10 +120,8 @@ public class UserService {
                         .map(SimpleUserDto::of);
     }
    
-    private final double defaultSignOnBalance = 20000;
     public UserEntity addOriginUser(final SignUpUserForm user) throws DataIntegrityViolationException{
         final UserEntity userEntity = user.toEntity();
-        userEntity.setBalance(defaultSignOnBalance);
         userEntity.setLoginType(LoginTypeEnum.ORIGIN);
         return addUser(userEntity);
     }
@@ -131,7 +129,10 @@ public class UserService {
         UserEntity user = addUser(userEntity);
         return user;
     }
+
+    private final double defaultSignOnBalance = 20000;
     private UserEntity addUser(final UserEntity user) throws DataIntegrityViolationException{
+        user.setBalance(defaultSignOnBalance);
         user.save(userDao, userDetailDao);
         return user;
     }    
