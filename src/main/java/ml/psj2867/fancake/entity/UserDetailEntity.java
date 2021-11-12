@@ -11,6 +11,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import ml.psj2867.fancake.dao.UserDetailEntityDao;
 import ml.psj2867.fancake.entity.embedded.AddressEmbedded;
 import ml.psj2867.fancake.entity.embedded.BankEmbedded;
 import ml.psj2867.fancake.entity.embedded.TermsEmbedded;
@@ -33,5 +34,10 @@ public class UserDetailEntity{
     private AddressEmbedded address;
     @Embedded
     private TermsEmbedded terms;
+
+    public static UserDetailEntity deletedUserDetail(UserDetailEntityDao userDetailDao){
+        final Integer deletedUserId = 0;
+        return userDetailDao.getById(deletedUserId);
+    }
 
 }

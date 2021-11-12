@@ -71,8 +71,9 @@ public class UserService {
     
     public void deleteUser() {
         UserEntity user = this.getUserOrThrow();
-        userDao.delete(user);
+        user.delete(userDao, userDetailDao);
     } 
+    
     public void updateUser(final UserUpdateForm userUpdateForm) {
         UserEntity user = this.getUserOrThrow();
         userUpdateForm.overWrite(user);

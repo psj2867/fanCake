@@ -110,4 +110,16 @@ public class UserEntity{
         userDetailDao.save(this.getDetail());
         userDao.save(this);
     }
+
+    public void delete(UserEntityDao userDao, UserDetailEntityDao userDetailDao){
+        this.setDetail(UserDetailEntity.deletedUserDetail(userDetailDao));
+        if(this.getDetail() != null)
+            userDetailDao.delete(this.getDetail());
+        this.setEmail("");
+        this.setId("");
+        this.setName("");
+        this.setPassword("");
+        this.setPhoneNumber(phoneNumber);
+        userDao.save(this);
+    }
 }
