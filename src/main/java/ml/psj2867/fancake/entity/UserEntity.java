@@ -120,6 +120,7 @@ public class UserEntity{
         this.setName("");
         this.setPassword("");
         this.setPhoneNumber(phoneNumber);
+        this.setLoginType(LoginTypeEnum.DELETED);
         userDao.save(this);
     }
 }
