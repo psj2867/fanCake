@@ -16,14 +16,18 @@ import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.ResponseEntity.BodyBuilder;
 import org.springframework.validation.BindException;
 import org.springframework.web.HttpMediaTypeNotSupportedException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import lombok.extern.slf4j.Slf4j;
+import ml.psj2867.fancake.exception.ApiException;
 import ml.psj2867.fancake.exception.bad.BadRequesetException;
 import ml.psj2867.fancake.exception.bad.FieldValidException;
+import ml.psj2867.fancake.exception.forbidden.ForbiddenException;
+import ml.psj2867.fancake.exception.forbidden.NotOwnerException;
 import ml.psj2867.fancake.exception.notfound.NotFoundException;
 import ml.psj2867.fancake.exception.notfound.ResourceNotFoundException;
 import ml.psj2867.fancake.exception.unauth.UnAuthorizedException;
@@ -65,7 +69,21 @@ public class RestExceptionHandlerAdvice {
     public ResponseEntity<MessageDto> UnAuthorizedException(final HttpServletRequest request,
             final HttpServletResponse reponse, final UnAuthorizedException e) {
         this.log(request, reponse, e);
-        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(MessageDto.of("Unauthorized"));
+        return this.errorMessage(HttpStatus.UNAUTHORIZED, "Unauthorized", e);
+    }
+
+    // 403
+    @ExceptionHandler(ForbiddenException.class)
+    public ResponseEntity<MessageDto> ForbiddenException(final HttpServletRequest request,
+            final HttpServletResponse reponse, final ForbiddenException e) {
+        this.log(request, reponse, e);
+        return this.errorMessage(HttpStatus.FORBIDDEN, "No authority", e);
+    }
+    @ExceptionHandler(NotOwnerException.class)
+    public ResponseEntity<MessageDto> NotOwnerException(final HttpServletRequest request,
+            final HttpServletResponse reponse, final NotOwnerException e) {
+        this.log(request, reponse, e);
+        return this.errorMessage(HttpStatus.FORBIDDEN, NotOwnerException.DEFAULT_MSG, e);
     }
 
     // 404
@@ -80,7 +98,7 @@ public class RestExceptionHandlerAdvice {
             final HttpServletResponse reponse, final ResourceNotFoundException e) {
         this.log(request, reponse, e);
         final String message = String.format("'%s' - '%s' is not found", e.getResource(), e.getRejectedValue());
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(MessageDto.of(message));
+        return this.errorMessage(HttpStatus.NOT_FOUND, message, e);
     }
 
     // 415
@@ -103,6 +121,16 @@ public class RestExceptionHandlerAdvice {
     
     private void log(final HttpServletRequest request, final HttpServletResponse reponse, final Exception e) {
         log.warn("url - {}, paramter - {}", request.getRequestURL(), convertParameterMap(request), e);
+    }
+
+    private ResponseEntity<MessageDto> errorMessage(HttpStatus httpStatus, String defaultMsg, ApiException e){
+        BodyBuilder builder = ResponseEntity.status(HttpStatus.UNSUPPORTED_MEDIA_TYPE);        
+        return errorMessage(builder, defaultMsg, e);
+    }
+    private ResponseEntity<MessageDto> errorMessage(BodyBuilder builder, String defaultMsg, ApiException e){
+        if(e.getMessageDto() == null)
+            return builder.body(MessageDto.of(defaultMsg));
+        return builder.body(e.getMessageDto());
     }
 
     private Map<String, String> convertParameterMap(final HttpServletRequest request) {

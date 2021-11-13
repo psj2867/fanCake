@@ -1,7 +1,8 @@
 package ml.psj2867.fancake.exception.unauth;
 
+import ml.psj2867.fancake.exception.ApiException;
 
-public class LoginException extends RuntimeException{
+public class LoginException extends ApiException{
 
     private static final long serialVersionUID = 1L;
 

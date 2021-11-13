@@ -1,10 +1,13 @@
 package ml.psj2867.fancake.controller.api;
 
+import javax.validation.constraints.NotNull;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -78,6 +81,14 @@ public class VideosRestController {
     @ApiResponse(responseCode = "401",description = "사용자 인증 실패" )
     public MessageDto postComments(@PathVariable int videoIdx, @Validated @RequestBody CommentForm commentForm){
         commentService.doComment(videoIdx, commentForm);
+        return MessageDto.success();
+    }
+    @DeleteMapping("{videoIdx}/comments")
+    @ApiResponse(responseCode = "401",description = "사용자 인증 실패" )
+    @ApiResponse(responseCode = "403",description = "작성자 아님" )
+    @ApiResponse(responseCode = "404",description = "없는 댓글" )
+    public MessageDto deleteComments(@PathVariable int videoIdx, @Validated @NotNull @RequestBody int commentIdx){
+        commentService.deleteComment(videoIdx, commentIdx);
         return MessageDto.success();
     }
 
