@@ -20,13 +20,15 @@ public class NaverOAuthUserInfo{
     private String email;
     private String mobile;
     private String mobile_e164;
-    private String name;    
+    private String name;   
+    private String nickname;
 
     public UserEntity convertToEntity(){
-        if(! StringUtils.hasLength( this.name ))
-            this.name = this.id;
-        if(! StringUtils.hasLength( this.email ))
-            this.email = "";
+        if(! StringUtils.hasLength( this.name )){
+            this.name = this.nickname;
+            if(! StringUtils.hasLength( this.name ))
+                this.name = this.id;
+        }
         
         UserEntity user = UserEntity.builder()
                                     .id(this.id)
