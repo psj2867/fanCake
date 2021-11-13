@@ -10,10 +10,8 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Order;
-import org.springframework.data.jpa.domain.Specification;
 import org.springframework.util.StringUtils;
 
-import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -51,11 +49,6 @@ public abstract class ListForm<T> extends BaseForm<T>{
     protected String sort;
 
     protected abstract List<String> getSortTypes();     
-
-    @Getter(value = AccessLevel.PROTECTED)
-    @Setter(value = AccessLevel.NONE)
-    private Specification<T> spec;
-
    
 
     public Pageable toPageable(){
