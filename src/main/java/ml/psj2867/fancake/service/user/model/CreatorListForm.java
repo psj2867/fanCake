@@ -11,9 +11,9 @@ import javax.persistence.criteria.Subquery;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.util.StringUtils;
 
-import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.experimental.SuperBuilder;
 import ml.psj2867.fancake.configure.security.AuthEnum;
 import ml.psj2867.fancake.entity.AuthoritiesEntity;
 import ml.psj2867.fancake.entity.UserEntity;
@@ -21,7 +21,7 @@ import ml.psj2867.fancake.service.api.model.ListForm;
 
 @Getter
 @Setter
-@Builder
+@SuperBuilder
 public class CreatorListForm extends ListForm<UserEntity> {
 
     @Nullable

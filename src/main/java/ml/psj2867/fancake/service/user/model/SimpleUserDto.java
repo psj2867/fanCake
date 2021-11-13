@@ -31,6 +31,7 @@ public class SimpleUserDto {
     public static SimpleUserDto of(UserEntity userEntity) {
         return SimpleUserDto.builder()
                         .userIdx(userEntity.getIdx())
+                        .name(userEntity.getName())
                         .build();
 
     }

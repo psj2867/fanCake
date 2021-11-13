@@ -9,16 +9,16 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.util.StringUtils;
 
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.experimental.SuperBuilder;
 import ml.psj2867.fancake.entity.UserEntity;
 import ml.psj2867.fancake.service.api.model.ListForm;
 
 @Getter
 @Setter
-@Builder
+@SuperBuilder
 @NoArgsConstructor
 @AllArgsConstructor
 public class UserListForm extends ListForm<UserEntity> {

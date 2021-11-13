@@ -80,9 +80,13 @@ public class VideoService  {
       video.setAuctionState(state);
       videoDao.save(video);
     }
-    public VideoDto getVideo(int videoIdx){
+    public VideoDto getVideoOrThrow(int videoIdx){
         return videoDao.findById(videoIdx)
             .map(VideoDto::of)
+            .orElseThrow( ()->  ResourceNotFoundException.of("video", videoIdx) );
+    }
+    public VideoEntity getVideoEntityOrThrow(int videoIdx){
+        return videoDao.findById(videoIdx)
             .orElseThrow( ()->  ResourceNotFoundException.of("video", videoIdx) );
     }
 
@@ -93,7 +97,8 @@ public class VideoService  {
     public Page<VideoDto> getVideoList(ChannesVideoslListForm form, ChannelEntity channel ){
         Page<VideoEntity> items = videoDao.findAll(form.toSpec(channel), form.toPageable());
         return items.map(VideoDto::of);
-    }
+    }  
+    
     
 
     public VideoEntity addVideoList(VideoForm form){

@@ -59,6 +59,14 @@ public class RestExceptionHandlerAdvice {
         this.log(request, reponse, e);
         return ResponseEntity.badRequest().body(e.getErrors(messageSource));
     }
+    
+    // 401
+    @ExceptionHandler(UnAuthorizedException.class)
+    public ResponseEntity<MessageDto> UnAuthorizedException(final HttpServletRequest request,
+            final HttpServletResponse reponse, final UnAuthorizedException e) {
+        this.log(request, reponse, e);
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(MessageDto.of("Unauthorized"));
+    }
 
     // 404
     @ExceptionHandler(NotFoundException.class)
@@ -75,13 +83,6 @@ public class RestExceptionHandlerAdvice {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(MessageDto.of(message));
     }
 
-    // 401
-    @ExceptionHandler(UnAuthorizedException.class)
-    public ResponseEntity<MessageDto> UnAuthorizedException(final HttpServletRequest request,
-            final HttpServletResponse reponse, final UnAuthorizedException e) {
-        this.log(request, reponse, e);
-        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(MessageDto.of("Unauthorized"));
-    }
     // 415
     @ExceptionHandler(HttpMediaTypeNotSupportedException.class)
     public ResponseEntity<ErrorDto> HttpMediaTypeNotSupportedException(final HttpServletRequest request,

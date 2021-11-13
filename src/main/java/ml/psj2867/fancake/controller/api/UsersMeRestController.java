@@ -45,6 +45,7 @@ public class UsersMeRestController {
     private PasswordEncoder passwordEncoder;
     
     @Operation(description = "로그인 된 사용자 정보")
+    @ApiResponse(responseCode = "401",description = "사용자 인증 실패" )
     @GetMapping("")
     public SimpleUserDto getRootGetUserIfno(@Validated @Nullable UserInfoForm form){
         if(!SecurityUtil.isAuth())
@@ -54,13 +55,16 @@ public class UsersMeRestController {
         else
             return SimpleUserDto.current();                
     }
+    
     @Operation(description = "정보 수정")
+    @ApiResponse(responseCode = "401",description = "사용자 인증 실패" )
     @PutMapping("")
     public MessageDto putRootUpdateUser(@Validated @RequestBody UserUpdateForm userDetailForm){
         userService.updateUser(userDetailForm);
         return MessageDto.success();
     }
     @Operation(description = "현재 로그인 된 사용자 제거")
+    @ApiResponse(responseCode = "401",description = "사용자 인증 실패" )
     @DeleteMapping("")
     public MessageDto deleteRootDeleteUser(){
         userService.deleteUser();
@@ -70,6 +74,7 @@ public class UsersMeRestController {
     
     @Operation(description = "비밀번호 변경")
     @ApiResponse(responseCode = "400", description = "현재 비밀번호와 다를 시")
+    @ApiResponse(responseCode = "401",description = "사용자 인증 실패" )
     @PutMapping("password")
     public MessageDto putPasswordUpdatePassword(@Validated @RequestBody UpdateUserPasswordForm passwordForm){
         passwordForm.encode(passwordEncoder);
@@ -78,11 +83,13 @@ public class UsersMeRestController {
     }
 
     @Operation(description = "로그인 된 사용자의 조각들")
+    @ApiResponse(responseCode = "401",description = "사용자 인증 실패" )
     @GetMapping("stocks")
     public Page<StockDto> getStocks(@Validated @Nullable StockListForm form){
         return stockService.getUserStock(form);
     }
     @Operation(description = "로그인 된 사용자의 거래 내용")
+    @ApiResponse(responseCode = "401",description = "사용자 인증 실패" )
     @GetMapping("tradings")
     public Page<TradingHistoryDto> getTradings(@Validated @Nullable TradingHistoryListForm form){
         return tradingService.getTradingList(form);
