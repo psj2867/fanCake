@@ -19,7 +19,6 @@ import ml.psj2867.fancake.service.oauth.model.LoginTypeEnum;
 @AllArgsConstructor
 public class DetailUserDto extends SimpleUserDto {
 
-    private String userID;
     private String phoneNumber;
     private double balance;
     private String email;

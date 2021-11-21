@@ -21,6 +21,7 @@ import org.springframework.validation.BindException;
 import org.springframework.web.HttpMediaTypeNotSupportedException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.servlet.NoHandlerFoundException;
 
 import lombok.extern.slf4j.Slf4j;
 import ml.psj2867.fancake.exception.ApiException;
@@ -32,6 +33,7 @@ import ml.psj2867.fancake.exception.notfound.NotFoundException;
 import ml.psj2867.fancake.exception.notfound.ResourceNotFoundException;
 import ml.psj2867.fancake.exception.unauth.UnAuthorizedException;
 import ml.psj2867.fancake.service.api.model.ErrorDto;
+import ml.psj2867.fancake.util.GeneralUtil;
 import ml.psj2867.fancake.util.MessageDto;
 
 @Slf4j
@@ -100,7 +102,14 @@ public class RestExceptionHandlerAdvice {
         final String message = String.format("'%s' - '%s' is not found", e.getResource(), e.getRejectedValue());
         return this.errorMessage(HttpStatus.NOT_FOUND, message, e);
     }
-
+    @ExceptionHandler(NoHandlerFoundException.class)
+    public ResponseEntity<MessageDto> NoHandlerFoundException(final HttpServletRequest request,
+            final HttpServletResponse reponse, final NoHandlerFoundException e) {
+        this.log(request, reponse, e);
+        log.warn("ip - {}", GeneralUtil.getClientIP(request));
+        return ResponseEntity.notFound().build();
+    }
+    
     // 415
     @ExceptionHandler(HttpMediaTypeNotSupportedException.class)
     public ResponseEntity<ErrorDto> HttpMediaTypeNotSupportedException(final HttpServletRequest request,

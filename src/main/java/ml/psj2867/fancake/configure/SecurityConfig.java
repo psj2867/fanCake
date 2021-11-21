@@ -13,7 +13,7 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.AuthenticationEntryPoint;
-import org.springframework.security.web.access.ExceptionTranslationFilter;
+import org.springframework.security.web.authentication.AnonymousAuthenticationFilter;
 import org.springframework.security.web.firewall.DefaultHttpFirewall;
 import org.springframework.security.web.firewall.HttpFirewall;
 
@@ -57,8 +57,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
             .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
             .and()
                 .formLogin()
-                .disable();
-        http.addFilterAfter(new JwtFilter(this.jwtProvider), ExceptionTranslationFilter.class);
+                .disable()
+            // .anonymous().authorities(Arrays.asList(AuthEnum.ANONYMOUS))    
+            ;
+        http.addFilterBefore(new JwtFilter(this.jwtProvider), AnonymousAuthenticationFilter.class);
         http.exceptionHandling().authenticationEntryPoint(authenticationEntryPoint());
     }
     private AuthenticationEntryPoint authenticationEntryPoint(){

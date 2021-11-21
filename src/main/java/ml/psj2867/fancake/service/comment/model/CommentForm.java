@@ -1,5 +1,7 @@
 package ml.psj2867.fancake.service.comment.model;
 
+import javax.validation.constraints.NotBlank;
+
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import ml.psj2867.fancake.entity.CommentEntity;
@@ -10,6 +12,7 @@ import ml.psj2867.fancake.entity.VideoEntity;
 @NoArgsConstructor
 public class CommentForm {
 
+    @NotBlank
     private String content;
 
     public CommentEntity toEntity(UserEntity user, VideoEntity video){

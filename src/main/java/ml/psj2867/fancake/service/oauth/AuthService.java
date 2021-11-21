@@ -16,6 +16,7 @@ import java.util.Optional;
 import org.apache.http.client.utils.URIBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -39,6 +40,7 @@ import ml.psj2867.fancake.service.user.UserService;
 import ml.psj2867.fancake.service.user.model.UserLoginForm;
 import ml.psj2867.fancake.util.GeneralUtil;
 import ml.psj2867.fancake.util.OptionalUtil;
+import ml.psj2867.fancake.util.SecurityUtil;
 
 @Slf4j
 @Service
@@ -55,9 +57,16 @@ public class AuthService {
     @Autowired
     private JwtProvider jwtProvider;
 
+    public TokenDto getTempToken()  {
+        if(! SecurityUtil.isAuth()) throw new UnAuthorizedException();
+        Authentication authentication= SecurityUtil.getAuth().orElseThrow(()-> new UnAuthorizedException());
+        return jwtProvider.generateTempTokenDtoForStomp(authentication);
+    }
+
     private TokenDto login(UserEntity user) throws LoginException {
         try {
             UsernamePasswordAuthenticationToken authUser = new UsernamePasswordAuthenticationToken(user.getIdx(), user.getName(), user.getGrants());
+            authUser.setDetails(user.getId());
             final TokenDto token = jwtProvider.generateTokenDto(authUser);
             return token;
         } catch (Exception e) {

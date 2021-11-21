@@ -5,6 +5,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 
+import javax.servlet.http.HttpServletRequest;
+
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -51,4 +53,25 @@ public class GeneralUtil {
       return convertJson(json, new TypeReference<Map<String, String>>() {})
                .orElse(new HashMap<>());
    }
+
+   public static String getClientIP(HttpServletRequest request) {
+      String ip = request.getHeader("X-Forwarded-For");
+  
+      if (ip == null) {
+          ip = request.getHeader("Proxy-Client-IP");
+      }
+      if (ip == null) {
+          ip = request.getHeader("WL-Proxy-Client-IP");
+      }
+      if (ip == null) {
+          ip = request.getHeader("HTTP_CLIENT_IP");
+      }
+      if (ip == null) {
+          ip = request.getHeader("HTTP_X_FORWARDED_FOR");
+      }
+      if (ip == null) {
+          ip = request.getRemoteAddr();
+      }  
+      return ip;
+  }
 }

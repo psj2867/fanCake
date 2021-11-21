@@ -3,6 +3,7 @@ package ml.psj2867.fancake.util;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -21,21 +22,22 @@ public class SecurityUtil {
         return getPrincipal().flatMap(pL -> OptionalUtil.parseInt((String)pL));
     }
     public static List<GrantedAuthority> getGrants(){
-        Collection<? extends GrantedAuthority> grants = getAuth().getAuthorities();
+        Collection<? extends GrantedAuthority> grants = getAuth().map(Authentication::getAuthorities)
+                                                                .orElse(Collections.emptyList());
         return new ArrayList<>(grants);
     }
 
     private static Optional<Object> getPrincipal(){
-        return isAuth() ?  Optional.ofNullable(getAuth().getPrincipal()) : Optional.empty() ;
+        return getAuth().map(Authentication::getPrincipal);
     }
     private static Optional<Object> getCredentaial(){
-        return isAuth() ?  Optional.ofNullable(getAuth().getCredentials()) : Optional.empty() ;
+        return getAuth().map(Authentication::getCredentials);
     }
     public static boolean isAuth(){
         return hasNotAuth("ROLE_ANONYMOUS");
     }
-    public static Authentication getAuth(){
-        return SecurityContextHolder.getContext().getAuthentication();
+    public static Optional<Authentication> getAuth(){
+        return Optional.ofNullable( SecurityContextHolder.getContext().getAuthentication() );
     }
     public static boolean hasNotAuth(String... grant){
         return ! hasAuth(grant);
