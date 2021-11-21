@@ -8,7 +8,9 @@ import lombok.Getter;
 public class MessageDto {
     private String message;
 
-
+    public String toJson(){
+        return OptionalUtil.toJson(this).orElse("");
+    }
     public static MessageDto of(String message) {
         return new MessageDto(message);
     }

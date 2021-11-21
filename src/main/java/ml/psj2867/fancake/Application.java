@@ -1,5 +1,9 @@
 package ml.psj2867.fancake;
 
+import java.util.TimeZone;
+
+import javax.annotation.PostConstruct;
+
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
@@ -12,6 +16,10 @@ public class Application  extends SpringBootServletInitializer{
 		SpringApplication.run(Application.class, args);
 		
 	}
+    @PostConstruct
+    void started() {
+        TimeZone.setDefault(TimeZone.getTimeZone("Asia/Seoul"));
+    }
 
 	@Override
 	protected SpringApplicationBuilder configure(SpringApplicationBuilder builder) {

@@ -14,6 +14,7 @@ import ml.psj2867.fancake.entity.UserEntity;
 @Builder
 public class AddressEmbedded{
 
+    private String addressPhoneNumber;
     private String addressRecipient;
     private String address;
     private String addressDetail;
@@ -21,10 +22,11 @@ public class AddressEmbedded{
 
     public static AddressEmbedded of(UserEntity user){
         return AddressEmbedded.builder() 
-                            .addressRecipient(user.getAddress().getAddressRecipient())
-                            .address(user.getAddress().getAddress())
-                            .addressDetail(user.getAddress().getAddressDetail())
-                            .addressZipCode(user.getAddress().getAddressZipCode())
+                            .addressRecipient(user.getDetail().getAddress().getAddressRecipient())
+                            .address(user.getDetail().getAddress().getAddress())
+                            .addressDetail(user.getDetail().getAddress().getAddressDetail())
+                            .addressZipCode(user.getDetail().getAddress().getAddressZipCode())
+                            .addressPhoneNumber(user.getDetail().getAddress().getAddressPhoneNumber())
                             .build();
     }
 }

@@ -7,7 +7,7 @@ import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.stereotype.Repository;
 
 import ml.psj2867.fancake.entity.UserEntity;
-import ml.psj2867.fancake.service.user.model.auth.LoginTypeEnum;
+import ml.psj2867.fancake.service.oauth.model.LoginTypeEnum;
 
 @Repository
 public interface UserEntityDao extends JpaRepository<UserEntity, Integer>, JpaSpecificationExecutor<UserEntity> {

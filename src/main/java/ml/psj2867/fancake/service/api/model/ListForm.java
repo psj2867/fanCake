@@ -3,7 +3,6 @@ package ml.psj2867.fancake.service.api.model;
 import java.util.List;
 
 import javax.annotation.Nullable;
-import javax.persistence.criteria.Predicate;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 
@@ -11,22 +10,20 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Order;
-import org.springframework.data.jpa.domain.Specification;
 import org.springframework.util.StringUtils;
 
-import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.SuperBuilder;
-import ml.psj2867.fancake.exception.FieldValidException;
+import ml.psj2867.fancake.exception.bad.FieldValidException;
 
 @Getter
 @Setter
 @SuperBuilder
 @NoArgsConstructor
-public abstract class ListForm<T>{
+public abstract class ListForm<T> extends BaseForm<T>{
 
     @Builder.Default
     protected static final int DEFAULT_COUNT_PER_PAGE = 10;
@@ -52,58 +49,16 @@ public abstract class ListForm<T>{
     protected String sort;
 
     protected abstract List<String> getSortTypes();     
-
-    @Getter(value = AccessLevel.PROTECTED)
-    @Setter(value = AccessLevel.NONE)
-    Specification<T> spec;
-
-    public Specification<T> toSpec(){
-        return this.spec;
-    }
-
-    protected Specification<T> and(Specification<T> addSpec){
-        if( addSpec == null) return this.spec;
-        if(this.spec == null){
-            this.spec = addSpec;
-            return this.spec;
-        }
-        this.spec = this.spec.and(addSpec);
-        return this.spec;
-    }
-    protected Specification<T> or(Specification<T> addSpec){
-        if( addSpec == null) return this.spec;
-        if(this.spec == null){
-            this.spec = addSpec;
-            return this.spec;
-        }
-        this.spec = this.spec.or(addSpec);
-        return this.spec;
-    }
-    protected Specification<T> like(String q, String fieldName){
-        return (root, query, builder) -> {
-            Predicate p = null;
-            if( StringUtils.hasLength(q) )
-                p = builder.like(root.get(fieldName), "%" + q + "%");
-            return p;
-        };
-    }
-    protected Specification<T> like(String q, String join, String fieldName){
-        return (root, query, builder) -> {
-            Predicate p = null;
-            if( StringUtils.hasLength(q) )
-                p = builder.like(root.join(join).get(fieldName), "%" + q + "%");
-            return p;
-        };
-    }
+   
 
     public Pageable toPageable(){
         page = ( page < 0  ) ? 0 : page;
         countPerPage = (countPerPage < 1 ) ? ListForm.DEFAULT_COUNT_PER_PAGE : countPerPage;
         countPerPage = ( ListForm.MAX_COUNT_PER_PAGE < countPerPage ) ? ListForm.MAX_COUNT_PER_PAGE : countPerPage;
-        return toPageable(page, countPerPage);
+        return toPageable(page, countPerPage,null);
     }
 
-    private Pageable toPageable(int curr, int countPerPagge){
+    private Pageable toPageable(int curr, int countPerPagge, ListForm<T> nullForInner){
         PageRequest pageable = null;
         if( StringUtils.hasLength(sort) && asc ){
             isSortField(this.sort);

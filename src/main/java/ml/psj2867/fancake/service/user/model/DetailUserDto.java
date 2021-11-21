@@ -10,7 +10,7 @@ import lombok.experimental.SuperBuilder;
 import ml.psj2867.fancake.entity.UserEntity;
 import ml.psj2867.fancake.entity.embedded.AddressEmbedded;
 import ml.psj2867.fancake.entity.embedded.BankEmbedded;
-import ml.psj2867.fancake.service.user.model.auth.LoginTypeEnum;
+import ml.psj2867.fancake.service.oauth.model.LoginTypeEnum;
 
 @Getter
 @Setter
@@ -35,7 +35,6 @@ public class DetailUserDto extends SimpleUserDto {
         return DetailUserDto.builder()
                     .name(userEntity.getName())
                     .userIdx(userEntity.getIdx())
-                    .isAuthenticate(true) 
                     .userID(userEntity.getId())
                     .balance(userEntity.getBalance())
                     .createdDate(userEntity.getCreatedDate())

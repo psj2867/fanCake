@@ -6,14 +6,20 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import ml.psj2867.fancake.dao.VideoEntityDao;
+import ml.psj2867.fancake.entity.ChannelEntity;
 import ml.psj2867.fancake.entity.UserEntity;
 import ml.psj2867.fancake.entity.VideoEntity;
-import ml.psj2867.fancake.exception.FieldValidException;
-import ml.psj2867.fancake.exception.NotFoundException;
+import ml.psj2867.fancake.entity.type.VideoAuctionState;
+import ml.psj2867.fancake.exception.bad.FieldValidException;
+import ml.psj2867.fancake.exception.notfound.ResourceNotFoundException;
+import ml.psj2867.fancake.service.api.model.ErrorDto;
+import ml.psj2867.fancake.service.channel.model.ChannesVideoslListForm;
 import ml.psj2867.fancake.service.stock.StockService;
+import ml.psj2867.fancake.service.trading.TradingService;
 import ml.psj2867.fancake.service.user.UserService;
-import ml.psj2867.fancake.service.video.model.BuyStockErrorDto;
+import ml.psj2867.fancake.service.video.model.BuyStockErrorBalanceDto;
 import ml.psj2867.fancake.service.video.model.BuyStockForm;
+import ml.psj2867.fancake.service.video.model.BuyStockSizeErrorDto;
 import ml.psj2867.fancake.service.video.model.VideoDto;
 import ml.psj2867.fancake.service.video.model.VideoForm;
 import ml.psj2867.fancake.service.video.model.VideoListForm;
@@ -28,33 +34,71 @@ public class VideoService  {
     private StockService stockService;    
     @Autowired
     private UserService userService;
+    @Autowired
+    private TradingService tradingService;
 
     public void buyStock(int videoIdx, BuyStockForm form){
         UserEntity user = userService.getUserOrThrow();
         VideoEntity video = videoDao.findById(videoIdx)
-                                .orElseThrow( ()->  NotFoundException.of("video", videoIdx) );
-        long remainSize = video.getStockSize() - video.getSize();
-        if(  remainSize < form.getSize() ){
-            BuyStockErrorDto error = BuyStockErrorDto.builder()
-                                                        .code("video.buyStock.outOfSize")
-                                                        .rejectedValue(form.getSize())
-                                                        .reaminSize(remainSize)
-                                                        .build();
+                                .orElseThrow( ()->  ResourceNotFoundException.of("video", videoIdx) );
+        checkBuyValid(user, video,form);
+        userService.withdrawal(form.calcAmmountOfStock(video));
+        stockService.buyStock(video, user, form);
+        tradingService.saveBuyTrading(video, user, form);
+    }
+    private void checkBuyValid(UserEntity user, VideoEntity video, BuyStockForm form){
+        if( ! video.checkOnSale() ){
+            ErrorDto error  = ErrorDto.builder()
+                            .code("video.buyStock.isNotOnSale")
+                            .rejectedValue(video.getVideoTitle())
+                            .build();
             throw FieldValidException.of(error);
         }
-        stockService.buyStock(video, user, form);
+        long remainSize = video.getStockSize() - video.getCurrentAmount();
+        if(  remainSize < form.getSize() ){
+            ErrorDto error = BuyStockSizeErrorDto.builder()
+                                        .code("video.buyStock.outOfSize")
+                                        .rejectedValue(form.getSize())
+                                        .reaminSize(remainSize)
+                                        .build();
+            throw FieldValidException.of(error);
+        }
+
+        if( user.getBalance() < form.calcAmmountOfStock(video)  ){
+            ErrorDto error = BuyStockErrorBalanceDto.builder()
+                                            .code("video.buyStock.outOfBalance")
+                                            .rejectedValue(form.getSize())
+                                            .balance(user.getBalance())
+                                            .build();
+            throw FieldValidException.of(error);
+        }
     }
 
-    public VideoDto getVideo(int videoIdx){
+    public void updateVideoState(int videoIdx, VideoAuctionState state){
+      VideoEntity video = videoDao.findById(videoIdx)
+          .orElseThrow( ()->  ResourceNotFoundException.of("video", videoIdx) );
+      video.setAuctionState(state);
+      videoDao.save(video);
+    }
+    public VideoDto getVideoOrThrow(int videoIdx){
         return videoDao.findById(videoIdx)
             .map(VideoDto::of)
-            .orElseThrow( ()->  NotFoundException.of("video", videoIdx) );
+            .orElseThrow( ()->  ResourceNotFoundException.of("video", videoIdx) );
+    }
+    public VideoEntity getVideoEntityOrThrow(int videoIdx){
+        return videoDao.findById(videoIdx)
+            .orElseThrow( ()->  ResourceNotFoundException.of("video", videoIdx) );
     }
 
     public Page<VideoDto> getVideoList(VideoListForm form){
         Page<VideoEntity> items = videoDao.findAll(form.toSpec(), form.toPageable());
         return items.map(VideoDto::of);
     }
+    public Page<VideoDto> getVideoList(ChannesVideoslListForm form, ChannelEntity channel ){
+        Page<VideoEntity> items = videoDao.findAll(form.toSpec(channel), form.toPageable());
+        return items.map(VideoDto::of);
+    }  
+    
     
 
     public VideoEntity addVideoList(VideoForm form){

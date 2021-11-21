@@ -6,7 +6,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.SuperBuilder;
 import ml.psj2867.fancake.entity.UserEntity;
-import ml.psj2867.fancake.exception.UnAuthorizedException;
+import ml.psj2867.fancake.exception.unauth.UnAuthorizedException;
 import ml.psj2867.fancake.util.SecurityUtil;
 
 @Getter
@@ -16,25 +16,22 @@ import ml.psj2867.fancake.util.SecurityUtil;
 @AllArgsConstructor
 public class SimpleUserDto {
 
-    private String name;
     private Integer userIdx;
-    private boolean isAuthenticate;
+    private String name;
 
     public static SimpleUserDto current() throws UnAuthorizedException{
         if(!SecurityUtil.isAuth())
             throw new UnAuthorizedException();
         return SimpleUserDto.builder()
-                            .name(SecurityUtil.getName().get())
                             .userIdx(SecurityUtil.getUserIdx().get())
-                            .isAuthenticate(true)
+                            .name(SecurityUtil.getName().get())
                             .build();
     }
 
     public static SimpleUserDto of(UserEntity userEntity) {
         return SimpleUserDto.builder()
-                        .name(userEntity.getName())
                         .userIdx(userEntity.getIdx())
-                        .isAuthenticate(true)  
+                        .name(userEntity.getName())
                         .build();
 
     }

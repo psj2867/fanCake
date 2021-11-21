@@ -3,7 +3,7 @@
   <include resource="org/springframework/boot/logging/logback/defaults.xml" />
 
   <!-- 변수 지정 -->
-  <property name="LOG_DIR" value="./logs"/>
+  <property name="LOG_DIR" value="./logs/fancake"/>
   <property name="LOG_PATH_NAME" value="${LOG_DIR}/data.log" />
 
   <!-- FILE Appender -->
@@ -32,8 +32,24 @@
 
   <springProfile name="dev">
     <root level="debug">
-      <appender-ref ref="STDOUT" />
       <appender-ref ref="FILE" />
+    </root>
+
+    <logger name="ml.psj2867" level="trace"/>
+    <logger name="org.springframework" level="info"/>
+    <logger name="org.hibernate" level="info"/>
+    <logger name="org.hibernate.type.descriptor.sql" level="info"/>
+    <logger name="com.zaxxer.hikari" level="warn"/>
+    <logger name="org.springframework.security.web.access.ExceptionTranslationFilter" level="trace"/>
+    <logger name="springfox" level="info"/>
+    <logger name="org.thymeleaf" level="info"/>
+    <logger name="Validator" level="info"/>
+
+  </springProfile>
+
+  <springProfile name="local">
+    <root level="debug">
+      <appender-ref ref="STDOUT" />
     </root>
 
     <logger name="ml.psj2867" level="trace"/>
@@ -41,9 +57,10 @@
     <logger name="org.hibernate" level="info"/>
     <logger name="org.hibernate.type.descriptor.sql" level="trace"/>
     <logger name="com.zaxxer.hikari" level="warn"/>
-    <logger name="org.springframework.security.web.access.ExceptionTranslationFilter" level="error"/>
+    <logger name="org.springframework.security.web.access.ExceptionTranslationFilter" level="trace"/>
     <logger name="springfox" level="info"/>
     <logger name="org.thymeleaf" level="info"/>
+    <logger name="Validator" level="info"/>
 
   </springProfile>
 
@@ -58,7 +75,7 @@
     <root level="warn">
       <appender-ref ref="FILE" />
     </root>
-  <logger name="ml.psj2867" level="trace"/>
+  <logger name="ml.psj2867" level="info"/>
   </springProfile> 
 
   

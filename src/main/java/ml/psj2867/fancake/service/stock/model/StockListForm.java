@@ -16,13 +16,14 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.experimental.SuperBuilder;
 import ml.psj2867.fancake.entity.StockEntity;
 import ml.psj2867.fancake.entity.UserEntity;
 import ml.psj2867.fancake.service.api.model.ListForm;
 
 @Getter
 @Setter
-@Builder
+@SuperBuilder
 @NoArgsConstructor
 @AllArgsConstructor
 @ApiModel(description = "sort type - [video,price,createdDate]")

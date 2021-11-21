@@ -10,7 +10,7 @@
 	</parent>
 	<groupId>ml.psj2867</groupId>
 	<artifactId>fancake</artifactId>
-	<version>1.0.3</version>
+	<version>1.2.1</version>
 	<packaging>war</packaging>
 	<name>fancake</name>
 	<description>fancake project 2021</description>
@@ -47,8 +47,16 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-tomcat</artifactId>
 			<scope>provided</scope>
-		</dependency>
-
+		</dependency>        
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-hateoas</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-mail</artifactId>
+            <version>1.4.3.RELEASE</version>
+        </dependency>
 		<!-- spring -security -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -135,7 +143,7 @@
 		<dependency>
 			<groupId>org.apache.httpcomponents</groupId>
 			<artifactId>httpclient</artifactId>
-			<version>4.5.1</version>
+			<version>4.5.13</version>
 		</dependency>
 
 		<!-- test -->
@@ -161,6 +169,8 @@
 	</repositories>
 
 	<build>
+    	<finalName>ROOT</finalName>
+
 		<plugins>
 			<plugin>
 				<groupId>org.springframework.boot</groupId>

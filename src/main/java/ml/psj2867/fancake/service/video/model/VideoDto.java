@@ -7,6 +7,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 import ml.psj2867.fancake.entity.VideoEntity;
+import ml.psj2867.fancake.entity.type.VideoAuctionState;
 import ml.psj2867.fancake.service.channel.model.ChannelDto;
 
 @Builder
@@ -25,11 +26,12 @@ public class VideoDto{
     private int videoIdx;
     private LocalDateTime expirationDate;
     private boolean isOnSale;
+    private VideoAuctionState auctionState;
 
     public static VideoDto of(VideoEntity videoEntity){
         return VideoDto.builder()
                     .title(videoEntity.getVideoTitle())
-                    .currentAmount(videoEntity.getSize())
+                    .currentAmount(videoEntity.getCurrentAmount())
                     .expirationDate(videoEntity.getExpirationDate())
                     .marketCap(videoEntity.getPricePerShare() * videoEntity.getStockSize())
                     .pricePerShare(videoEntity.getPricePerShare())
@@ -37,11 +39,10 @@ public class VideoDto{
                     .channel(ChannelDto.of(videoEntity.getChannel()))
                     .videoIdx(videoEntity.getIdx())
                     .videoId(videoEntity.getVideoId())
-                    .isOnSale(checkOnSale(videoEntity))
+                    .isOnSale(videoEntity.checkOnSale())
+                    .auctionState(videoEntity.getAuctionState() )
                     .build();
     }
-    private static boolean checkOnSale(VideoEntity videoEntity){
-        return videoEntity.getExpirationDate().isAfter(LocalDateTime.now());
-    }
+   
 
 }

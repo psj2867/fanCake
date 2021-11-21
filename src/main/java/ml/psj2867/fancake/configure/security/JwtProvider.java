@@ -35,7 +35,9 @@ import ml.psj2867.fancake.util.CookieUtil;
 public class JwtProvider {
     
     public static final String AUTHORIZATION_HEADER = "Authorization";
-    public static final String BEARER_PREFIX = "Bearer";
+    // public static final String BEARER_PREFIX = "Bearer";
+    public static final String AUTHORIZATION_QUERY = "authToken";
+    public static final String AUTHORIZATION_COOKIE = JwtProvider.AUTHORIZATION_HEADER;
 
     private static final String AUTHORITIES_KEY = "grants";
     private static final String USER_NAME_KEY = "user_name";
@@ -57,11 +59,9 @@ public class JwtProvider {
 
     public TokenDto generateTokenDto(Authentication authentication) {
         // 권한들 가져오기
-        GrantedAuthority defaultGrant = AuthEnum.USER;
         List<String> authoritieList = authentication.getAuthorities().stream()
                                             .map(GrantedAuthority::getAuthority)
                                             .collect(Collectors.toList());
-        authoritieList.add(defaultGrant.getAuthority());
         String authorities = String.join(",", authoritieList);
                                     
 
