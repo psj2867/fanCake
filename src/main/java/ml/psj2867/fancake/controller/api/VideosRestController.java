@@ -1,7 +1,5 @@
 package ml.psj2867.fancake.controller.api;
 
-import javax.validation.constraints.NotNull;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
@@ -21,6 +19,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import ml.psj2867.fancake.entity.type.VideoAuctionState;
 import ml.psj2867.fancake.service.comment.CommentService;
+import ml.psj2867.fancake.service.comment.model.CommentDeleteForm;
 import ml.psj2867.fancake.service.comment.model.CommentDto;
 import ml.psj2867.fancake.service.comment.model.CommentForm;
 import ml.psj2867.fancake.service.comment.model.CommentOffsetForm;
@@ -87,8 +86,8 @@ public class VideosRestController {
     @ApiResponse(responseCode = "401",description = "사용자 인증 실패" )
     @ApiResponse(responseCode = "403",description = "작성자 아님" )
     @ApiResponse(responseCode = "404",description = "없는 댓글" )
-    public MessageDto deleteComments(@PathVariable int videoIdx, @Validated @NotNull @RequestBody int commentIdx){
-        commentService.deleteComment(videoIdx, commentIdx);
+    public MessageDto deleteComments(@PathVariable int videoIdx, @Validated @RequestBody CommentDeleteForm CommentDeleteForm){
+        commentService.deleteComment(videoIdx, CommentDeleteForm.getCommentIdx());
         return MessageDto.success();
     }
 
