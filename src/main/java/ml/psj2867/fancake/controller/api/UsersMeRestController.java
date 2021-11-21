@@ -16,7 +16,9 @@ import org.springframework.web.bind.annotation.RestController;
 import io.swagger.annotations.Api;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import ml.psj2867.fancake.configure.security.TokenDto;
 import ml.psj2867.fancake.exception.unauth.UnAuthorizedException;
+import ml.psj2867.fancake.service.oauth.AuthService;
 import ml.psj2867.fancake.service.stock.StockService;
 import ml.psj2867.fancake.service.stock.model.StockDto;
 import ml.psj2867.fancake.service.stock.model.StockListForm;
@@ -37,6 +39,8 @@ import ml.psj2867.fancake.util.SecurityUtil;
 public class UsersMeRestController {    
     @Autowired
     private UserService userService;
+    @Autowired
+    private AuthService authService;
     @Autowired
     private StockService stockService;
     @Autowired
@@ -71,6 +75,12 @@ public class UsersMeRestController {
         return MessageDto.success();
     }
    
+    @Operation(description = "web socket 임시 토큰")
+    @ApiResponse(responseCode = "401",description = "사용자 인증 실패" )
+    @GetMapping("token")
+    public TokenDto getTempToken(){
+        return authService.getTempToken();
+    }
     
     @Operation(description = "비밀번호 변경")
     @ApiResponse(responseCode = "400", description = "현재 비밀번호와 다를 시")

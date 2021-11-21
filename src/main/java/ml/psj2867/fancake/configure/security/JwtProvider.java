@@ -9,7 +9,6 @@ import java.util.stream.Collectors;
 
 import javax.servlet.http.Cookie;
 
-import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
@@ -41,7 +40,9 @@ public class JwtProvider {
 
     private static final String AUTHORITIES_KEY = "grants";
     private static final String USER_NAME_KEY = "user_name";
+    private static final String USER_ID_KEY = "user_id";
     public static final long ACCESS_TOKEN_EXPIRE_TIME = 1000 * 60 * 60 * 24; // 1일 
+    public static final long TEMP_ACCESS_TOKEN_EXPIRE_TIME = 1000 * 60 ; // 1분
     //private static final long REFRESH_TOKEN_EXPIRE_TIME = 1000 * 60 * 60 * 24 * 7; // 7일
 
     private final Key key;
@@ -56,23 +57,27 @@ public class JwtProvider {
     public Cookie createCookie(TokenDto token) {
         return CookieUtil.createCookie(AUTHORIZATION_HEADER, token.getAccessToken());
     }
-
     public TokenDto generateTokenDto(Authentication authentication) {
+        return generateTokenDto(authentication, ACCESS_TOKEN_EXPIRE_TIME);
+    }
+    public TokenDto generateTempTokenDtoForStomp(Authentication authentication) {
+        return generateTokenDto(authentication, TEMP_ACCESS_TOKEN_EXPIRE_TIME);
+    }
+    private TokenDto generateTokenDto(Authentication authentication, long expireTime) {
         // 권한들 가져오기
         List<String> authoritieList = authentication.getAuthorities().stream()
                                             .map(GrantedAuthority::getAuthority)
                                             .collect(Collectors.toList());
-        String authorities = String.join(",", authoritieList);
-                                    
+        String authorities = String.join(",", authoritieList);                                    
 
         long now = (new Date()).getTime();
+        Date accessTokenExpiresIn = new Date(now + expireTime);
 
-        // Access Token 생성
-        Date accessTokenExpiresIn = new Date(now + ACCESS_TOKEN_EXPIRE_TIME);
         String accessToken = Jwts.builder()
                 .setSubject(authentication.getName())       // payload "sub": "IDX"
                 .claim(AUTHORITIES_KEY, authorities)        // payload "auth": "ROLE_USER"
                 .claim(USER_NAME_KEY, authentication.getCredentials() )        // payload "user_name": "[name]"
+                .claim(USER_ID_KEY, authentication.getDetails() )        // payload "user_name": "[name]"
                 .setExpiration(accessTokenExpiresIn)        // payload "exp": 1516239022 (예시)
                 .signWith(key, SignatureAlgorithm.HS512)    // header "alg": "HS512"
                 .compact();
@@ -86,15 +91,7 @@ public class JwtProvider {
     public Authentication getAuthentication(String accessToken) {
         // 토큰 복호화
         Claims claims = parseClaims(accessToken);
-        if (claims.getSubject() == null) {
-            throw new BadCredentialsException("권한 정보가 없는 토큰입니다.");
-        }
-        if (claims.get(AUTHORITIES_KEY) == null || ! StringUtils.hasLength(claims.get(AUTHORITIES_KEY).toString())) {
-            throw new BadCredentialsException("권한 정보가 없는 토큰입니다.");
-        }
-        if (claims.get(USER_NAME_KEY) == null) {
-            throw new BadCredentialsException("사용자 정보가 없는 토큰입니다.");
-        }
+        if(claims == null) return null;
 
         // 클레임에서 권한 정보 가져오기
         Collection<? extends GrantedAuthority> authorities =
@@ -106,11 +103,26 @@ public class JwtProvider {
         return new UsernamePasswordAuthenticationToken(claims.getSubject(), claims.get(USER_NAME_KEY), authorities);
     }
 
-    public boolean validateToken(String token) {
-        if( ! StringUtils.hasLength(token) ) return false;
+    private Claims parseClaims(String accessToken) {
+        if(! StringUtils.hasLength(accessToken)){
+            log.info("빈 토큰입니다.");
+            return null;
+        }
         try {
-            jwtParser.parseClaimsJws(token);
-            return true;
+            Claims claims =  jwtParser.parseClaimsJws(accessToken).getBody();
+            if (claims.getSubject() == null) {
+                log.info("권한 정보가 없는 토큰입니다.");
+                throw new RuntimeException();
+            }
+            if (claims.get(AUTHORITIES_KEY) == null || ! StringUtils.hasLength(claims.get(AUTHORITIES_KEY).toString())) {
+                log.info("권한 정보가 없는 토큰입니다.");
+                throw new RuntimeException();
+            }
+            if (claims.get(USER_NAME_KEY) == null) {
+                log.info("사용자 정보가 없는 토큰입니다.");
+                throw new RuntimeException();
+            }
+            return claims;
         } catch (io.jsonwebtoken.security.SecurityException | MalformedJwtException e) {
             log.info("잘못된 JWT 서명입니다.");
         } catch (ExpiredJwtException e) {
@@ -119,17 +131,9 @@ public class JwtProvider {
             log.info("지원되지 않는 JWT 토큰입니다.");
         } catch (IllegalArgumentException e) {
             log.info("JWT 토큰이 잘못되었습니다.");
+        } catch (RuntimeException e){
+            return null;
         }
-        return false;
-    }
-
-    private Claims parseClaims(String accessToken) {
-        if(!StringUtils.hasLength(accessToken))
-            throw new BadCredentialsException("인증 정보가 없습니다.");
-        try {
-            return jwtParser.parseClaimsJws(accessToken).getBody();
-        } catch (ExpiredJwtException e) {
-            return e.getClaims();
-        }
+        return null;
     }
 }

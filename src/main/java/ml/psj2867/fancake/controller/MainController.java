@@ -11,7 +11,7 @@ public class MainController {
     
     @RequestMapping("")
     public String getMain() {
-        return "redirect:/static/fanCake/index.html";
+        return "redirect:/static/index.html";
     }
 
     @RequestMapping("test")

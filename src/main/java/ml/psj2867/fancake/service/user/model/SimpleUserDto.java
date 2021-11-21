@@ -18,6 +18,7 @@ public class SimpleUserDto {
 
     private Integer userIdx;
     private String name;
+    private String userID;
 
     public static SimpleUserDto current() throws UnAuthorizedException{
         if(!SecurityUtil.isAuth())
@@ -32,6 +33,7 @@ public class SimpleUserDto {
         return SimpleUserDto.builder()
                         .userIdx(userEntity.getIdx())
                         .name(userEntity.getName())
+                        .userID(userEntity.getId())
                         .build();
 
     }

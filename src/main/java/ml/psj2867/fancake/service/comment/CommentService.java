@@ -47,10 +47,12 @@ public class CommentService {
         Page<CommentDto> reversedComments = new PageImpl<>(contents, comments.getPageable(), comments.getTotalElements());
         return reversedComments;
     }
-    public void doComment(int videoIdx, CommentForm commentForm){
+    public CommentEntity insertComment(int videoIdx, CommentForm commentForm){
         VideoEntity video = videoService.getVideoEntityOrThrow(videoIdx);
         UserEntity user = userService.getUserOrThrow();
-        commentDao.save(commentForm.toEntity(user, video));
+        CommentEntity comment = commentForm.toEntity(user, video);
+        commentDao.save(comment);
+        return comment;
     }
     public void deleteComment(int videoIdx,int commentIdx){
         CommentEntity comment = this.getCommentOrThrow(commentIdx, videoIdx);

@@ -22,7 +22,6 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import ml.psj2867.fancake.entity.type.VideoAuctionState;
 import ml.psj2867.fancake.service.comment.CommentService;
 import ml.psj2867.fancake.service.comment.model.CommentDto;
-import ml.psj2867.fancake.service.comment.model.CommentForm;
 import ml.psj2867.fancake.service.comment.model.CommentOffsetForm;
 import ml.psj2867.fancake.service.video.VideoService;
 import ml.psj2867.fancake.service.video.model.BuyStockForm;
@@ -77,12 +76,7 @@ public class VideosRestController {
     public Page<CommentDto> getComments(@PathVariable int videoIdx, @Validated CommentOffsetForm commentOffsetForm){
         return commentService.getComments(videoIdx, commentOffsetForm);
     }
-    @PostMapping("{videoIdx}/comments")
-    @ApiResponse(responseCode = "401",description = "사용자 인증 실패" )
-    public MessageDto postComments(@PathVariable int videoIdx, @Validated @RequestBody CommentForm commentForm){
-        commentService.doComment(videoIdx, commentForm);
-        return MessageDto.success();
-    }
+    
     @DeleteMapping("{videoIdx}/comments")
     @ApiResponse(responseCode = "401",description = "사용자 인증 실패" )
     @ApiResponse(responseCode = "403",description = "작성자 아님" )
