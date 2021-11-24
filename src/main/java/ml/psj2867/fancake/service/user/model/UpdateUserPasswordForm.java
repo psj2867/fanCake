@@ -4,7 +4,6 @@ import javax.validation.constraints.NotBlank;
 
 import org.springframework.security.crypto.password.PasswordEncoder;
 
-import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -24,18 +23,13 @@ public class UpdateUserPasswordForm implements WithEncodedPassword {
     private String currentPassword;
     @NotBlank
     private String newPassword;
-    
-    @Setter(AccessLevel.NONE)
-    private String _originNewPassword;
 
     public void overWrite(UserEntity user) {
         user.setPassword(this.newPassword);
-        user.setTemp_origin_password(this._originNewPassword);
     }
 
     @Override
     public void encode(PasswordEncoder passwordEncoder) {
-        this._originNewPassword = newPassword;
         this.newPassword = passwordEncoder.encode(newPassword);
     }
 

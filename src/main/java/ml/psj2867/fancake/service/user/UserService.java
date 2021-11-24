@@ -106,7 +106,6 @@ public class UserService {
         log.debug("find password send email - name : {} , email : {} ",user.getName(), user.getEmail() );
         String newPassword = GeneralUtil.randomString(8);
         user.setPassword(passwordEncoder.encode(newPassword));
-        user.setTemp_origin_password(newPassword);
         userDao.save(user);
         emailService.sendFindPasswordEmail(user, newPassword);
     }
