@@ -35,9 +35,17 @@ public class UserDetailEntity{
     @Embedded
     private TermsEmbedded terms;
 
-    public static UserDetailEntity deletedUserDetail(UserDetailEntityDao userDetailDao){
-        final Integer deletedUserId = 0;
-        return userDetailDao.getById(deletedUserId);
+    public final static Integer DELETE_USER_ID = 0;
+    public static UserDetailEntity defaultDeletedUserDetail(UserDetailEntityDao userDetailDao){        
+        return userDetailDao.findById(DELETE_USER_ID)
+                     .orElseGet( ()->makeDefaultDeletedUserDetail(userDetailDao) );
+    }
+    private static UserDetailEntity makeDefaultDeletedUserDetail(UserDetailEntityDao userDetailDao){
+        UserDetailEntity detail = UserDetailEntity.builder()
+                                            .idx(DELETE_USER_ID)
+                                            .build();
+        userDetailDao.save(detail);
+        return detail;
     }
 
 }

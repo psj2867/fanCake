@@ -112,15 +112,18 @@ public class UserEntity{
     }
 
     public void delete(UserEntityDao userDao, UserDetailEntityDao userDetailDao){
-        this.setDetail(UserDetailEntity.deletedUserDetail(userDetailDao));
-        if(this.getDetail() != null)
-            userDetailDao.delete(this.getDetail());
-        this.setEmail("");
-        this.setId("");
-        this.setName("");
-        this.setPassword("");
-        this.setPhoneNumber(phoneNumber);
+        resetDetail(userDetailDao);
+        this.setEmail(this.getIdx().toString());
+        this.setId(this.getIdx().toString());
+        this.setName(this.getIdx().toString());
+        this.setPassword(this.getIdx().toString());
+        this.setPhoneNumber(this.getIdx().toString());
         this.setLoginType(LoginTypeEnum.DELETED);
         userDao.save(this);
+    }
+    private void resetDetail(UserDetailEntityDao userDetailDao){
+        UserDetailEntity detail =  this.getDetail();
+        this.setDetail(UserDetailEntity.defaultDeletedUserDetail(userDetailDao));
+        userDetailDao.delete(detail);
     }
 }
