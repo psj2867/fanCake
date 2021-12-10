@@ -113,11 +113,11 @@
 			<version>1.3.3</version>
 		</dependency>
 -->
-		<dependency>
+		<!-- <dependency>
 			<groupId>com.h2database</groupId>
 			<artifactId>h2</artifactId>
 			<version>1.4.200</version>
-		</dependency>
+		</dependency> -->
 
 		<!-- YouTube Data V3 support -->
 		<dependency>
