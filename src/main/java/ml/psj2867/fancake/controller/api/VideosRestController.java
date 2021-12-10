@@ -1,9 +1,13 @@
 package ml.psj2867.fancake.controller.api;
 
+import java.util.Arrays;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.messaging.simp.SimpMessageSendingOperations;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -17,10 +21,13 @@ import org.springframework.web.bind.annotation.RestController;
 import io.swagger.annotations.Api;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import ml.psj2867.fancake.controller.websocket.StompController;
+import ml.psj2867.fancake.entity.CommentEntity;
 import ml.psj2867.fancake.entity.type.VideoAuctionState;
 import ml.psj2867.fancake.service.comment.CommentService;
 import ml.psj2867.fancake.service.comment.model.CommentDeleteForm;
 import ml.psj2867.fancake.service.comment.model.CommentDto;
+import ml.psj2867.fancake.service.comment.model.CommentForm;
 import ml.psj2867.fancake.service.comment.model.CommentOffsetForm;
 import ml.psj2867.fancake.service.video.VideoService;
 import ml.psj2867.fancake.service.video.model.BuyStockForm;
@@ -37,6 +44,8 @@ public class VideosRestController {
     private VideoService videoService;
     @Autowired
     private CommentService commentService;
+    @Autowired
+    private  SimpMessageSendingOperations messagingTemplate;
     
 
     @Operation(description = "전체 영상 목록")
@@ -70,6 +79,18 @@ public class VideosRestController {
         return ResponseEntity.status(HttpStatus.CREATED).body(MessageDto.success());
     }
 
+    @PostMapping("{videoIdx}/comments")
+    @ApiResponse(responseCode = "401",description = "사용자 인증 실패" )
+    public MessageDto postComments(@PathVariable int videoIdx, @Validated @RequestBody CommentForm commentForm){
+        CommentEntity comment  = commentService.insertComment(videoIdx, commentForm);
+        sendStomp(videoIdx, comment);
+        return MessageDto.success();
+    }
+    private void sendStomp(int videoIdx, CommentEntity comment){
+        String detination = StompController.getSubscribeDestination(videoIdx);
+        List<CommentDto> payload = Arrays.asList(CommentDto.of(comment));
+        messagingTemplate.convertAndSend(detination, payload);
+    }
     @Operation(description = "영상 댓글 - offset이 비어있으면 prev 무시, 가장 최근 limit 만큼")
     @GetMapping("{videoIdx}/comments")
     public Page<CommentDto> getComments(@PathVariable int videoIdx, @Validated CommentOffsetForm commentOffsetForm){
