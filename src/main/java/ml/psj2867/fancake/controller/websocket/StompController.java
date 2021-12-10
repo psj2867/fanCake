@@ -16,7 +16,7 @@ import ml.psj2867.fancake.service.comment.model.CommentOffsetForm;
 @Slf4j
 @Controller
 public class StompController {
-    public static final String SUBSCRIBE_MAPPING_FORMMAT = "/videos/%s/comments";
+    public static final String SUBSCRIBE_MAPPING_FORMMAT = "/sub/videos/%s/comments";
     
     @Autowired
     private  CommentService commentService;

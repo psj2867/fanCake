@@ -10,6 +10,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import ml.psj2867.fancake.configure.security.JwtProvider;
+import ml.psj2867.fancake.controller.api.ApiRestController;
 import springfox.documentation.builders.PathSelectors;
 import springfox.documentation.builders.RequestHandlerSelectors;
 import springfox.documentation.builders.RequestParameterBuilder;
@@ -37,13 +38,12 @@ public class ApplicationConfig implements WebMvcConfigurer{
                         .in("query")
                         .required(false)
                         .build());
-                                  
         return new Docket(DocumentationType.SWAGGER_2)
                 .host(properties.getHost())
                 .globalRequestParameters(global)
                 .consumes(getConsumeContentTypes())
                 .select()
-                    .apis(RequestHandlerSelectors.basePackage("ml.psj2867.fancake.controller.api"))//Swagger API 문서로 만들기 원하는 basePackage 경로
+                    .apis(RequestHandlerSelectors.basePackage(ApiRestController.class.getPackageName()))//Swagger API 문서로 만들기 원하는 basePackage 경로
                     .paths(PathSelectors.ant("/api/**"))    //URL 경로를 지정하여 해당 URL에 해당하는 요청만 SWAGGER로 만듦
                 .build();
     }
