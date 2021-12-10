@@ -16,8 +16,7 @@ public class EmailService {
     public void sendFindPasswordEmail(final UserEntity user, String password){
         String subject = emailSubject(user);
         String content = emailContent(user, password) ;
-        sendSimpleMessage( "fanCake.elk@gmail.com", subject, content);
-        // sendSimpleMessage( user.getEmail(), subject, content);
+        sendSimpleMessage( user.getEmail(), subject, content);
     }
     private String emailSubject(final UserEntity user){
         return "fancake 비밀번호 찾기 초기화 비밀번호" ;
